@@ -121,33 +121,38 @@ export function calculateCorrectReport(totalUsers: number) {
   user1_hearts_earned = WELCOME_HEARTS;
   
   for (const level of LEVELS) {
-    if (user1_allowance >= level.cum) {
-      // 하트허용치 조건 충족
-      
-      // 보유 하트가 충분한지 확인
-      if (user1_hearts_balance >= level.hearts_required) {
-        // 레벨업 가능
-        user1_stars_purchased += level.stars;
-        user1_coins_earned += level.coins;
-        
-        // 하트 소비
-        user1_hearts_balance -= level.hearts_required;
-        user1_hearts_spent += level.hearts_required;
-        
-        // 하트 보상 획득
-        user1_hearts_balance += level.hearts;
-        user1_hearts_earned += level.hearts;
-        
-        user1_highest_farm = level.farm;
-        user1_highest_level = level.level;
-      } else {
-        // 하트 부족으로 레벨업 불가
-        break;
-      }
-    } else {
+    // 조건 1: 하트허용치 충족 확인
+    if (user1_allowance < level.cum) {
       // 하트허용치 부족으로 레벨업 불가
       break;
     }
+    
+    // 조건 2: 보유 하트 ≥ 필요 하트허용치 확인
+    if (user1_hearts_balance < level.cum) {
+      // 보유 하트가 필요 하트허용치보다 적어서 레벨업 불가
+      break;
+    }
+    
+    // 조건 3: 레벨업에 필요한 하트 소비량 확인
+    if (user1_hearts_balance < level.hearts_required) {
+      // 하트 소비량이 부족하여 레벨업 불가
+      break;
+    }
+    
+    // 모든 조건 충족 - 레벨업 가능
+    user1_stars_purchased += level.stars;
+    user1_coins_earned += level.coins;
+    
+    // 하트 소비
+    user1_hearts_balance -= level.hearts_required;
+    user1_hearts_spent += level.hearts_required;
+    
+    // 하트 보상 획득
+    user1_hearts_balance += level.hearts;
+    user1_hearts_earned += level.hearts;
+    
+    user1_highest_farm = level.farm;
+    user1_highest_level = level.level;
   }
   
   const user1_investment = user1_stars_purchased * 3;
@@ -177,33 +182,38 @@ export function calculateCorrectReport(totalUsers: number) {
     user256_hearts_earned = WELCOME_HEARTS;
     
     for (const level of LEVELS) {
-      if (user256_allowance >= level.cum) {
-        // 하트허용치 조건 충족
-        
-        // 보유 하트가 충분한지 확인
-        if (user256_hearts_balance >= level.hearts_required) {
-          // 레벨업 가능
-          user256_stars_purchased += level.stars;
-          user256_coins_earned += level.coins;
-          
-          // 하트 소비
-          user256_hearts_balance -= level.hearts_required;
-          user256_hearts_spent += level.hearts_required;
-          
-          // 하트 보상 획득
-          user256_hearts_balance += level.hearts;
-          user256_hearts_earned += level.hearts;
-          
-          user256_highest_farm = level.farm;
-          user256_highest_level = level.level;
-        } else {
-          // 하트 부족으로 레벨업 불가
-          break;
-        }
-      } else {
+      // 조건 1: 하트허용치 충족 확인
+      if (user256_allowance < level.cum) {
         // 하트허용치 부족으로 레벨업 불가
         break;
       }
+      
+      // 조건 2: 보유 하트 ≥ 필요 하트허용치 확인
+      if (user256_hearts_balance < level.cum) {
+        // 보유 하트가 필요 하트허용치보다 적어서 레벨업 불가
+        break;
+      }
+      
+      // 조건 3: 레벨업에 필요한 하트 소비량 확인
+      if (user256_hearts_balance < level.hearts_required) {
+        // 하트 소비량이 부족하여 레벨업 불가
+        break;
+      }
+      
+      // 모든 조건 충족 - 레벨업 가능
+      user256_stars_purchased += level.stars;
+      user256_coins_earned += level.coins;
+      
+      // 하트 소비
+      user256_hearts_balance -= level.hearts_required;
+      user256_hearts_spent += level.hearts_required;
+      
+      // 하트 보상 획득
+      user256_hearts_balance += level.hearts;
+      user256_hearts_earned += level.hearts;
+      
+      user256_highest_farm = level.farm;
+      user256_highest_level = level.level;
     }
   }
   
