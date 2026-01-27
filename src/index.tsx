@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { DatabaseHelper } from './lib/db-helper';
 import { SimulationRunner } from './lib/simulator';
-import { calculateKeyMetrics } from './lib/calculator';
+import { calculateFullReport } from './lib/level-achievement-calculator';
 
 type Bindings = {
   DB: D1Database;
@@ -15,8 +15,8 @@ app.use('/api/*', cors());
 
 // ========== 순수 계산 API (DB 없음) ==========
 
-// 입력 인원수에 따른 핵심 지표 계산
-app.get('/api/calculate/:total_users', async (c) => {
+// 입력 인원수에 따른 레벨별 달성자 수 및 플랫폼 수익 계산
+app.get('/api/report/:total_users', async (c) => {
   try {
     const totalUsers = parseInt(c.req.param('total_users'));
     
@@ -24,11 +24,11 @@ app.get('/api/calculate/:total_users', async (c) => {
       return c.json({ error: '유효한 인원수를 입력하세요 (1 이상)' }, 400);
     }
 
-    if (totalUsers > 10000) {
-      return c.json({ error: '인원수가 너무 큽니다 (최대 10,000명)' }, 400);
+    if (totalUsers > 1000000) {
+      return c.json({ error: '인원수가 너무 큽니다 (최대 1,000,000명)' }, 400);
     }
 
-    const result = calculateKeyMetrics(totalUsers);
+    const result = calculateFullReport(totalUsers);
     
     return c.json(result);
   } catch (error) {
