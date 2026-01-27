@@ -116,6 +116,47 @@ app.get('/api/users/:id', async (c) => {
   }
 });
 
+// 특정 사용자의 일별 히스토리 조회
+app.get('/api/users/:id/history', async (c) => {
+  try {
+    const userId = parseInt(c.req.param('id'));
+    const dbHelper = new DatabaseHelper(c.env.DB);
+    
+    const user = await dbHelper.getUser(userId);
+    if (!user) {
+      return c.json({ error: '사용자를 찾을 수 없습니다.' }, 404);
+    }
+    
+    // 레벨업 이력 조회
+    const historyResult = await c.env.DB.prepare(`
+      SELECT * FROM levelup_history 
+      WHERE user_id = ? 
+      ORDER BY simulation_day, created_at
+    `).bind(userId).all();
+    
+    const history = historyResult.results;
+    
+    // 일별로 그룹화
+    const dailyHistory: any = {};
+    
+    for (const record of history) {
+      const day = record.simulation_day;
+      if (!dailyHistory[day]) {
+        dailyHistory[day] = [];
+      }
+      dailyHistory[day].push(record);
+    }
+    
+    return c.json({ 
+      user, 
+      history,
+      daily_history: dailyHistory
+    });
+  } catch (error) {
+    return c.json({ error: `히스토리 조회 실패: ${error}` }, 500);
+  }
+});
+
 // ========== 분석 ==========
 
 // 사용자 분석 (투자 수익률)
