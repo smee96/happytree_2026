@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { DatabaseHelper } from './lib/db-helper';
 import { SimulationRunner } from './lib/simulator';
-import { calculateFullReport } from './lib/level-achievement-calculator';
+import { calculateCorrectReport } from './lib/correct-calculator';
 
 type Bindings = {
   DB: D1Database;
@@ -28,7 +28,7 @@ app.get('/api/report/:total_users', async (c) => {
       return c.json({ error: '인원수가 너무 큽니다 (최대 1,000,000명)' }, 400);
     }
 
-    const result = calculateFullReport(totalUsers);
+    const result = calculateCorrectReport(totalUsers);
     
     return c.json(result);
   } catch (error) {

@@ -67,17 +67,32 @@ const LEVEL_CONFIGS = [
 
 /**
  * 레벨별 달성자 수 계산
+ * 각 레벨 = 해당 레벨까지 달성한 사람 - 다음 레벨 달성한 사람
  */
 export function calculateLevelAchievements(totalUsers: number): LevelAchievement[] {
   const achievements: LevelAchievement[] = [];
   
+  // 먼저 모든 레벨의 "달성 가능한 최대 인원" 계산
+  const maxAchievers: number[] = [];
   for (const config of LEVEL_CONFIGS) {
-    // 달성 가능 범위: 1번부터 (totalUsers - cumulative + 1)번까지
     const maxAchiever = totalUsers - config.cumulative + 1;
-    const achieversCount = maxAchiever > 0 ? maxAchiever : 0;
-    const achieversRange = achieversCount > 0 ? `1~${maxAchiever}` : '없음';
+    maxAchievers.push(maxAchiever > 0 ? maxAchiever : 0);
+  }
+  
+  // 각 레벨의 실제 달성자 수 = 이 레벨 달성 - 다음 레벨 달성
+  for (let i = 0; i < LEVEL_CONFIGS.length; i++) {
+    const config = LEVEL_CONFIGS[i];
+    const currentLevelAchievers = maxAchievers[i];
+    const nextLevelAchievers = i < LEVEL_CONFIGS.length - 1 ? maxAchievers[i + 1] : 0;
     
-    // 총 별/코인 계산
+    // 이 레벨에서 멈춘 사람 수 (다음 레벨 미달성)
+    const achieversCount = currentLevelAchievers - nextLevelAchievers;
+    
+    const achieversRange = currentLevelAchievers > 0 
+      ? `1~${currentLevelAchievers}` 
+      : '없음';
+    
+    // 총 별/코인 계산 (이 레벨에서 멈춘 사람만)
     const totalStars = achieversCount * config.stars;
     const totalCoins = achieversCount * config.coins;
     
