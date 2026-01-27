@@ -128,6 +128,37 @@ export function calculateCorrectReport(totalUsers: number) {
     ? ((user1_net_profit / user1_investment) * 100).toFixed(2)
     : '0.00';
   
+  // 256번 사용자 수익 계산
+  let user256_stars_purchased = 0;
+  let user256_coins_earned = 0;
+  let user256_highest_farm = 1;
+  let user256_highest_level = 1;
+  let user256_exists = false;
+  
+  if (totalUsers >= 256) {
+    user256_exists = true;
+    // 256번 사용자의 하트허용치 = totalUsers - 256 + 1
+    const user256_allowance = totalUsers - 256 + 1;
+    
+    for (const level of LEVELS) {
+      if (user256_allowance >= level.cum) {
+        user256_stars_purchased += level.stars;
+        user256_coins_earned += level.coins;
+        user256_highest_farm = level.farm;
+        user256_highest_level = level.level;
+      } else {
+        break;
+      }
+    }
+  }
+  
+  const user256_investment = user256_stars_purchased * 3;
+  const user256_return = user256_coins_earned * 0.1;
+  const user256_net_profit = user256_return - user256_investment;
+  const user256_roi = user256_investment > 0 
+    ? ((user256_net_profit / user256_investment) * 100).toFixed(2)
+    : '0.00';
+  
   return {
     total_users: totalUsers,
     farm_1: farm1,
@@ -154,5 +185,17 @@ export function calculateCorrectReport(totalUsers: number) {
       net_profit_usd: user1_net_profit,
       roi_percent: user1_roi,
     },
+    user_256: user256_exists ? {
+      entry_order: 256,
+      stars_purchased: user256_stars_purchased,
+      coins_earned: user256_coins_earned,
+      heart_allowance: totalUsers - 256 + 1,
+      highest_farm: user256_highest_farm,
+      highest_level: user256_highest_level,
+      investment_usd: user256_investment,
+      return_usd: user256_return,
+      net_profit_usd: user256_net_profit,
+      roi_percent: user256_roi,
+    } : null,
   };
 }

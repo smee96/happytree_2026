@@ -140,6 +140,43 @@ app.get('/', (c) => {
                 </div>
             </div>
 
+            <!-- 256번 사용자 수익 카드 -->
+            <div id="user256Card" class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-lg p-6 mb-6 border-2 border-blue-200 hidden">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">👤 256번 사용자 수익 <span class="text-sm text-gray-500">(농장2 시작)</span></h2>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="bg-white/70 p-4 rounded-lg">
+                        <div class="text-sm text-gray-600">구매 별</div>
+                        <div class="text-2xl font-bold text-blue-600" id="user256Stars">-</div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-lg">
+                        <div class="text-sm text-gray-600">획득 코인</div>
+                        <div class="text-2xl font-bold text-blue-600" id="user256Coins">-</div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-lg">
+                        <div class="text-sm text-gray-600">투자금</div>
+                        <div class="text-2xl font-bold text-red-600" id="user256Investment">-</div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-lg">
+                        <div class="text-sm text-gray-600">수익금</div>
+                        <div class="text-2xl font-bold text-green-600" id="user256Return">-</div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-lg">
+                        <div class="text-sm text-gray-600">순이익</div>
+                        <div class="text-2xl font-bold" id="user256NetProfit">-</div>
+                    </div>
+                </div>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="text-center">
+                        <span class="text-lg text-gray-700">최고 달성: </span>
+                        <span class="text-xl font-bold text-blue-700" id="user256Level">-</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-lg text-gray-700">ROI: </span>
+                        <span class="text-2xl font-bold" id="user256ROI">-</span>
+                    </div>
+                </div>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h3 class="text-xl font-bold text-gray-800 mb-4">🌱 농장 1</h3>
@@ -398,6 +435,31 @@ app.get('/', (c) => {
             document.getElementById('user1NetProfit').className = \`text-2xl font-bold \${user1NetProfitColor}\`;
             
             document.getElementById('user1Level').textContent = \`농장 \${user1.highest_farm} - Lv.\${user1.highest_level}\`;
+
+            // 256번 사용자 수익 (256명 이상일 때만 표시)
+            if (data.user_256) {
+                const user256 = data.user_256;
+                document.getElementById('user256Card').classList.remove('hidden');
+                
+                document.getElementById('user256Stars').textContent = user256.stars_purchased.toLocaleString() + '개';
+                document.getElementById('user256Coins').textContent = user256.coins_earned.toLocaleString() + '개';
+                document.getElementById('user256Investment').textContent = '$' + user256.investment_usd.toLocaleString();
+                document.getElementById('user256Return').textContent = '$' + user256.return_usd.toLocaleString();
+                document.getElementById('user256NetProfit').textContent = '$' + user256.net_profit_usd.toLocaleString();
+                
+                const user256ROI = parseFloat(user256.roi_percent);
+                const user256ROIColor = user256ROI >= 0 ? 'text-green-600' : 'text-red-600';
+                document.getElementById('user256ROI').textContent = user256.roi_percent + '%';
+                document.getElementById('user256ROI').className = \`text-2xl font-bold \${user256ROIColor}\`;
+                
+                const user256NetProfitValue = parseFloat(user256.net_profit_usd);
+                const user256NetProfitColor = user256NetProfitValue >= 0 ? 'text-green-600' : 'text-red-600';
+                document.getElementById('user256NetProfit').className = \`text-2xl font-bold \${user256NetProfitColor}\`;
+                
+                document.getElementById('user256Level').textContent = \`농장 \${user256.highest_farm} - Lv.\${user256.highest_level}\`;
+            } else {
+                document.getElementById('user256Card').classList.add('hidden');
+            }
 
             displayFarmTable('farm1Table', data.farm_1);
             displayFarmTable('farm2Table', data.farm_2);
