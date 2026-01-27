@@ -106,7 +106,7 @@ app.get('/', (c) => {
             <!-- 1번 사용자 수익 카드 -->
             <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg shadow-lg p-6 mb-6 border-2 border-amber-200">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">👤 1번 사용자 수익</h2>
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
                     <div class="bg-white/70 p-4 rounded-lg">
                         <div class="text-sm text-gray-600">구매 별</div>
                         <div class="text-2xl font-bold text-amber-600" id="user1Stars">-</div>
@@ -114,6 +114,10 @@ app.get('/', (c) => {
                     <div class="bg-white/70 p-4 rounded-lg">
                         <div class="text-sm text-gray-600">획득 코인</div>
                         <div class="text-2xl font-bold text-amber-600" id="user1Coins">-</div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-lg">
+                        <div class="text-sm text-gray-600">보유 하트 ♥</div>
+                        <div class="text-2xl font-bold text-pink-600" id="user1Hearts">-</div>
                     </div>
                     <div class="bg-white/70 p-4 rounded-lg">
                         <div class="text-sm text-gray-600">투자금</div>
@@ -143,7 +147,7 @@ app.get('/', (c) => {
             <!-- 256번 사용자 수익 카드 -->
             <div id="user256Card" class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg shadow-lg p-6 mb-6 border-2 border-blue-200 hidden">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">👤 256번 사용자 수익 <span class="text-sm text-gray-500">(농장2 시작)</span></h2>
-                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
                     <div class="bg-white/70 p-4 rounded-lg">
                         <div class="text-sm text-gray-600">구매 별</div>
                         <div class="text-2xl font-bold text-blue-600" id="user256Stars">-</div>
@@ -151,6 +155,10 @@ app.get('/', (c) => {
                     <div class="bg-white/70 p-4 rounded-lg">
                         <div class="text-sm text-gray-600">획득 코인</div>
                         <div class="text-2xl font-bold text-blue-600" id="user256Coins">-</div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-lg">
+                        <div class="text-sm text-gray-600">보유 하트 ♥</div>
+                        <div class="text-2xl font-bold text-pink-600" id="user256Hearts">-</div>
                     </div>
                     <div class="bg-white/70 p-4 rounded-lg">
                         <div class="text-sm text-gray-600">투자금</div>
@@ -421,6 +429,7 @@ app.get('/', (c) => {
             const user1 = data.user_1;
             document.getElementById('user1Stars').textContent = user1.stars_purchased.toLocaleString() + '개';
             document.getElementById('user1Coins').textContent = user1.coins_earned.toLocaleString() + '개';
+            document.getElementById('user1Hearts').textContent = user1.hearts_earned.toLocaleString() + '개';
             document.getElementById('user1Investment').textContent = '$' + user1.investment_usd.toLocaleString();
             document.getElementById('user1Return').textContent = '$' + user1.return_usd.toLocaleString();
             document.getElementById('user1NetProfit').textContent = '$' + user1.net_profit_usd.toLocaleString();
@@ -443,6 +452,7 @@ app.get('/', (c) => {
                 
                 document.getElementById('user256Stars').textContent = user256.stars_purchased.toLocaleString() + '개';
                 document.getElementById('user256Coins').textContent = user256.coins_earned.toLocaleString() + '개';
+                document.getElementById('user256Hearts').textContent = user256.hearts_earned.toLocaleString() + '개';
                 document.getElementById('user256Investment').textContent = '$' + user256.investment_usd.toLocaleString();
                 document.getElementById('user256Return').textContent = '$' + user256.return_usd.toLocaleString();
                 document.getElementById('user256NetProfit').textContent = '$' + user256.net_profit_usd.toLocaleString();

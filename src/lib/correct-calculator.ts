@@ -103,17 +103,23 @@ export function calculateCorrectReport(totalUsers: number) {
   // 1번 사용자 수익 계산
   let user1_stars_purchased = 0;
   let user1_coins_earned = 0;
+  let user1_hearts_earned = 0;
   let user1_highest_farm = 1;
   let user1_highest_level = 1;
   
   // 1번 사용자의 하트허용치 = totalUsers (본인 제외한 후속 입장자 수)
   const user1_allowance = totalUsers - 1 + 1; // -1(본인제외) +1(초기값)
   
+  // 초기 환영 하트 5개
+  const WELCOME_HEARTS = 5;
+  user1_hearts_earned = WELCOME_HEARTS;
+  
   for (const level of LEVELS) {
     if (user1_allowance >= level.cum) {
       // 이 레벨 달성 가능
       user1_stars_purchased += level.stars;
       user1_coins_earned += level.coins;
+      user1_hearts_earned += level.hearts;
       user1_highest_farm = level.farm;
       user1_highest_level = level.level;
     } else {
@@ -131,6 +137,7 @@ export function calculateCorrectReport(totalUsers: number) {
   // 256번 사용자 수익 계산
   let user256_stars_purchased = 0;
   let user256_coins_earned = 0;
+  let user256_hearts_earned = 0;
   let user256_highest_farm = 1;
   let user256_highest_level = 1;
   let user256_exists = false;
@@ -140,10 +147,14 @@ export function calculateCorrectReport(totalUsers: number) {
     // 256번 사용자의 하트허용치 = totalUsers - 256 + 1
     const user256_allowance = totalUsers - 256 + 1;
     
+    // 초기 환영 하트 5개
+    user256_hearts_earned = WELCOME_HEARTS;
+    
     for (const level of LEVELS) {
       if (user256_allowance >= level.cum) {
         user256_stars_purchased += level.stars;
         user256_coins_earned += level.coins;
+        user256_hearts_earned += level.hearts;
         user256_highest_farm = level.farm;
         user256_highest_level = level.level;
       } else {
@@ -177,6 +188,7 @@ export function calculateCorrectReport(totalUsers: number) {
       entry_order: 1,
       stars_purchased: user1_stars_purchased,
       coins_earned: user1_coins_earned,
+      hearts_earned: user1_hearts_earned,
       heart_allowance: user1_allowance,
       highest_farm: user1_highest_farm,
       highest_level: user1_highest_level,
@@ -189,6 +201,7 @@ export function calculateCorrectReport(totalUsers: number) {
       entry_order: 256,
       stars_purchased: user256_stars_purchased,
       coins_earned: user256_coins_earned,
+      hearts_earned: user256_hearts_earned,
       heart_allowance: totalUsers - 256 + 1,
       highest_farm: user256_highest_farm,
       highest_level: user256_highest_level,
