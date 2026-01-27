@@ -76,6 +76,7 @@ app.get('/', (c) => {
         </div>
 
         <div id="result" class="hidden">
+            <!-- 플랫폼 수익 카드 -->
             <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">💰 플랫폼 수익</h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -99,6 +100,43 @@ app.get('/', (c) => {
                 <div class="mt-4 text-center">
                     <span class="text-lg text-gray-700">수익률: </span>
                     <span class="text-2xl font-bold" id="profitMargin">-</span>
+                </div>
+            </div>
+
+            <!-- 1번 사용자 수익 카드 -->
+            <div class="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg shadow-lg p-6 mb-6 border-2 border-amber-200">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">👤 1번 사용자 수익</h2>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="bg-white/70 p-4 rounded-lg">
+                        <div class="text-sm text-gray-600">구매 별</div>
+                        <div class="text-2xl font-bold text-amber-600" id="user1Stars">-</div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-lg">
+                        <div class="text-sm text-gray-600">획득 코인</div>
+                        <div class="text-2xl font-bold text-amber-600" id="user1Coins">-</div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-lg">
+                        <div class="text-sm text-gray-600">투자금</div>
+                        <div class="text-2xl font-bold text-red-600" id="user1Investment">-</div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-lg">
+                        <div class="text-sm text-gray-600">수익금</div>
+                        <div class="text-2xl font-bold text-green-600" id="user1Return">-</div>
+                    </div>
+                    <div class="bg-white/70 p-4 rounded-lg">
+                        <div class="text-sm text-gray-600">순이익</div>
+                        <div class="text-2xl font-bold" id="user1NetProfit">-</div>
+                    </div>
+                </div>
+                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="text-center">
+                        <span class="text-lg text-gray-700">최고 달성: </span>
+                        <span class="text-xl font-bold text-amber-700" id="user1Level">-</span>
+                    </div>
+                    <div class="text-center">
+                        <span class="text-lg text-gray-700">ROI: </span>
+                        <span class="text-2xl font-bold" id="user1ROI">-</span>
+                    </div>
                 </div>
             </div>
 
@@ -331,6 +369,7 @@ app.get('/', (c) => {
         }
 
         function displayResult(data) {
+            // 플랫폼 수익
             document.getElementById('totalStars').textContent = data.platform.total_stars_sold.toLocaleString() + '개';
             document.getElementById('starRevenue').textContent = '$' + data.platform.star_revenue_usd.toLocaleString();
             document.getElementById('coinCost').textContent = '$' + data.platform.coin_cost_usd.toLocaleString();
@@ -340,6 +379,25 @@ app.get('/', (c) => {
             const profitColor = profitMargin >= 0 ? 'text-green-600' : 'text-red-600';
             document.getElementById('profitMargin').textContent = data.platform.profit_margin_percent + '%';
             document.getElementById('profitMargin').className = \`text-2xl font-bold \${profitColor}\`;
+
+            // 1번 사용자 수익
+            const user1 = data.user_1;
+            document.getElementById('user1Stars').textContent = user1.stars_purchased.toLocaleString() + '개';
+            document.getElementById('user1Coins').textContent = user1.coins_earned.toLocaleString() + '개';
+            document.getElementById('user1Investment').textContent = '$' + user1.investment_usd.toLocaleString();
+            document.getElementById('user1Return').textContent = '$' + user1.return_usd.toLocaleString();
+            document.getElementById('user1NetProfit').textContent = '$' + user1.net_profit_usd.toLocaleString();
+            
+            const user1ROI = parseFloat(user1.roi_percent);
+            const user1ROIColor = user1ROI >= 0 ? 'text-green-600' : 'text-red-600';
+            document.getElementById('user1ROI').textContent = user1.roi_percent + '%';
+            document.getElementById('user1ROI').className = \`text-2xl font-bold \${user1ROIColor}\`;
+            
+            const user1NetProfitValue = parseFloat(user1.net_profit_usd);
+            const user1NetProfitColor = user1NetProfitValue >= 0 ? 'text-green-600' : 'text-red-600';
+            document.getElementById('user1NetProfit').className = \`text-2xl font-bold \${user1NetProfitColor}\`;
+            
+            document.getElementById('user1Level').textContent = \`농장 \${user1.highest_farm} - Lv.\${user1.highest_level}\`;
 
             displayFarmTable('farm1Table', data.farm_1);
             displayFarmTable('farm2Table', data.farm_2);

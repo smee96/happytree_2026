@@ -100,6 +100,34 @@ export function calculateCorrectReport(totalUsers: number) {
   const farm3 = stats.filter(s => s.farm_id === 3);
   const farm4 = stats.filter(s => s.farm_id === 4);
   
+  // 1번 사용자 수익 계산
+  let user1_stars_purchased = 0;
+  let user1_coins_earned = 0;
+  let user1_highest_farm = 1;
+  let user1_highest_level = 1;
+  
+  // 1번 사용자의 하트허용치 = totalUsers (본인 제외한 후속 입장자 수)
+  const user1_allowance = totalUsers - 1 + 1; // -1(본인제외) +1(초기값)
+  
+  for (const level of LEVELS) {
+    if (user1_allowance >= level.cum) {
+      // 이 레벨 달성 가능
+      user1_stars_purchased += level.stars;
+      user1_coins_earned += level.coins;
+      user1_highest_farm = level.farm;
+      user1_highest_level = level.level;
+    } else {
+      break; // 더 이상 달성 불가
+    }
+  }
+  
+  const user1_investment = user1_stars_purchased * 3;
+  const user1_return = user1_coins_earned * 0.1;
+  const user1_net_profit = user1_return - user1_investment;
+  const user1_roi = user1_investment > 0 
+    ? ((user1_net_profit / user1_investment) * 100).toFixed(2)
+    : '0.00';
+  
   return {
     total_users: totalUsers,
     farm_1: farm1,
@@ -113,6 +141,18 @@ export function calculateCorrectReport(totalUsers: number) {
       coin_cost_usd: coinCost,
       net_revenue_usd: netRevenue,
       profit_margin_percent: profitMargin,
+    },
+    user_1: {
+      entry_order: 1,
+      stars_purchased: user1_stars_purchased,
+      coins_earned: user1_coins_earned,
+      heart_allowance: user1_allowance,
+      highest_farm: user1_highest_farm,
+      highest_level: user1_highest_level,
+      investment_usd: user1_investment,
+      return_usd: user1_return,
+      net_profit_usd: user1_net_profit,
+      roi_percent: user1_roi,
     },
   };
 }
