@@ -13,45 +13,45 @@ interface LevelStats {
 }
 
 const LEVELS = [
-  // 농장 1
-  { farm: 1, level: 1, cum: 1, stars: 0, coins: 0 },
-  { farm: 1, level: 2, cum: 3, stars: 0, coins: 0 },
-  { farm: 1, level: 3, cum: 7, stars: 1, coins: 0 },
-  { farm: 1, level: 4, cum: 15, stars: 1, coins: 6 },
-  { farm: 1, level: 5, cum: 31, stars: 1, coins: 18 },
-  { farm: 1, level: 6, cum: 63, stars: 1, coins: 54 },
-  { farm: 1, level: 7, cum: 127, stars: 1, coins: 162 },
-  { farm: 1, level: 8, cum: 255, stars: 1, coins: 96 },
+  // 농장 1 - 이미지에서 확인한 정확한 데이터
+  { farm: 1, level: 1, cum: 1, stars: 0, coins: 0, hearts: 1 },
+  { farm: 1, level: 2, cum: 3, stars: 0, coins: 0, hearts: 3 },
+  { farm: 1, level: 3, cum: 7, stars: 1, coins: 0, hearts: 14 },
+  { farm: 1, level: 4, cum: 15, stars: 1, coins: 6, hearts: 69 },
+  { farm: 1, level: 5, cum: 31, stars: 1, coins: 12, hearts: 344 },
+  { farm: 1, level: 6, cum: 63, stars: 1, coins: 24, hearts: 1719 },
+  { farm: 1, level: 7, cum: 127, stars: 1, coins: 48, hearts: 8594 },
+  { farm: 1, level: 8, cum: 255, stars: 1, coins: 96, hearts: 0 },
   
-  // 농장 2
-  { farm: 2, level: 1, cum: 256, stars: 1, coins: 0 },
-  { farm: 2, level: 2, cum: 259, stars: 2, coins: 0 },
-  { farm: 2, level: 3, cum: 268, stars: 3, coins: 0 },
-  { farm: 2, level: 4, cum: 295, stars: 4, coins: 20 },
-  { farm: 2, level: 5, cum: 376, stars: 5, coins: 60 },
-  { farm: 2, level: 6, cum: 619, stars: 6, coins: 180 },
-  { farm: 2, level: 7, cum: 1348, stars: 7, coins: 550 },
-  { farm: 2, level: 8, cum: 3535, stars: 8, coins: 1750 },
+  // 농장 2 - 이미지에서 확인한 정확한 데이터
+  { farm: 2, level: 1, cum: 256, stars: 1, coins: 0, hearts: 1 },
+  { farm: 2, level: 2, cum: 259, stars: 2, coins: 0, hearts: 2 },
+  { farm: 2, level: 3, cum: 268, stars: 3, coins: 0, hearts: 9 },
+  { farm: 2, level: 4, cum: 295, stars: 4, coins: 20, hearts: 35 },
+  { farm: 2, level: 5, cum: 376, stars: 5, coins: 60, hearts: 141 },
+  { farm: 2, level: 6, cum: 619, stars: 6, coins: 180, hearts: 563 },
+  { farm: 2, level: 7, cum: 1348, stars: 7, coins: 550, hearts: 2253 },
+  { farm: 2, level: 8, cum: 3535, stars: 8, coins: 1750, hearts: 0 },
   
-  // 농장 3
-  { farm: 3, level: 1, cum: 1349, stars: 2, coins: 0 },
-  { farm: 3, level: 2, cum: 1353, stars: 4, coins: 0 },
-  { farm: 3, level: 3, cum: 1369, stars: 6, coins: 0 },
-  { farm: 3, level: 4, cum: 1433, stars: 8, coins: 50 },
-  { farm: 3, level: 5, cum: 1689, stars: 10, coins: 190 },
-  { farm: 3, level: 6, cum: 2713, stars: 12, coins: 770 },
-  { farm: 3, level: 7, cum: 6809, stars: 14, coins: 3070 },
-  { farm: 3, level: 8, cum: 23193, stars: 16, coins: 13110 },
+  // 농장 3 - 이미지에서 확인한 정확한 데이터
+  { farm: 3, level: 1, cum: 3536, stars: 2, coins: 0, hearts: 1 },
+  { farm: 3, level: 2, cum: 3540, stars: 4, coins: 0, hearts: 2 },
+  { farm: 3, level: 3, cum: 3556, stars: 6, coins: 0, hearts: 5 },
+  { farm: 3, level: 4, cum: 3620, stars: 8, coins: 50, hearts: 15 },
+  { farm: 3, level: 5, cum: 3876, stars: 10, coins: 190, hearts: 45 },
+  { farm: 3, level: 6, cum: 4900, stars: 12, coins: 770, hearts: 134 },
+  { farm: 3, level: 7, cum: 8996, stars: 14, coins: 3070, hearts: 401 },
+  { farm: 3, level: 8, cum: 25380, stars: 16, coins: 13110, hearts: 0 },
   
-  // 농장 4
-  { farm: 4, level: 1, cum: 6810, stars: 3, coins: 0 },
-  { farm: 4, level: 2, cum: 6815, stars: 6, coins: 0 },
-  { farm: 4, level: 3, cum: 6840, stars: 9, coins: 0 },
-  { farm: 4, level: 4, cum: 6965, stars: 12, coins: 90 },
-  { farm: 4, level: 5, cum: 7590, stars: 15, coins: 470 },
-  { farm: 4, level: 6, cum: 10715, stars: 18, coins: 2340 },
-  { farm: 4, level: 7, cum: 26340, stars: 21, coins: 11720 },
-  { farm: 4, level: 8, cum: 104465, stars: 24, coins: 62500 },
+  // 농장 4 - 이미지에서 확인한 정확한 데이터
+  { farm: 4, level: 1, cum: 25381, stars: 3, coins: 0, hearts: 1 },
+  { farm: 4, level: 2, cum: 25386, stars: 6, coins: 0, hearts: 1 },
+  { farm: 4, level: 3, cum: 25411, stars: 9, coins: 0, hearts: 2 },
+  { farm: 4, level: 4, cum: 25536, stars: 12, coins: 90, hearts: 4 },
+  { farm: 4, level: 5, cum: 26161, stars: 15, coins: 470, hearts: 9 },
+  { farm: 4, level: 6, cum: 29286, stars: 18, coins: 2340, hearts: 18 },
+  { farm: 4, level: 7, cum: 44911, stars: 21, coins: 11720, hearts: 35 },
+  { farm: 4, level: 8, cum: 123036, stars: 24, coins: 62500, hearts: 0 },
 ];
 
 export function calculateCorrectReport(totalUsers: number) {
