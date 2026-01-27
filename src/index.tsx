@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { DatabaseHelper } from './lib/db-helper';
 import { SimulationRunner } from './lib/simulator';
+import { calculateKeyMetrics } from './lib/calculator';
 
 type Bindings = {
   DB: D1Database;
@@ -11,6 +12,29 @@ const app = new Hono<{ Bindings: Bindings }>();
 
 // CORS 설정
 app.use('/api/*', cors());
+
+// ========== 순수 계산 API (DB 없음) ==========
+
+// 입력 인원수에 따른 핵심 지표 계산
+app.get('/api/calculate/:total_users', async (c) => {
+  try {
+    const totalUsers = parseInt(c.req.param('total_users'));
+    
+    if (isNaN(totalUsers) || totalUsers < 1) {
+      return c.json({ error: '유효한 인원수를 입력하세요 (1 이상)' }, 400);
+    }
+
+    if (totalUsers > 10000) {
+      return c.json({ error: '인원수가 너무 큽니다 (최대 10,000명)' }, 400);
+    }
+
+    const result = calculateKeyMetrics(totalUsers);
+    
+    return c.json(result);
+  } catch (error) {
+    return c.json({ error: `계산 실패: ${error}` }, 500);
+  }
+});
 
 // ========== 시뮬레이션 세션 관리 ==========
 
@@ -81,6 +105,116 @@ app.post('/api/sessions/:id/run', async (c) => {
     return c.json({ error: `시뮬레이션 실행 실패: ${error}` }, 500);
   }
 });
+
+// ========== 핵심 지표 조회 ==========
+
+// 입력 인원수 N에 따른 핵심 지표 조회 (1번, 중간, 마지막, 플랫폼 수익)
+app.get('/api/sessions/:id/key-metrics', async (c) => {
+  try {
+    const sessionId = parseInt(c.req.param('id'));
+    const dbHelper = new DatabaseHelper(c.env.DB);
+    const users = await dbHelper.getUsersBySession(sessionId);
+    
+    if (users.length === 0) {
+      return c.json({ error: '사용자가 없습니다. 먼저 시뮬레이션을 실행하세요.' }, 404);
+    }
+
+    const totalUsers = users.length;
+    const middleIndex = Math.floor(totalUsers / 2);
+
+    // 1번 사용자 (입장 순서 1)
+    const user1 = users.find(u => u.entry_order === 1);
+    const user1Progress = user1 ? await dbHelper.getUserProgress(user1.id) : [];
+    const user1State = user1 ? await formatUserState(user1, user1Progress) : null;
+
+    // 중간 사용자 (입장 순서 middleIndex + 1)
+    const userMiddle = users.find(u => u.entry_order === middleIndex + 1);
+    const userMiddleProgress = userMiddle ? await dbHelper.getUserProgress(userMiddle.id) : [];
+    const userMiddleState = userMiddle ? await formatUserState(userMiddle, userMiddleProgress) : null;
+
+    // 마지막 사용자 (입장 순서 totalUsers)
+    const userLast = users.find(u => u.entry_order === totalUsers);
+    const userLastProgress = userLast ? await dbHelper.getUserProgress(userLast.id) : [];
+    const userLastState = userLast ? await formatUserState(userLast, userLastProgress) : null;
+
+    // 플랫폼 수익 계산
+    const totalStarsSold = users.reduce((sum, u) => sum + u.total_stars_purchased, 0);
+    const totalCoinsPaid = users.reduce((sum, u) => sum + u.total_coins_earned, 0);
+    const starRevenue = totalStarsSold * 3; // 별 1개 = $3
+    const coinCost = totalCoinsPaid * 0.1; // 코인 1개 = $0.10
+    const platformRevenue = starRevenue - coinCost;
+    const profitMargin = starRevenue > 0 ? (platformRevenue / starRevenue * 100).toFixed(2) : '0.00';
+
+    return c.json({
+      total_users: totalUsers,
+      user_1: user1State,
+      user_middle: userMiddleState,
+      user_last: userLastState,
+      platform: {
+        total_stars_sold: totalStarsSold,
+        total_coins_paid: totalCoinsPaid,
+        star_revenue: starRevenue,
+        coin_cost: coinCost,
+        net_revenue: platformRevenue,
+        profit_margin_percent: profitMargin
+      }
+    });
+  } catch (error) {
+    return c.json({ error: `핵심 지표 조회 실패: ${error}` }, 500);
+  }
+});
+
+// 사용자 상태 포맷 헬퍼 함수
+async function formatUserState(user: any, progress: any[]) {
+  const investment = user.total_stars_purchased * 3;
+  const returns = user.total_coins_earned * 0.1;
+  const netProfit = returns - investment;
+  const roi = investment > 0 ? ((netProfit / investment) * 100).toFixed(2) : '0.00';
+
+  // 가장 높은 레벨 찾기
+  let highestFarm = 0;
+  let highestLevel = 0;
+  for (const p of progress) {
+    if (p.farm_id > highestFarm || (p.farm_id === highestFarm && p.current_level > highestLevel)) {
+      highestFarm = p.farm_id;
+      highestLevel = p.current_level;
+    }
+  }
+
+  return {
+    user_id: user.id,
+    entry_order: user.entry_order,
+    entry_day: user.entry_day,
+    // 별 (Stars)
+    stars_owned: user.stars,
+    stars_used: user.total_stars_purchased,
+    // 코인 (Coins)
+    coins_owned: user.coins,
+    coins_earned: user.total_coins_earned,
+    // 하트 (Hearts)
+    hearts_owned: user.hearts,
+    hearts_used: user.hearts, // 현재 사용한 하트는 별도로 추적하지 않음
+    // 하트허용치 (Heart Allowance)
+    heart_allowance_owned: user.heart_allowance,
+    heart_allowance_used: 0, // TODO: 별도 계산 필요
+    // 달성 레벨
+    highest_farm: highestFarm,
+    highest_level: highestLevel,
+    level_display: `Farm ${highestFarm} Lv.${highestLevel}`,
+    // 투자 수익
+    investment_usd: investment,
+    return_usd: returns,
+    net_profit_usd: netProfit,
+    roi_percent: roi,
+    // 진행 상태
+    farm_progress: progress.map(p => ({
+      farm_id: p.farm_id,
+      current_level: p.current_level,
+      is_completed: p.is_completed === 1,
+      is_unlocked: p.is_unlocked === 1
+    }))
+  };
+}
 
 // ========== 사용자 관리 ==========
 
