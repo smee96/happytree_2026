@@ -57,9 +57,13 @@ export class SimulationRunner {
     day: number,
     dailyNewUsers: number
   ): Promise<void> {
+    console.log(`\n=== Day ${day} 시뮬레이션 시작 ===`);
+    
     // 1. 신규 사용자 입장
     const existingUsers = await this.dbHelper.getUsersBySession(sessionId);
     const startEntryOrder = existingUsers.length + 1;
+
+    console.log(`[신규 입장] ${dailyNewUsers}명 입장 (입장순서: ${startEntryOrder}~${startEntryOrder + dailyNewUsers - 1})`);
 
     for (let i = 0; i < dailyNewUsers; i++) {
       const entryOrder = startEntryOrder + i;
@@ -71,6 +75,8 @@ export class SimulationRunner {
 
     // 2. 모든 사용자의 하트허용치 재계산 (정확성 보장)
     const allUsers = await this.dbHelper.getUsersBySession(sessionId);
+    console.log(`[하트허용치 재계산] 총 ${allUsers.length}명`);
+    
     for (const user of allUsers) {
       const calculatedAllowance = calculateHeartAllowance(
         user.entry_order,
@@ -85,6 +91,7 @@ export class SimulationRunner {
     }
 
     // 3. 모든 사용자의 자동 레벨업 시도 (가능한 만큼)
+    console.log(`[레벨업 처리] ${allUsers.length}명 시도`);
     for (const user of allUsers) {
       await this.autoLevelUpUser(user, day);
     }
@@ -100,6 +107,9 @@ export class SimulationRunner {
     let updatedUser = await this.dbHelper.getUser(user.id);
     if (!updatedUser) return;
 
+    console.log(`[레벨업 시도] User #${user.id} (입장순서: ${user.entry_order})`);
+    console.log(`  - 별: ${updatedUser.stars}, 하트허용치: ${updatedUser.heart_allowance}`);
+
     const userProgress = await this.dbHelper.getUserProgress(user.id);
 
     // 각 농장별로 레벨업 시도
@@ -110,6 +120,7 @@ export class SimulationRunner {
       if (!progress || progress.is_unlocked === 0) {
         // 잠금 해제 가능한지 확인
         if (canUnlockFarm(farmId, userProgress)) {
+          console.log(`  [농장 ${farmId}] 잠금 해제`);
           await this.dbHelper.unlockFarm(user.id, farmId);
           userProgress.push({
             id: 0,
@@ -136,20 +147,24 @@ export class SimulationRunner {
         const levelConfig = await this.dbHelper.getLevelConfig(farmId, level);
         if (!levelConfig) break;
 
-        // 레벨업 가능 여부 확인
-        const validation = canLevelUp(updatedUser, levelConfig);
-        if (!validation.canLevelUp) {
-          break; // 더 이상 레벨업 불가
+        // 별 자동 구매 (레벨업 검증 전에 먼저 수행)
+        if (updatedUser.stars < levelConfig.required_stars) {
+          console.log(`  [농장 ${farmId}, Lv.${level}] 별 구매: ${levelConfig.required_stars}개`);
+          updatedUser = purchaseStars(updatedUser, levelConfig.required_stars);
         }
 
-        // 별 자동 구매
-        if (updatedUser.stars < levelConfig.required_stars) {
-          updatedUser = purchaseStars(updatedUser, levelConfig.required_stars);
+        // 레벨업 가능 여부 확인 (별 구매 후)
+        const validation = canLevelUp(updatedUser, levelConfig);
+        if (!validation.canLevelUp) {
+          console.log(`  [농장 ${farmId}, Lv.${level}] 실패: ${validation.reason}`);
+          break; // 더 이상 레벨업 불가
         }
 
         // 레벨업 실행
         const beforeLevel = level - 1;
         updatedUser = executeLevelUp(updatedUser, levelConfig);
+        
+        console.log(`  [농장 ${farmId}, Lv.${level}] 성공! 코인 +${levelConfig.reward_coins}, 하트 +${levelConfig.reward_hearts}`);
 
         // 데이터베이스 업데이트
         await this.dbHelper.updateUser(updatedUser);
@@ -177,6 +192,8 @@ export class SimulationRunner {
         updatedUser = await this.dbHelper.getUser(user.id) || updatedUser;
       }
     }
+    
+    console.log(`  → 최종: 별 ${updatedUser.total_stars_purchased}개 구매, 코인 ${updatedUser.total_coins_earned}개 획득`);
   }
 
   /**
@@ -188,6 +205,12 @@ export class SimulationRunner {
     const totalStarsSold = users.reduce((sum, u) => sum + u.total_stars_purchased, 0);
     const totalCoinsPaid = users.reduce((sum, u) => sum + u.total_coins_earned, 0);
     const platformRevenue = calculatePlatformRevenue(totalStarsSold, totalCoinsPaid);
+
+    console.log(`[Day ${day} 통계]`);
+    console.log(`  - 총 사용자: ${users.length}명`);
+    console.log(`  - 총 별 판매: ${totalStarsSold}개 ($${totalStarsSold * 3})`);
+    console.log(`  - 총 코인 지급: ${totalCoinsPaid}개 ($${totalCoinsPaid * 0.1})`);
+    console.log(`  - 플랫폼 수익: $${platformRevenue}`);
 
     await this.dbHelper.saveSimulationStats({
       session_id: sessionId,
