@@ -79,8 +79,8 @@ export function calculateCorrectReport(totalUsers: number) {
     while (user.currentFarmIndex < LEVELS.length) {
       const nextLevel = LEVELS[user.currentFarmIndex];
       
-      // 조건 1: 하트허용치 충족
-      if (user.heartAllowance < nextLevel.cum) {
+      // 조건 1: 하트허용치 충족 (hearts_required만 체크)
+      if (user.heartAllowance < nextLevel.hearts_required) {
         break;
       }
       
@@ -89,12 +89,12 @@ export function calculateCorrectReport(totalUsers: number) {
         break;
       }
       
-      // 조건 3: 별 구매 (별이 필요한 경우만)
+      // 레벨업 성공!
+      // 별 구매 (별이 필요한 경우 자동 구매)
       if (nextLevel.stars > 0) {
         user.starsPurchased += nextLevel.stars;
       }
       
-      // 레벨업 성공!
       // 하트 소비
       user.heartsBalance -= nextLevel.hearts_required;
       user.heartsSpent += nextLevel.hearts_required;
