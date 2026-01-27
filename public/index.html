@@ -1,38 +1,4 @@
-import { Hono } from 'hono';
-import { cors } from 'hono/cors';
-import { calculateCorrectReport } from './lib/correct-calculator';
-
-const app = new Hono();
-
-// CORS 설정
-app.use('/api/*', cors());
-
-// ========== 순수 계산 API ==========
-
-// 입력 인원수에 따른 레벨별 달성자 수 및 플랫폼 수익 계산
-app.get('/api/report/:total_users', async (c) => {
-  try {
-    const totalUsers = parseInt(c.req.param('total_users'));
-    
-    if (isNaN(totalUsers) || totalUsers < 1) {
-      return c.json({ error: '유효한 인원수를 입력하세요 (1 이상)' }, 400);
-    }
-
-    if (totalUsers > 1000000) {
-      return c.json({ error: '인원수가 너무 큽니다 (최대 1,000,000명)' }, 400);
-    }
-
-    const result = calculateCorrectReport(totalUsers);
-    
-    return c.json(result);
-  } catch (error) {
-    return c.json({ error: `계산 실패: ${error}` }, 500);
-  }
-});
-
-// 루트 경로 - HTML UI
-app.get('/', (c) => {
-  return c.html(`<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -42,11 +8,13 @@ app.get('/', (c) => {
 </head>
 <body class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen p-8">
     <div class="max-w-6xl mx-auto">
+        <!-- 헤더 -->
         <div class="text-center mb-8">
             <h1 class="text-4xl font-bold text-gray-800 mb-2">🌳 HappyTree Calculator</h1>
             <p class="text-gray-600">레벨별 달성자 수 및 플랫폼 수익 계산기</p>
         </div>
 
+        <!-- 입력 카드 -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
             <div class="flex gap-4 items-end">
                 <div class="flex-1">
@@ -70,12 +38,15 @@ app.get('/', (c) => {
             </div>
         </div>
 
+        <!-- 로딩 -->
         <div id="loading" class="hidden text-center py-8">
             <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-green-500 border-t-transparent"></div>
             <p class="mt-4 text-gray-600">계산 중...</p>
         </div>
 
+        <!-- 결과 -->
         <div id="result" class="hidden">
+            <!-- 플랫폼 수익 -->
             <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4">💰 플랫폼 수익</h2>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -102,7 +73,9 @@ app.get('/', (c) => {
                 </div>
             </div>
 
+            <!-- 농장별 상세 -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 농장 1 -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h3 class="text-xl font-bold text-gray-800 mb-4">🌱 농장 1</h3>
                     <div class="overflow-x-auto">
@@ -115,10 +88,13 @@ app.get('/', (c) => {
                                     <th class="px-3 py-2 text-right">총 코인</th>
                                 </tr>
                             </thead>
-                            <tbody id="farm1Table" class="divide-y divide-gray-200"></tbody>
+                            <tbody id="farm1Table" class="divide-y divide-gray-200">
+                            </tbody>
                         </table>
                     </div>
                 </div>
+
+                <!-- 농장 2 -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h3 class="text-xl font-bold text-gray-800 mb-4">🌿 농장 2</h3>
                     <div class="overflow-x-auto">
@@ -131,10 +107,13 @@ app.get('/', (c) => {
                                     <th class="px-3 py-2 text-right">총 코인</th>
                                 </tr>
                             </thead>
-                            <tbody id="farm2Table" class="divide-y divide-gray-200"></tbody>
+                            <tbody id="farm2Table" class="divide-y divide-gray-200">
+                            </tbody>
                         </table>
                     </div>
                 </div>
+
+                <!-- 농장 3 -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h3 class="text-xl font-bold text-gray-800 mb-4">🌳 농장 3</h3>
                     <div class="overflow-x-auto">
@@ -147,10 +126,13 @@ app.get('/', (c) => {
                                     <th class="px-3 py-2 text-right">총 코인</th>
                                 </tr>
                             </thead>
-                            <tbody id="farm3Table" class="divide-y divide-gray-200"></tbody>
+                            <tbody id="farm3Table" class="divide-y divide-gray-200">
+                            </tbody>
                         </table>
                     </div>
                 </div>
+
+                <!-- 농장 4 -->
                 <div class="bg-white rounded-lg shadow-lg p-6">
                     <h3 class="text-xl font-bold text-gray-800 mb-4">🌲 농장 4</h3>
                     <div class="overflow-x-auto">
@@ -163,14 +145,17 @@ app.get('/', (c) => {
                                     <th class="px-3 py-2 text-right">총 코인</th>
                                 </tr>
                             </thead>
-                            <tbody id="farm4Table" class="divide-y divide-gray-200"></tbody>
+                            <tbody id="farm4Table" class="divide-y divide-gray-200">
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="error" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 text-red-700"></div>
+        <!-- 에러 -->
+        <div id="error" class="hidden bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+        </div>
     </div>
 
     <script>
@@ -182,12 +167,13 @@ app.get('/', (c) => {
                 return;
             }
 
+            // UI 업데이트
             document.getElementById('loading').classList.remove('hidden');
             document.getElementById('result').classList.add('hidden');
             document.getElementById('error').classList.add('hidden');
 
             try {
-                const response = await fetch(\`/api/report/\${totalUsers}\`);
+                const response = await fetch(`/api/report/${totalUsers}`);
                 const data = await response.json();
 
                 if (!response.ok) {
@@ -203,6 +189,7 @@ app.get('/', (c) => {
         }
 
         function displayResult(data) {
+            // 플랫폼 수익
             document.getElementById('totalStars').textContent = data.platform.total_stars_sold.toLocaleString() + '개';
             document.getElementById('starRevenue').textContent = '$' + data.platform.star_revenue_usd.toLocaleString();
             document.getElementById('coinCost').textContent = '$' + data.platform.coin_cost_usd.toLocaleString();
@@ -211,8 +198,9 @@ app.get('/', (c) => {
             const profitMargin = parseFloat(data.platform.profit_margin_percent);
             const profitColor = profitMargin >= 0 ? 'text-green-600' : 'text-red-600';
             document.getElementById('profitMargin').textContent = data.platform.profit_margin_percent + '%';
-            document.getElementById('profitMargin').className = \`text-2xl font-bold \${profitColor}\`;
+            document.getElementById('profitMargin').className = `text-2xl font-bold ${profitColor}`;
 
+            // 농장별 테이블
             displayFarmTable('farm1Table', data.farm_1);
             displayFarmTable('farm2Table', data.farm_2);
             displayFarmTable('farm3Table', data.farm_3);
@@ -228,12 +216,12 @@ app.get('/', (c) => {
             farmData.forEach(level => {
                 if (level.achievers_count > 0) {
                     const row = document.createElement('tr');
-                    row.innerHTML = \`
-                        <td class="px-3 py-2">Lv.\${level.level}</td>
-                        <td class="px-3 py-2 text-right">\${level.achievers_count.toLocaleString()}명</td>
-                        <td class="px-3 py-2 text-right">\${level.total_stars_sold.toLocaleString()}</td>
-                        <td class="px-3 py-2 text-right">\${level.total_coins_paid.toLocaleString()}</td>
-                    \`;
+                    row.innerHTML = `
+                        <td class="px-3 py-2">Lv.${level.level}</td>
+                        <td class="px-3 py-2 text-right">${level.achievers_count.toLocaleString()}명</td>
+                        <td class="px-3 py-2 text-right">${level.total_stars_sold.toLocaleString()}</td>
+                        <td class="px-3 py-2 text-right">${level.total_coins_paid.toLocaleString()}</td>
+                    `;
                     tbody.appendChild(row);
                 }
             });
@@ -246,18 +234,17 @@ app.get('/', (c) => {
             document.getElementById('result').classList.add('hidden');
         }
 
+        // Enter 키 입력 처리
         document.getElementById('totalUsers').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 calculate();
             }
         });
 
+        // 페이지 로드 시 자동 계산
         window.addEventListener('load', () => {
             calculate();
         });
     </script>
 </body>
-</html>`);
-});
-
-export default app;
+</html>
