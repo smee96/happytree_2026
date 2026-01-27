@@ -429,7 +429,7 @@ app.get('/', (c) => {
             const user1 = data.user_1;
             document.getElementById('user1Stars').textContent = user1.stars_purchased.toLocaleString() + '개';
             document.getElementById('user1Coins').textContent = user1.coins_earned.toLocaleString() + '개';
-            document.getElementById('user1Hearts').textContent = user1.hearts_earned.toLocaleString() + '개';
+            document.getElementById('user1Hearts').textContent = user1.hearts_balance.toLocaleString() + '개';
             document.getElementById('user1Investment').textContent = '$' + user1.investment_usd.toLocaleString();
             document.getElementById('user1Return').textContent = '$' + user1.return_usd.toLocaleString();
             document.getElementById('user1NetProfit').textContent = '$' + user1.net_profit_usd.toLocaleString();
@@ -452,7 +452,7 @@ app.get('/', (c) => {
                 
                 document.getElementById('user256Stars').textContent = user256.stars_purchased.toLocaleString() + '개';
                 document.getElementById('user256Coins').textContent = user256.coins_earned.toLocaleString() + '개';
-                document.getElementById('user256Hearts').textContent = user256.hearts_earned.toLocaleString() + '개';
+                document.getElementById('user256Hearts').textContent = user256.hearts_balance.toLocaleString() + '개';
                 document.getElementById('user256Investment').textContent = '$' + user256.investment_usd.toLocaleString();
                 document.getElementById('user256Return').textContent = '$' + user256.return_usd.toLocaleString();
                 document.getElementById('user256NetProfit').textContent = '$' + user256.net_profit_usd.toLocaleString();
