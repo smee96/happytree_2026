@@ -18,11 +18,28 @@
 
 ## API 엔드포인트
 
-### 시뮬레이션 세션
+### 🚀 핵심 계산 API (권장)
+- `GET /api/calculate/:total_users` - **입력 인원수에 따른 핵심 지표 즉시 계산**
+  - **1번 사용자 상태값** (최고 우선순위, 가장 많은 하트허용치)
+  - **중간 사용자 상태값** (입장 순서 N/2)
+  - **마지막 입장자 상태값** (가장 불리한 위치)
+  - **플랫폼 수익** (총 별 판매, 총 코인 지급, 순수익)
+  - ✨ **초고속 응답** (DB 없이 순수 계산, 1500명도 0.2초 이내)
+
+**사용 예시:**
+```bash
+# 255명 (Farm 1 Lv8 완료 최소 인원)
+curl http://localhost:3000/api/calculate/255
+
+# 1500명 (대규모 시나리오)
+curl http://localhost:3000/api/calculate/1500
+```
+
+### 시뮬레이션 세션 (전체 DB 시뮬레이션)
 - `POST /api/sessions` - 새 시뮬레이션 세션 생성
 - `GET /api/sessions` - 모든 세션 조회
 - `GET /api/sessions/:id` - 특정 세션 조회
-- `POST /api/sessions/:id/run` - 시뮬레이션 실행
+- `POST /api/sessions/:id/run` - 시뮬레이션 실행 (느림, 대규모는 권장하지 않음)
 
 ### 분석
 - `GET /api/sessions/:id/users` - 세션의 모든 사용자 조회
