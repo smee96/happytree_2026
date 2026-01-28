@@ -88,18 +88,6 @@ app.get('/', (c) => {
                         value="1500"
                     >
                 </div>
-                <div class="w-48">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
-                    <select 
-                        id="maxPots" 
-                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                    >
-                        <option value="1">1개 (기본)</option>
-                        <option value="3">3개</option>
-                        <option value="5" selected>5개</option>
-                        <option value="10">10개</option>
-                    </select>
-                </div>
                 <button 
                     onclick="calculate()"
                     class="px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
@@ -139,17 +127,6 @@ app.get('/', (c) => {
                 <div class="mt-4 text-center">
                     <span class="text-lg text-gray-700">수익률: </span>
                     <span class="text-2xl font-bold" id="profitMargin">-</span>
-                </div>
-            </div>
-
-            <!-- 1번 사용자 화분 정보 (다중 화분일 때만) -->
-            <div id="user1PotsCard" class="hidden bg-white rounded-lg shadow-lg p-6 mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">🪴 1번 사용자 화분 현황</h2>
-                <div id="user1PotsContainer" class="grid grid-cols-2 md:grid-cols-5 gap-4"></div>
-                
-                <div id="user1CompletedPotsSection" class="hidden mt-6 border-t pt-6">
-                    <h3 class="text-lg font-bold text-gray-700 mb-3">📦 개인 창고 (완료된 화분)</h3>
-                    <div id="user1CompletedPotsContainer" class="grid grid-cols-2 md:grid-cols-5 gap-4"></div>
                 </div>
             </div>
 
@@ -449,7 +426,6 @@ app.get('/', (c) => {
     <script>
         async function calculate() {
             const totalUsers = document.getElementById('totalUsers').value;
-            const maxPots = document.getElementById('maxPots').value;
             
             if (!totalUsers || totalUsers < 1) {
                 showError('유효한 인원수를 입력하세요 (1 이상)');
@@ -461,19 +437,14 @@ app.get('/', (c) => {
             document.getElementById('error').classList.add('hidden');
 
             try {
-                // 화분 개수에 따라 다른 API 호출
-                const apiUrl = maxPots === '1' 
-                    ? \`/api/report/\${totalUsers}\`
-                    : \`/api/multi-pot/\${totalUsers}/\${maxPots}\`;
-                
-                const response = await fetch(apiUrl);
+                const response = await fetch(\`/api/report/\${totalUsers}\`);
                 const data = await response.json();
 
                 if (!response.ok) {
                     throw new Error(data.error || '계산 실패');
                 }
 
-                displayResult(data, maxPots);
+                displayResult(data);
             } catch (error) {
                 showError(error.message);
             } finally {
@@ -481,7 +452,7 @@ app.get('/', (c) => {
             }
         }
 
-        function displayResult(data, maxPots) {
+        function displayResult(data) {
             // 플랫폼 수익
             document.getElementById('totalStars').textContent = data.platform.total_stars_sold.toLocaleString() + '개';
             document.getElementById('starRevenue').textContent = '$' + data.platform.star_revenue_usd.toLocaleString();
@@ -492,14 +463,6 @@ app.get('/', (c) => {
             const profitColor = profitMargin >= 0 ? 'text-green-600' : 'text-red-600';
             document.getElementById('profitMargin').textContent = data.platform.profit_margin_percent + '%';
             document.getElementById('profitMargin').className = \`text-2xl font-bold \${profitColor}\`;
-
-            // 1번 사용자 화분 정보 (다중 화분일 때만)
-            if (maxPots !== '1' && data.user_1.pots) {
-                displayUserPots(data.user_1.pots);
-                document.getElementById('user1PotsCard').classList.remove('hidden');
-            } else {
-                document.getElementById('user1PotsCard').classList.add('hidden');
-            }
 
             // 1번 사용자 수익
             const user1 = data.user_1;
@@ -555,61 +518,6 @@ app.get('/', (c) => {
             displayFarmTable('farm4Table', data.farm_4);
 
             document.getElementById('result').classList.remove('hidden');
-        }
-
-        function displayUserPots(pots) {
-            const activePots = pots.filter(pot => pot.status === 'active');
-            const completedPots = pots.filter(pot => pot.status === 'completed');
-            
-            // 활성 화분 표시
-            const potsContainer = document.getElementById('user1PotsContainer');
-            potsContainer.innerHTML = '';
-            
-            activePots.forEach((pot, index) => {
-                const potCard = document.createElement('div');
-                const farmEmojis = ['', '🌱', '🌿', '🌳', '🌲'];
-                const potEmoji = pot.status === 'completed' ? '✅' : '🪴';
-                
-                potCard.className = 'bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-lg border-2 border-green-200';
-                potCard.innerHTML = \`
-                    <div class="text-center">
-                        <div class="text-3xl mb-2">\${potEmoji}</div>
-                        <div class="text-sm font-semibold text-gray-700">화분 \${index + 1}</div>
-                        <div class="text-xs text-gray-600 mt-1">
-                            \${farmEmojis[pot.farm_id]} 농장 \${pot.farm_id}
-                        </div>
-                        <div class="text-lg font-bold text-green-700 mt-2">Lv.\${pot.level}</div>
-                    </div>
-                \`;
-                potsContainer.appendChild(potCard);
-            });
-            
-            // 완료된 화분 표시
-            if (completedPots.length > 0) {
-                document.getElementById('user1CompletedPotsSection').classList.remove('hidden');
-                const completedPotsContainer = document.getElementById('user1CompletedPotsContainer');
-                completedPotsContainer.innerHTML = '';
-                
-                completedPots.forEach((pot, index) => {
-                    const potCard = document.createElement('div');
-                    const farmEmojis = ['', '🌱', '🌿', '🌳', '🌲'];
-                    
-                    potCard.className = 'bg-gradient-to-br from-amber-50 to-yellow-50 p-4 rounded-lg border-2 border-amber-300';
-                    potCard.innerHTML = \`
-                        <div class="text-center">
-                            <div class="text-3xl mb-2">✅</div>
-                            <div class="text-sm font-semibold text-gray-700">완료 화분 \${index + 1}</div>
-                            <div class="text-xs text-gray-600 mt-1">
-                                \${farmEmojis[pot.farm_id]} 농장 \${pot.farm_id}
-                            </div>
-                            <div class="text-lg font-bold text-amber-700 mt-2">Lv.8 완료</div>
-                        </div>
-                    \`;
-                    completedPotsContainer.appendChild(potCard);
-                });
-            } else {
-                document.getElementById('user1CompletedPotsSection').classList.add('hidden');
-            }
         }
 
         function displayFarmTable(tableId, farmData) {
