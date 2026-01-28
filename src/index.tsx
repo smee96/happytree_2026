@@ -31,10 +31,11 @@ app.get('/api/report/:total_users', async (c) => {
   }
 });
 
-// 5개 화분 버전
-app.get('/api/multi-pot/:total_users', async (c) => {
+// 다중 화분 버전 (화분 개수 지정 가능)
+app.get('/api/multi-pot/:total_users/:max_pots', async (c) => {
   try {
     const totalUsers = parseInt(c.req.param('total_users'));
+    const maxPots = parseInt(c.req.param('max_pots'));
     
     if (isNaN(totalUsers) || totalUsers < 1) {
       return c.json({ error: '유효한 인원수를 입력하세요 (1 이상)' }, 400);
@@ -44,7 +45,11 @@ app.get('/api/multi-pot/:total_users', async (c) => {
       return c.json({ error: '인원수가 너무 큽니다 (최대 1,000,000명)' }, 400);
     }
 
-    const result = calculateMultiPotReport(totalUsers);
+    if (isNaN(maxPots) || maxPots < 1 || maxPots > 10) {
+      return c.json({ error: '화분 개수는 1~10 사이여야 합니다' }, 400);
+    }
+
+    const result = calculateMultiPotReport(totalUsers, maxPots);
     
     return c.json(result);
   } catch (error) {

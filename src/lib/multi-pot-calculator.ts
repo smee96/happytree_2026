@@ -72,8 +72,8 @@ interface UserStateMultiPot {
   heartsSpent: number;
 }
 
-export function calculateMultiPotReport(totalUsers: number) {
-  const MAX_POTS = 5; // 최대 화분 개수
+export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5) {
+  const MAX_POTS = maxPots; // 파라미터로 받은 값 사용
   const users = new Map<number, UserStateMultiPot>();
   
   // 화분 레벨업 시도 함수
