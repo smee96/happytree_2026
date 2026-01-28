@@ -56,28 +56,47 @@ const LEVELS = [
 
 // 화분 상태
 interface PotState {
-  potNumber: number; // 1-5
+  potNumber: number; // 화분 번호
   currentFarmIndex: number; // LEVELS 배열 인덱스
+  isCompleted: boolean; // 완료 여부 (농장4 Lv8 달성)
 }
 
-// 사용자 상태 (5개 화분 포함)
+// 완료된 화분 정보
+interface CompletedPot {
+  potNumber: number;
+  completedAt: string; // 완료 시점 설명
+  finalFarm: number;
+  finalLevel: number;
+}
+
+// 사용자 상태 (활성 화분 5개 + 창고)
 interface UserStateMultiPot {
   entryOrder: number;
   heartsBalance: number;
   heartAllowance: number;
-  pots: PotState[]; // 최대 5개 화분
+  activePots: PotState[]; // 현재 키우는 중인 화분 (최대 5개)
+  warehouse: CompletedPot[]; // 완료된 화분 창고
   starsPurchased: number;
   coinsEarned: number;
   heartsEarned: number;
   heartsSpent: number;
+  totalPotsCreated: number; // 생성한 총 화분 수
 }
 
 export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5) {
-  const MAX_POTS = maxPots; // 파라미터로 받은 값 사용
+  const MAX_ACTIVE_POTS = 5; // 동시에 키울 수 있는 화분 개수 (고정)
   const users = new Map<number, UserStateMultiPot>();
+  
+  // 화분 완료 여부 체크
+  function isPotCompleted(pot: PotState): boolean {
+    // 농장4 Lv8 (LEVELS 배열의 마지막)에 도달하면 완료
+    return pot.currentFarmIndex >= LEVELS.length;
+  }
   
   // 화분 레벨업 시도 함수
   function attemptPotLevelUp(user: UserStateMultiPot, pot: PotState) {
+    if (pot.isCompleted) return; // 이미 완료된 화분은 건너뜀
+    
     while (pot.currentFarmIndex < LEVELS.length) {
       const nextLevel = LEVELS[pot.currentFarmIndex];
       
@@ -111,22 +130,51 @@ export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5)
       
       // 다음 레벨로 이동
       pot.currentFarmIndex++;
+      
+      // 완료 체크
+      if (isPotCompleted(pot)) {
+        pot.isCompleted = true;
+        break;
+      }
     }
   }
   
-  // 모든 화분에 대해 레벨업 시도 (화분별로 최대한 레벨업)
+  // 완료된 화분을 창고로 이동
+  function moveCompletedPotsToWarehouse(user: UserStateMultiPot) {
+    const completedPots = user.activePots.filter(p => p.isCompleted);
+    
+    for (const pot of completedPots) {
+      const lastLevel = LEVELS[LEVELS.length - 1];
+      user.warehouse.push({
+        potNumber: pot.potNumber,
+        completedAt: `User ${user.entryOrder} completed pot ${pot.potNumber}`,
+        finalFarm: lastLevel.farm,
+        finalLevel: lastLevel.level,
+      });
+    }
+    
+    // 완료된 화분을 활성 목록에서 제거
+    user.activePots = user.activePots.filter(p => !p.isCompleted);
+  }
+  
+  // 모든 화분에 대해 레벨업 시도
   function attemptAllPotsLevelUp(user: UserStateMultiPot) {
     // 화분이 없으면 첫 번째 화분 생성
-    if (user.pots.length === 0) {
-      user.pots.push({ potNumber: 1, currentFarmIndex: 0 });
+    if (user.activePots.length === 0) {
+      user.totalPotsCreated++;
+      user.activePots.push({ 
+        potNumber: user.totalPotsCreated, 
+        currentFarmIndex: 0,
+        isCompleted: false
+      });
     }
     
     let madeProgress = true;
     while (madeProgress) {
       madeProgress = false;
       
-      // 각 화분에 대해 레벨업 시도
-      for (const pot of user.pots) {
+      // 각 활성 화분에 대해 레벨업 시도
+      for (const pot of user.activePots) {
         const beforeIndex = pot.currentFarmIndex;
         attemptPotLevelUp(user, pot);
         if (pot.currentFarmIndex > beforeIndex) {
@@ -134,15 +182,20 @@ export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5)
         }
       }
       
-      // 새 화분 추가 가능 여부 확인 (최대 5개까지)
-      if (user.pots.length < MAX_POTS) {
-        const lastPot = user.pots[user.pots.length - 1];
-        // 마지막 화분이 최소 1레벨 이상 달성했으면 새 화분 추가 가능
-        if (lastPot.currentFarmIndex > 0) {
+      // 완료된 화분을 창고로 이동
+      moveCompletedPotsToWarehouse(user);
+      
+      // 새 화분 추가 가능 여부 확인 (활성 화분이 5개 미만일 때)
+      if (user.activePots.length < MAX_ACTIVE_POTS) {
+        // 마지막 활성 화분이 최소 1레벨 이상 달성했으면 새 화분 추가 가능
+        const lastPot = user.activePots[user.activePots.length - 1];
+        if (lastPot && lastPot.currentFarmIndex > 0) {
           // 새 화분 생성 시도
+          user.totalPotsCreated++;
           const newPot: PotState = {
-            potNumber: user.pots.length + 1,
-            currentFarmIndex: 0
+            potNumber: user.totalPotsCreated,
+            currentFarmIndex: 0,
+            isCompleted: false
           };
           
           // 새 화분의 첫 레벨업 시도
@@ -151,7 +204,7 @@ export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5)
           
           // 레벨업 성공했으면 화분 추가
           if (newPot.currentFarmIndex > beforeIndex) {
-            user.pots.push(newPot);
+            user.activePots.push(newPot);
             madeProgress = true;
           }
         }
@@ -166,11 +219,13 @@ export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5)
       entryOrder,
       heartsBalance: WELCOME_HEARTS,
       heartAllowance: 0,
-      pots: [],
+      activePots: [],
+      warehouse: [],
       starsPurchased: 0,
       coinsEarned: 0,
       heartsEarned: WELCOME_HEARTS,
       heartsSpent: 0,
+      totalPotsCreated: 0,
     });
     
     // 모든 기존 사용자의 허용치 +1
@@ -192,10 +247,15 @@ export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5)
   for (const level of LEVELS) {
     let achieversCount = 0;
     for (const user of users.values()) {
-      for (const pot of user.pots) {
+      // 활성 화분 체크
+      for (const pot of user.activePots) {
         if (pot.currentFarmIndex > LEVELS.indexOf(level)) {
           achieversCount++;
         }
+      }
+      // 완료된 화분도 체크 (모든 레벨 달성)
+      for (const completedPot of user.warehouse) {
+        achieversCount++;
       }
     }
     
@@ -244,13 +304,22 @@ export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5)
     // 최고 달성 레벨 찾기
     let highestFarm = 0;
     let highestLevel = 0;
-    for (const pot of user.pots) {
+    for (const pot of user.activePots) {
       if (pot.currentFarmIndex > 0) {
         const level = LEVELS[pot.currentFarmIndex - 1];
         if (level.farm > highestFarm || (level.farm === highestFarm && level.level > highestLevel)) {
           highestFarm = level.farm;
           highestLevel = level.level;
         }
+      }
+    }
+    
+    // 완료된 화분도 체크
+    for (const completedPot of user.warehouse) {
+      if (completedPot.finalFarm > highestFarm || 
+          (completedPot.finalFarm === highestFarm && completedPot.finalLevel > highestLevel)) {
+        highestFarm = completedPot.finalFarm;
+        highestLevel = completedPot.finalLevel;
       }
     }
     
@@ -261,14 +330,33 @@ export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5)
       ? ((netProfit / investment) * 100).toFixed(2)
       : '0.00';
     
+    // UI용 pots 배열 생성 (활성 화분 + 완료 화분)
+    const pots = [
+      ...user.activePots.map(pot => ({
+        farm_id: pot.currentFarmIndex > 0 ? LEVELS[pot.currentFarmIndex - 1].farm : 0,
+        level: pot.currentFarmIndex > 0 ? LEVELS[pot.currentFarmIndex - 1].level : 0,
+        status: 'active' as const,
+      })),
+      ...user.warehouse.map(pot => ({
+        farm_id: pot.finalFarm,
+        level: pot.finalLevel,
+        status: 'completed' as const,
+      })),
+    ];
+    
     return {
       entry_order: entryOrder,
-      pots_count: user.pots.length,
-      pots_details: user.pots.map(pot => ({
+      active_pots_count: user.activePots.length,
+      warehouse_pots_count: user.warehouse.length,
+      total_pots_created: user.totalPotsCreated,
+      pots, // UI용 화분 배열
+      active_pots: user.activePots.map(pot => ({
         pot_number: pot.potNumber,
         farm: pot.currentFarmIndex > 0 ? LEVELS[pot.currentFarmIndex - 1].farm : 0,
         level: pot.currentFarmIndex > 0 ? LEVELS[pot.currentFarmIndex - 1].level : 0,
+        is_completed: pot.isCompleted,
       })),
+      warehouse_pots: user.warehouse,
       stars_purchased: user.starsPurchased,
       coins_earned: user.coinsEarned,
       hearts_balance: user.heartsBalance,
@@ -289,7 +377,7 @@ export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5)
   
   return {
     total_users: totalUsers,
-    max_pots: MAX_POTS,
+    max_active_pots: MAX_ACTIVE_POTS,
     farm_1: farm1,
     farm_2: farm2,
     farm_3: farm3,
