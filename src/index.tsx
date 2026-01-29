@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { calculateCorrectReport } from './lib/correct-calculator';
 import { calculateMultiPotReport } from './lib/multi-pot-calculator';
+import { calculateFivePotsReport } from './lib/five-pots-calculator';
 
 const app = new Hono();
 
@@ -50,6 +51,27 @@ app.get('/api/multi-pot/:total_users/:max_pots', async (c) => {
     }
 
     const result = calculateMultiPotReport(totalUsers, maxPots);
+    
+    return c.json(result);
+  } catch (error) {
+    return c.json({ error: `계산 실패: ${error}` }, 500);
+  }
+});
+
+// 5개 화분 버전 (확장 우선 전략)
+app.get('/api/five-pots/:total_users', async (c) => {
+  try {
+    const totalUsers = parseInt(c.req.param('total_users'));
+    
+    if (isNaN(totalUsers) || totalUsers < 1) {
+      return c.json({ error: '유효한 인원수를 입력하세요 (1 이상)' }, 400);
+    }
+
+    if (totalUsers > 1000000) {
+      return c.json({ error: '인원수가 너무 큽니다 (최대 1,000,000명)' }, 400);
+    }
+
+    const result = calculateFivePotsReport(totalUsers);
     
     return c.json(result);
   } catch (error) {
