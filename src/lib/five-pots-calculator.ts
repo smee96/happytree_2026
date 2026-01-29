@@ -235,7 +235,7 @@ export function calculateFivePotsReport(totalUsers: number) {
     }
   }
   
-  // 통계 집계: 사용자 단위 (화분 1개라도 해당 레벨 달성하면 카운트)
+  // 통계 집계: 화분 단위 (화분마다 별/코인 구매)
   const stats: LevelStats[] = [];
   
   for (const level of LEVELS) {
@@ -243,10 +243,11 @@ export function calculateFivePotsReport(totalUsers: number) {
     let achieversCount = 0;
     
     for (const user of users.values()) {
-      // 이 사용자의 화분 중 1개라도 이 레벨을 달성했는가?
-      const hasAchieved = user.pots.some(pot => pot.levelIndex >= levelIndex);
-      if (hasAchieved) {
-        achieversCount++;
+      // 이 레벨을 달성한 화분 개수 카운트
+      for (const pot of user.pots) {
+        if (pot.levelIndex >= levelIndex) {
+          achieversCount++;
+        }
       }
     }
     
