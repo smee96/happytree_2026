@@ -113,11 +113,14 @@ app.get('/', (c) => {
                 <div class="w-48">
                     <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
                     <select 
-                        id="potMode" 
+                        id="potCount" 
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     >
-                        <option value="1">1개 (기본)</option>
-                        <option value="5">5개 (확장 우선)</option>
+                        <option value="1">1개</option>
+                        <option value="2">2개</option>
+                        <option value="3">3개</option>
+                        <option value="4">4개</option>
+                        <option value="5">5개</option>
                     </select>
                 </div>
                 <button 
@@ -458,7 +461,7 @@ app.get('/', (c) => {
     <script>
         async function calculate() {
             const totalUsers = document.getElementById('totalUsers').value;
-            const potMode = document.getElementById('potMode').value;
+            const potCount = document.getElementById('potCount').value;
             
             if (!totalUsers || totalUsers < 1) {
                 showError('유효한 인원수를 입력하세요 (1 이상)');
@@ -471,9 +474,9 @@ app.get('/', (c) => {
 
             try {
                 // 화분 개수에 따라 다른 API 호출
-                const apiUrl = potMode === '5' 
-                    ? \`/api/five-pots/\${totalUsers}\`
-                    : \`/api/report/\${totalUsers}\`;
+                const apiUrl = potCount === '1' 
+                    ? \`/api/report/\${totalUsers}\`
+                    : \`/api/multi-pot/\${totalUsers}/\${potCount}\`;
                 
                 const response = await fetch(apiUrl);
                 const data = await response.json();

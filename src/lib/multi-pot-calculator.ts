@@ -84,7 +84,7 @@ interface UserStateMultiPot {
 }
 
 export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5) {
-  const MAX_ACTIVE_POTS = 5; // 동시에 키울 수 있는 화분 개수 (고정)
+  const MAX_ACTIVE_POTS = maxPots; // 동시에 키울 수 있는 화분 개수
   const users = new Map<number, UserStateMultiPot>();
   
   // 화분 완료 여부 체크
