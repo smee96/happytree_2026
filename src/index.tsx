@@ -110,6 +110,16 @@ app.get('/', (c) => {
                         value="1500"
                     >
                 </div>
+                <div class="w-48">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
+                    <select 
+                        id="potMode" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    >
+                        <option value="1">1개 (기본)</option>
+                        <option value="5">5개 (확장 우선)</option>
+                    </select>
+                </div>
                 <button 
                     onclick="calculate()"
                     class="px-8 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors"
@@ -448,6 +458,7 @@ app.get('/', (c) => {
     <script>
         async function calculate() {
             const totalUsers = document.getElementById('totalUsers').value;
+            const potMode = document.getElementById('potMode').value;
             
             if (!totalUsers || totalUsers < 1) {
                 showError('유효한 인원수를 입력하세요 (1 이상)');
@@ -459,7 +470,12 @@ app.get('/', (c) => {
             document.getElementById('error').classList.add('hidden');
 
             try {
-                const response = await fetch(\`/api/report/\${totalUsers}\`);
+                // 화분 개수에 따라 다른 API 호출
+                const apiUrl = potMode === '5' 
+                    ? \`/api/five-pots/\${totalUsers}\`
+                    : \`/api/report/\${totalUsers}\`;
+                
+                const response = await fetch(apiUrl);
                 const data = await response.json();
 
                 if (!response.ok) {
