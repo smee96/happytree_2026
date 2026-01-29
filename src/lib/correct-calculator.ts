@@ -70,7 +70,7 @@ interface UserState {
   heartsSpent: number; // 소비한 총 하트
 }
 
-export function calculateCorrectReport(totalUsers: number) {
+export function calculateCorrectReport(totalUsers: number, starPrice: number = 2) {
   // 사용자별 상태 맵
   const users = new Map<number, UserState>();
   
@@ -177,7 +177,7 @@ export function calculateCorrectReport(totalUsers: number) {
     totalCoins += stat.total_coins_paid;
   }
   
-  const starRevenue = totalStars * 2;
+  const starRevenue = totalStars * starPrice;
   const coinCost = totalCoins * 0.1;
   const netRevenue = starRevenue - coinCost;
   const profitMargin = starRevenue > 0 
@@ -196,7 +196,7 @@ export function calculateCorrectReport(totalUsers: number) {
     if (!user) return null;
     
     const currentLevel = LEVELS[user.currentFarmIndex - 1];
-    const investment = user.starsPurchased * 2;
+    const investment = user.starsPurchased * starPrice;
     const returnAmount = user.coinsEarned * 0.1;
     const netProfit = returnAmount - investment;
     const roi = investment > 0 

@@ -15,6 +15,7 @@ app.use('/api/*', cors());
 app.get('/api/report/:total_users', async (c) => {
   try {
     const totalUsers = parseInt(c.req.param('total_users'));
+    const starPrice = parseFloat(c.req.query('starPrice') || '2');
     
     if (isNaN(totalUsers) || totalUsers < 1) {
       return c.json({ error: '유효한 인원수를 입력하세요 (1 이상)' }, 400);
@@ -24,7 +25,11 @@ app.get('/api/report/:total_users', async (c) => {
       return c.json({ error: '인원수가 너무 큽니다 (최대 1,000,000명)' }, 400);
     }
 
-    const result = calculateCorrectReport(totalUsers);
+    if (isNaN(starPrice) || starPrice < 1 || starPrice > 5) {
+      return c.json({ error: '별 가격은 $1~$5 사이여야 합니다' }, 400);
+    }
+
+    const result = calculateCorrectReport(totalUsers, starPrice);
     
     return c.json(result);
   } catch (error) {
@@ -37,6 +42,7 @@ app.get('/api/multi-pot/:total_users/:max_pots', async (c) => {
   try {
     const totalUsers = parseInt(c.req.param('total_users'));
     const maxPots = parseInt(c.req.param('max_pots'));
+    const starPrice = parseFloat(c.req.query('starPrice') || '2');
     
     if (isNaN(totalUsers) || totalUsers < 1) {
       return c.json({ error: '유효한 인원수를 입력하세요 (1 이상)' }, 400);
@@ -50,7 +56,11 @@ app.get('/api/multi-pot/:total_users/:max_pots', async (c) => {
       return c.json({ error: '화분 개수는 1~10 사이여야 합니다' }, 400);
     }
 
-    const result = calculateMultiPotReport(totalUsers, maxPots);
+    if (isNaN(starPrice) || starPrice < 1 || starPrice > 5) {
+      return c.json({ error: '별 가격은 $1~$5 사이여야 합니다' }, 400);
+    }
+
+    const result = calculateMultiPotReport(totalUsers, maxPots, starPrice);
     
     return c.json(result);
   } catch (error) {
@@ -62,6 +72,7 @@ app.get('/api/multi-pot/:total_users/:max_pots', async (c) => {
 app.get('/api/five-pots/:total_users', async (c) => {
   try {
     const totalUsers = parseInt(c.req.param('total_users'));
+    const starPrice = parseFloat(c.req.query('starPrice') || '2');
     
     if (isNaN(totalUsers) || totalUsers < 1) {
       return c.json({ error: '유효한 인원수를 입력하세요 (1 이상)' }, 400);
@@ -71,7 +82,11 @@ app.get('/api/five-pots/:total_users', async (c) => {
       return c.json({ error: '인원수가 너무 큽니다 (최대 1,000,000명)' }, 400);
     }
 
-    const result = calculateFivePotsReport(totalUsers);
+    if (isNaN(starPrice) || starPrice < 1 || starPrice > 5) {
+      return c.json({ error: '별 가격은 $1~$5 사이여야 합니다' }, 400);
+    }
+
+    const result = calculateFivePotsReport(totalUsers, starPrice);
     
     return c.json(result);
   } catch (error) {
@@ -121,6 +136,19 @@ app.get('/', (c) => {
                         <option value="3">3개</option>
                         <option value="4">4개</option>
                         <option value="5">5개</option>
+                    </select>
+                </div>
+                <div class="w-48">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">별 가격 ($)</label>
+                    <select 
+                        id="starPrice" 
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    >
+                        <option value="1">$1</option>
+                        <option value="2" selected>$2</option>
+                        <option value="3">$3</option>
+                        <option value="4">$4</option>
+                        <option value="5">$5</option>
                     </select>
                 </div>
                 <button 
@@ -452,7 +480,7 @@ app.get('/', (c) => {
             </div>
 
             <div class="mt-6 text-center text-sm text-gray-600">
-                <p>💰 화폐 체계: 별(★) $2/개 | 코인(◎) $0.10/개 | 하트(♥) 무료</p>
+                <p id="currencyInfo">💰 화폐 체계: 별(★) $2/개 | 코인(◎) $0.10/개 | 하트(♥) 무료</p>
                 <p class="mt-1">📌 레벨업 조건: 보유 하트 ≥ 필요 하트 AND 하트허용치 ≥ 필요 하트허용치 AND 별 ≥ 필요 별(Lv3부터)</p>
             </div>
         </div>
@@ -462,6 +490,7 @@ app.get('/', (c) => {
         async function calculate() {
             const totalUsers = document.getElementById('totalUsers').value;
             const potCount = document.getElementById('potCount').value;
+            const starPrice = document.getElementById('starPrice').value;
             
             if (!totalUsers || totalUsers < 1) {
                 showError('유효한 인원수를 입력하세요 (1 이상)');
@@ -475,8 +504,8 @@ app.get('/', (c) => {
             try {
                 // 화분 개수에 따라 다른 API 호출
                 const apiUrl = potCount === '1' 
-                    ? \`/api/report/\${totalUsers}\`
-                    : \`/api/multi-pot/\${totalUsers}/\${potCount}\`;
+                    ? \`/api/report/\${totalUsers}?starPrice=\${starPrice}\`
+                    : \`/api/multi-pot/\${totalUsers}/\${potCount}?starPrice=\${starPrice}\`;
                 
                 const response = await fetch(apiUrl);
                 const data = await response.json();
@@ -485,7 +514,7 @@ app.get('/', (c) => {
                     throw new Error(data.error || '계산 실패');
                 }
 
-                displayResult(data);
+                displayResult(data, starPrice);
             } catch (error) {
                 showError(error.message);
             } finally {
@@ -493,7 +522,10 @@ app.get('/', (c) => {
             }
         }
 
-        function displayResult(data) {
+        function displayResult(data, starPrice) {
+            // 화폐 체계 정보 업데이트
+            document.getElementById('currencyInfo').textContent = \`💰 화폐 체계: 별(★) $\${starPrice}/개 | 코인(◎) $0.10/개 | 하트(♥) 무료\`;
+            
             // 플랫폼 수익
             document.getElementById('totalStars').textContent = data.platform.total_stars_sold.toLocaleString() + '개';
             document.getElementById('starRevenue').textContent = '$' + data.platform.star_revenue_usd.toLocaleString();

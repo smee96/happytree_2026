@@ -83,7 +83,7 @@ interface UserStateMultiPot {
   totalPotsCreated: number; // 생성한 총 화분 수
 }
 
-export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5) {
+export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5, starPrice: number = 2) {
   const MAX_ACTIVE_POTS = maxPots; // 동시에 키울 수 있는 화분 개수
   const users = new Map<number, UserStateMultiPot>();
   
@@ -283,7 +283,7 @@ export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5)
     totalCoins += stat.total_coins_paid;
   }
   
-  const starRevenue = totalStars * 2;
+  const starRevenue = totalStars * starPrice;
   const coinCost = totalCoins * 0.1;
   const netRevenue = starRevenue - coinCost;
   const profitMargin = starRevenue > 0 
@@ -323,7 +323,7 @@ export function calculateMultiPotReport(totalUsers: number, maxPots: number = 5)
       }
     }
     
-    const investment = user.starsPurchased * 2;
+    const investment = user.starsPurchased * starPrice;
     const returnAmount = user.coinsEarned * 0.1;
     const netProfit = returnAmount - investment;
     const roi = investment > 0 

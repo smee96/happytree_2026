@@ -72,7 +72,7 @@ interface UserStateFivePots {
   heartsSpent: number;
 }
 
-export function calculateFivePotsReport(totalUsers: number) {
+export function calculateFivePotsReport(totalUsers: number, starPrice: number = 2) {
   const users = new Map<number, UserStateFivePots>();
   const MAX_POTS = 5;
   
@@ -275,7 +275,7 @@ export function calculateFivePotsReport(totalUsers: number) {
     totalCoins += stat.total_coins_paid;
   }
   
-  const starRevenue = totalStars * 2;
+  const starRevenue = totalStars * starPrice;
   const coinCost = totalCoins * 0.1;
   const netRevenue = starRevenue - coinCost;
   const profitMargin = starRevenue > 0 
@@ -305,7 +305,7 @@ export function calculateFivePotsReport(totalUsers: number) {
       }
     }
     
-    const investment = user.starsPurchased * 2;
+    const investment = user.starsPurchased * starPrice;
     const returnAmount = user.coinsEarned * 0.1;
     const netProfit = returnAmount - investment;
     const roi = investment > 0 
