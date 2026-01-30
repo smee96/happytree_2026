@@ -189,26 +189,26 @@ export function calculateSingleFarm(
         createdAt: 0, // 시간은 더 이상 사용하지 않음
       });
     }
-    
-    // 모든 사용자의 하트허용치 재계산
-    // 허용치 = 나보다 늦게 입장한 사용자들의 화분 개수 합계
-    users.forEach((user) => {
-      let allowance = 0;
-      users.forEach((otherUser) => {
-        if (otherUser.entryOrder > user.entryOrder) {
-          allowance += otherUser.pots.length;
-        }
-      });
-      user.heartAllowance = allowance;
-    });
-    
-    // 모든 화분 생성 후, 모든 사용자의 레벨업 시도
-    users.forEach(user => {
-      user.pots.forEach(pot => {
-        attemptPotLevelUp(user, pot);
-      });
-    });
   }
+  
+  // 모든 사용자 입장 완료 후, 하트허용치 계산 (한 번만!)
+  // 허용치 = 나보다 늦게 입장한 사용자들의 화분 개수 합계
+  users.forEach((user) => {
+    let allowance = 0;
+    users.forEach((otherUser) => {
+      if (otherUser.entryOrder > user.entryOrder) {
+        allowance += otherUser.pots.length;
+      }
+    });
+    user.heartAllowance = allowance;
+  });
+  
+  // 모든 사용자의 레벨업 시도 (한 번만!)
+  users.forEach(user => {
+    user.pots.forEach(pot => {
+      attemptPotLevelUp(user, pot);
+    });
+  });
 
   // 통계 집계
   const levelStats = levels.map((level, idx) => {
