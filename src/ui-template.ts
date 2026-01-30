@@ -119,7 +119,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                     <!-- User 1 Revenue -->
                     <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 mb-4 border-2 border-amber-200">
                         <h3 class="text-xl font-bold text-gray-800 mb-4">👤 1번 사용자 수익</h3>
-                        <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
                             <div class="bg-white p-3 rounded-lg">
                                 <div class="text-xs text-gray-600">화분 수</div>
                                 <div class="text-lg font-bold text-indigo-600" id="user-pots-1">-</div>
@@ -129,8 +129,16 @@ export const farmUITemplate = `<!DOCTYPE html>
                                 <div class="text-lg font-bold text-purple-600" id="user-level-1">-</div>
                             </div>
                             <div class="bg-white p-3 rounded-lg">
-                                <div class="text-xs text-gray-600">구매 별</div>
+                                <div class="text-xs text-gray-600">보유 별</div>
                                 <div class="text-lg font-bold text-blue-600" id="user-stars-1">-</div>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <div class="text-xs text-gray-600">보유 하트</div>
+                                <div class="text-lg font-bold text-pink-600" id="user-hearts-1">-</div>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <div class="text-xs text-gray-600">하트허용치</div>
+                                <div class="text-lg font-bold text-orange-600" id="user-allowance-1">-</div>
                             </div>
                             <div class="bg-white p-3 rounded-lg">
                                 <div class="text-xs text-gray-600">투자금</div>
@@ -240,7 +248,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                     <!-- User 1 Revenue -->
                     <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 mb-4 border-2 border-amber-200">
                         <h3 class="text-xl font-bold text-gray-800 mb-4">👤 1번 사용자 수익</h3>
-                        <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
                             <div class="bg-white p-3 rounded-lg">
                                 <div class="text-xs text-gray-600">화분 수</div>
                                 <div class="text-lg font-bold text-indigo-600" id="user-pots-2">-</div>
@@ -250,8 +258,16 @@ export const farmUITemplate = `<!DOCTYPE html>
                                 <div class="text-lg font-bold text-purple-600" id="user-level-2">-</div>
                             </div>
                             <div class="bg-white p-3 rounded-lg">
-                                <div class="text-xs text-gray-600">구매 별</div>
+                                <div class="text-xs text-gray-600">보유 별</div>
                                 <div class="text-lg font-bold text-blue-600" id="user-stars-2">-</div>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <div class="text-xs text-gray-600">보유 하트</div>
+                                <div class="text-lg font-bold text-pink-600" id="user-hearts-2">-</div>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <div class="text-xs text-gray-600">하트허용치</div>
+                                <div class="text-lg font-bold text-orange-600" id="user-allowance-2">-</div>
                             </div>
                             <div class="bg-white p-3 rounded-lg">
                                 <div class="text-xs text-gray-600">투자금</div>
@@ -361,7 +377,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                     <!-- User 1 Revenue -->
                     <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 mb-4 border-2 border-amber-200">
                         <h3 class="text-xl font-bold text-gray-800 mb-4">👤 1번 사용자 수익</h3>
-                        <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
                             <div class="bg-white p-3 rounded-lg">
                                 <div class="text-xs text-gray-600">화분 수</div>
                                 <div class="text-lg font-bold text-indigo-600" id="user-pots-3">-</div>
@@ -371,8 +387,16 @@ export const farmUITemplate = `<!DOCTYPE html>
                                 <div class="text-lg font-bold text-purple-600" id="user-level-3">-</div>
                             </div>
                             <div class="bg-white p-3 rounded-lg">
-                                <div class="text-xs text-gray-600">구매 별</div>
+                                <div class="text-xs text-gray-600">보유 별</div>
                                 <div class="text-lg font-bold text-blue-600" id="user-stars-3">-</div>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <div class="text-xs text-gray-600">보유 하트</div>
+                                <div class="text-lg font-bold text-pink-600" id="user-hearts-3">-</div>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <div class="text-xs text-gray-600">하트허용치</div>
+                                <div class="text-lg font-bold text-orange-600" id="user-allowance-3">-</div>
                             </div>
                             <div class="bg-white p-3 rounded-lg">
                                 <div class="text-xs text-gray-600">투자금</div>
@@ -482,7 +506,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                     <!-- User 1 Revenue -->
                     <div class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-6 mb-4 border-2 border-amber-200">
                         <h3 class="text-xl font-bold text-gray-800 mb-4">👤 1번 사용자 수익</h3>
-                        <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
                             <div class="bg-white p-3 rounded-lg">
                                 <div class="text-xs text-gray-600">화분 수</div>
                                 <div class="text-lg font-bold text-indigo-600" id="user-pots-4">-</div>
@@ -492,8 +516,16 @@ export const farmUITemplate = `<!DOCTYPE html>
                                 <div class="text-lg font-bold text-purple-600" id="user-level-4">-</div>
                             </div>
                             <div class="bg-white p-3 rounded-lg">
-                                <div class="text-xs text-gray-600">구매 별</div>
+                                <div class="text-xs text-gray-600">보유 별</div>
                                 <div class="text-lg font-bold text-blue-600" id="user-stars-4">-</div>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <div class="text-xs text-gray-600">보유 하트</div>
+                                <div class="text-lg font-bold text-pink-600" id="user-hearts-4">-</div>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg">
+                                <div class="text-xs text-gray-600">하트허용치</div>
+                                <div class="text-lg font-bold text-orange-600" id="user-allowance-4">-</div>
                             </div>
                             <div class="bg-white p-3 rounded-lg">
                                 <div class="text-xs text-gray-600">투자금</div>
@@ -601,6 +633,8 @@ export const farmUITemplate = `<!DOCTYPE html>
                     document.getElementById(\`user-pots-\${farmId}\`).textContent = data.user_1.pots_count + '개';
                     document.getElementById(\`user-level-\${farmId}\`).textContent = 'Lv.' + data.user_1.highest_level;
                     document.getElementById(\`user-stars-\${farmId}\`).textContent = data.user_1.stars_purchased + '개';
+                    document.getElementById(\`user-hearts-\${farmId}\`).textContent = data.user_1.hearts_balance.toLocaleString() + '개';
+                    document.getElementById(\`user-allowance-\${farmId}\`).textContent = data.user_1.heart_allowance.toLocaleString();
                     document.getElementById(\`user-investment-\${farmId}\`).textContent = '$' + data.user_1.investment_usd.toLocaleString();
                     document.getElementById(\`user-return-\${farmId}\`).textContent = '$' + data.user_1.return_usd.toLocaleString();
                     
