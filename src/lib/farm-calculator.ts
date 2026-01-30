@@ -180,24 +180,29 @@ export function calculateSingleFarm(
     
     users.set(entryOrder, newUser);
     
-    // 기존 사용자들의 하트허용치 증가 (후발 입장자가 만드는 화분 개수만큼)
-    users.forEach((existingUser, order) => {
-      if (order < entryOrder) {
-        existingUser.heartAllowance += maxPots; // 화분 개수만큼 증가
-      }
-    });
-    
-    // 모든 사용자의 레벨업 시도
-    users.forEach(user => {
-      // 화분 생성 (최대 maxPots개까지)
-      while (user.pots.length < maxPots) {
-        user.pots.push({
-          potNumber: user.pots.length + 1,
-          currentLevel: 0,
-        });
-      }
+    // 화분을 하나씩 생성하면서 하트허용치 업데이트
+    for (let potNum = 1; potNum <= maxPots; potNum++) {
+      // 신규 화분이 생성되기 전, 이 농장의 전체 화분 개수 계산
+      let totalExistingPots = 0;
+      users.forEach(user => {
+        totalExistingPots += user.pots.length;
+      });
       
-      // 각 화분 레벨업 시도
+      // 새 화분 생성
+      newUser.pots.push({
+        potNumber: potNum,
+        currentLevel: 0,
+      });
+      
+      // 이 농장의 모든 사용자의 하트허용치 증가
+      // 증가량 = 기존 화분 개수 (신규 화분이 생성되었으므로, 기존 화분들이 혜택)
+      users.forEach((user) => {
+        user.heartAllowance += totalExistingPots;
+      });
+    }
+    
+    // 모든 화분 생성 후, 모든 사용자의 레벨업 시도
+    users.forEach(user => {
       user.pots.forEach(pot => {
         attemptPotLevelUp(user, pot);
       });
