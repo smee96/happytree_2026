@@ -164,6 +164,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     <tr>
                                         <th class="px-3 py-2 text-left">레벨</th>
                                         <th class="px-3 py-2 text-right">달성자 수</th>
+                                        <th class="px-3 py-2 text-right">도달 화분 수</th>
                                         <th class="px-3 py-2 text-right">필요 별</th>
                                         <th class="px-3 py-2 text-right">필요 하트허용치</th>
                                         <th class="px-3 py-2 text-right">보상 코인</th>
@@ -171,7 +172,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y" id="level-stats-1">
-                                    <tr><td colspan="6" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
+                                    <tr><td colspan="7" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -293,6 +294,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     <tr>
                                         <th class="px-3 py-2 text-left">레벨</th>
                                         <th class="px-3 py-2 text-right">달성자 수</th>
+                                        <th class="px-3 py-2 text-right">도달 화분 수</th>
                                         <th class="px-3 py-2 text-right">필요 별</th>
                                         <th class="px-3 py-2 text-right">필요 하트허용치</th>
                                         <th class="px-3 py-2 text-right">보상 코인</th>
@@ -300,7 +302,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y" id="level-stats-2">
-                                    <tr><td colspan="6" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
+                                    <tr><td colspan="7" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -422,6 +424,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     <tr>
                                         <th class="px-3 py-2 text-left">레벨</th>
                                         <th class="px-3 py-2 text-right">달성자 수</th>
+                                        <th class="px-3 py-2 text-right">도달 화분 수</th>
                                         <th class="px-3 py-2 text-right">필요 별</th>
                                         <th class="px-3 py-2 text-right">필요 하트허용치</th>
                                         <th class="px-3 py-2 text-right">보상 코인</th>
@@ -429,7 +432,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y" id="level-stats-3">
-                                    <tr><td colspan="6" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
+                                    <tr><td colspan="7" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -551,6 +554,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     <tr>
                                         <th class="px-3 py-2 text-left">레벨</th>
                                         <th class="px-3 py-2 text-right">달성자 수</th>
+                                        <th class="px-3 py-2 text-right">도달 화분 수</th>
                                         <th class="px-3 py-2 text-right">필요 별</th>
                                         <th class="px-3 py-2 text-right">필요 하트허용치</th>
                                         <th class="px-3 py-2 text-right">보상 코인</th>
@@ -558,7 +562,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y" id="level-stats-4">
-                                    <tr><td colspan="6" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
+                                    <tr><td colspan="7" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -654,6 +658,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                         row.innerHTML = \`
                             <td class="px-3 py-2">Lv.\${stat.level}</td>
                             <td class="px-3 py-2 text-right font-semibold text-blue-600">\${stat.achievers_count.toLocaleString()}명</td>
+                            <td class="px-3 py-2 text-right font-semibold text-green-600">\${stat.pots_count.toLocaleString()}개</td>
                             <td class="px-3 py-2 text-right">\${stat.stars_per_person}</td>
                             <td class="px-3 py-2 text-right">\${stat.hearts_required.toLocaleString()}</td>
                             <td class="px-3 py-2 text-right">\${stat.coins_per_person}</td>

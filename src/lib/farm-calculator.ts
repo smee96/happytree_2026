@@ -227,6 +227,7 @@ export function calculateSingleFarm(
     return {
       level: idx + 1,
       achievers_count: achieversCount,
+      pots_count: potsAtLevel,
       stars_per_person: level.stars,
       coins_per_person: level.coins,
       hearts_required: level.hearts_required,
