@@ -225,6 +225,7 @@ export function calculateSingleFarm(
       stars_per_person: level.stars,
       coins_per_person: level.coins,
       hearts_required: level.hearts_required,
+      hearts_reward: level.hearts_reward,
       total_stars_sold: totalStars,
       total_coins_paid: totalCoins,
     };

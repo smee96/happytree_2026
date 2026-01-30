@@ -147,36 +147,23 @@ export const farmUITemplate = `<!DOCTYPE html>
                         </div>
                     </div>
                     
-                    <!-- Reward Plan Farm 1 -->
+                    <!-- Level Stats Farm 1 -->
                     <div class="bg-white rounded-lg p-6 border-2 border-green-200">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">🌱 농장 1 보상 플랜</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">📊 농장 1 레벨별 달성 현황</h3>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm">
                                 <thead class="bg-green-100">
                                     <tr>
                                         <th class="px-3 py-2 text-left">레벨</th>
+                                        <th class="px-3 py-2 text-right">달성자 수</th>
                                         <th class="px-3 py-2 text-right">필요 별</th>
                                         <th class="px-3 py-2 text-right">필요 하트허용치</th>
                                         <th class="px-3 py-2 text-right">보상 코인</th>
                                         <th class="px-3 py-2 text-right">보상 하트</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y">
-                                    <tr><td class="px-3 py-2">Lv.1</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">1</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.2</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">3</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.3</td><td class="px-3 py-2 text-right">1</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">14</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.4</td><td class="px-3 py-2 text-right">1</td><td class="px-3 py-2 text-right">15</td><td class="px-3 py-2 text-right">6</td><td class="px-3 py-2 text-right">69</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.5</td><td class="px-3 py-2 text-right">1</td><td class="px-3 py-2 text-right">23</td><td class="px-3 py-2 text-right">12</td><td class="px-3 py-2 text-right">344</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.6</td><td class="px-3 py-2 text-right">1</td><td class="px-3 py-2 text-right">39</td><td class="px-3 py-2 text-right">24</td><td class="px-3 py-2 text-right">1,719</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.7</td><td class="px-3 py-2 text-right">1</td><td class="px-3 py-2 text-right">71</td><td class="px-3 py-2 text-right">48</td><td class="px-3 py-2 text-right">8,594</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.8</td><td class="px-3 py-2 text-right">1</td><td class="px-3 py-2 text-right">135</td><td class="px-3 py-2 text-right">96</td><td class="px-3 py-2 text-right">X</td></tr>
-                                    <tr class="bg-green-50 font-bold">
-                                        <td class="px-3 py-2">합계</td>
-                                        <td class="px-3 py-2 text-right">6</td>
-                                        <td class="px-3 py-2 text-right">283</td>
-                                        <td class="px-3 py-2 text-right">186</td>
-                                        <td class="px-3 py-2 text-right">10,744</td>
-                                    </tr>
+                                <tbody class="divide-y" id="level-stats-1">
+                                    <tr><td colspan="6" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -281,36 +268,23 @@ export const farmUITemplate = `<!DOCTYPE html>
                         </div>
                     </div>
                     
-                    <!-- Reward Plan Farm 2 -->
+                    <!-- Level Stats Farm 2 -->
                     <div class="bg-white rounded-lg p-6 border-2 border-blue-200">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">🌿 농장 2 보상 플랜</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">📊 농장 2 레벨별 달성 현황</h3>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm">
                                 <thead class="bg-blue-100">
                                     <tr>
                                         <th class="px-3 py-2 text-left">레벨</th>
+                                        <th class="px-3 py-2 text-right">달성자 수</th>
                                         <th class="px-3 py-2 text-right">필요 별</th>
                                         <th class="px-3 py-2 text-right">필요 하트허용치</th>
                                         <th class="px-3 py-2 text-right">보상 코인</th>
                                         <th class="px-3 py-2 text-right">보상 하트</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y">
-                                    <tr><td class="px-3 py-2">Lv.1</td><td class="px-3 py-2 text-right">1</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">1</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.2</td><td class="px-3 py-2 text-right">2</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">2</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.3</td><td class="px-3 py-2 text-right">3</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">9</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.4</td><td class="px-3 py-2 text-right">4</td><td class="px-3 py-2 text-right">40</td><td class="px-3 py-2 text-right">10</td><td class="px-3 py-2 text-right">35</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.5</td><td class="px-3 py-2 text-right">5</td><td class="px-3 py-2 text-right">94</td><td class="px-3 py-2 text-right">30</td><td class="px-3 py-2 text-right">141</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.6</td><td class="px-3 py-2 text-right">6</td><td class="px-3 py-2 text-right">256</td><td class="px-3 py-2 text-right">90</td><td class="px-3 py-2 text-right">563</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.7</td><td class="px-3 py-2 text-right">7</td><td class="px-3 py-2 text-right">742</td><td class="px-3 py-2 text-right">275</td><td class="px-3 py-2 text-right">2,253</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.8</td><td class="px-3 py-2 text-right">8</td><td class="px-3 py-2 text-right">2,200</td><td class="px-3 py-2 text-right">875</td><td class="px-3 py-2 text-right">X</td></tr>
-                                    <tr class="bg-blue-50 font-bold">
-                                        <td class="px-3 py-2">합계</td>
-                                        <td class="px-3 py-2 text-right">36</td>
-                                        <td class="px-3 py-2 text-right">3,332</td>
-                                        <td class="px-3 py-2 text-right">1,280</td>
-                                        <td class="px-3 py-2 text-right">3,004</td>
-                                    </tr>
+                                <tbody class="divide-y" id="level-stats-2">
+                                    <tr><td colspan="6" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -415,36 +389,23 @@ export const farmUITemplate = `<!DOCTYPE html>
                         </div>
                     </div>
                     
-                    <!-- Reward Plan Farm 3 -->
+                    <!-- Level Stats Farm 3 -->
                     <div class="bg-white rounded-lg p-6 border-2 border-emerald-200">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">🌳 농장 3 보상 플랜</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">📊 농장 3 레벨별 달성 현황</h3>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm">
                                 <thead class="bg-emerald-100">
                                     <tr>
                                         <th class="px-3 py-2 text-left">레벨</th>
+                                        <th class="px-3 py-2 text-right">달성자 수</th>
                                         <th class="px-3 py-2 text-right">필요 별</th>
                                         <th class="px-3 py-2 text-right">필요 하트허용치</th>
                                         <th class="px-3 py-2 text-right">보상 코인</th>
                                         <th class="px-3 py-2 text-right">보상 하트</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y">
-                                    <tr><td class="px-3 py-2">Lv.1</td><td class="px-3 py-2 text-right">2</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">1</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.2</td><td class="px-3 py-2 text-right">4</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">2</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.3</td><td class="px-3 py-2 text-right">6</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">5</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.4</td><td class="px-3 py-2 text-right">8</td><td class="px-3 py-2 text-right">85</td><td class="px-3 py-2 text-right">25</td><td class="px-3 py-2 text-right">15</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.5</td><td class="px-3 py-2 text-right">10</td><td class="px-3 py-2 text-right">277</td><td class="px-3 py-2 text-right">95</td><td class="px-3 py-2 text-right">45</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.6</td><td class="px-3 py-2 text-right">12</td><td class="px-3 py-2 text-right">1,045</td><td class="px-3 py-2 text-right">385</td><td class="px-3 py-2 text-right">134</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.7</td><td class="px-3 py-2 text-right">14</td><td class="px-3 py-2 text-right">4,117</td><td class="px-3 py-2 text-right">1,535</td><td class="px-3 py-2 text-right">401</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.8</td><td class="px-3 py-2 text-right">16</td><td class="px-3 py-2 text-right">16,405</td><td class="px-3 py-2 text-right">6,555</td><td class="px-3 py-2 text-right">X</td></tr>
-                                    <tr class="bg-emerald-50 font-bold">
-                                        <td class="px-3 py-2">합계</td>
-                                        <td class="px-3 py-2 text-right">72</td>
-                                        <td class="px-3 py-2 text-right">21,929</td>
-                                        <td class="px-3 py-2 text-right">8,595</td>
-                                        <td class="px-3 py-2 text-right">603</td>
-                                    </tr>
+                                <tbody class="divide-y" id="level-stats-3">
+                                    <tr><td colspan="6" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -549,36 +510,23 @@ export const farmUITemplate = `<!DOCTYPE html>
                         </div>
                     </div>
                     
-                    <!-- Reward Plan Farm 4 -->
+                    <!-- Level Stats Farm 4 -->
                     <div class="bg-white rounded-lg p-6 border-2 border-purple-200">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">🌲 농장 4 보상 플랜</h3>
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">📊 농장 4 레벨별 달성 현황</h3>
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm">
                                 <thead class="bg-purple-100">
                                     <tr>
                                         <th class="px-3 py-2 text-left">레벨</th>
+                                        <th class="px-3 py-2 text-right">달성자 수</th>
                                         <th class="px-3 py-2 text-right">필요 별</th>
                                         <th class="px-3 py-2 text-right">필요 하트허용치</th>
                                         <th class="px-3 py-2 text-right">보상 코인</th>
                                         <th class="px-3 py-2 text-right">보상 하트</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y">
-                                    <tr><td class="px-3 py-2">Lv.1</td><td class="px-3 py-2 text-right">3</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">1</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.2</td><td class="px-3 py-2 text-right">6</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">1</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.3</td><td class="px-3 py-2 text-right">9</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">0</td><td class="px-3 py-2 text-right">2</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.4</td><td class="px-3 py-2 text-right">12</td><td class="px-3 py-2 text-right">156</td><td class="px-3 py-2 text-right">45</td><td class="px-3 py-2 text-right">4</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.5</td><td class="px-3 py-2 text-right">15</td><td class="px-3 py-2 text-right">656</td><td class="px-3 py-2 text-right">235</td><td class="px-3 py-2 text-right">9</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.6</td><td class="px-3 py-2 text-right">18</td><td class="px-3 py-2 text-right">3,156</td><td class="px-3 py-2 text-right">1,170</td><td class="px-3 py-2 text-right">18</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.7</td><td class="px-3 py-2 text-right">21</td><td class="px-3 py-2 text-right">15,656</td><td class="px-3 py-2 text-right">5,860</td><td class="px-3 py-2 text-right">35</td></tr>
-                                    <tr><td class="px-3 py-2">Lv.8</td><td class="px-3 py-2 text-right">24</td><td class="px-3 py-2 text-right">78,156</td><td class="px-3 py-2 text-right">31,250</td><td class="px-3 py-2 text-right">X</td></tr>
-                                    <tr class="bg-purple-50 font-bold">
-                                        <td class="px-3 py-2">합계</td>
-                                        <td class="px-3 py-2 text-right">108</td>
-                                        <td class="px-3 py-2 text-right">97,780</td>
-                                        <td class="px-3 py-2 text-right">38,560</td>
-                                        <td class="px-3 py-2 text-right">70</td>
-                                    </tr>
+                                <tbody class="divide-y" id="level-stats-4">
+                                    <tr><td colspan="6" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -660,6 +608,25 @@ export const farmUITemplate = `<!DOCTYPE html>
                     const roiEl = document.getElementById(\`user-roi-\${farmId}\`);
                     roiEl.textContent = data.user_1.roi_percent + '%';
                     roiEl.className = 'text-lg font-bold ' + (roi >= 0 ? 'text-green-600' : 'text-red-600');
+                }
+                
+                // Level stats data
+                if (data.level_stats) {
+                    const tbody = document.getElementById(\`level-stats-\${farmId}\`);
+                    tbody.innerHTML = '';
+                    
+                    data.level_stats.forEach(stat => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = \`
+                            <td class="px-3 py-2">Lv.\${stat.level}</td>
+                            <td class="px-3 py-2 text-right font-semibold text-blue-600">\${stat.achievers_count.toLocaleString()}명</td>
+                            <td class="px-3 py-2 text-right">\${stat.stars_per_person}</td>
+                            <td class="px-3 py-2 text-right">\${stat.hearts_required.toLocaleString()}</td>
+                            <td class="px-3 py-2 text-right">\${stat.coins_per_person}</td>
+                            <td class="px-3 py-2 text-right">\${stat.hearts_reward > 0 ? stat.hearts_reward.toLocaleString() : 'X'}</td>
+                        \`;
+                        tbody.appendChild(row);
+                    });
                 }
                 
                 result.classList.remove('hidden');
