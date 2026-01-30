@@ -165,9 +165,6 @@ export function calculateSingleFarm(
     }
   }
 
-  // 전체 화분 생성 순서를 추적하기 위한 카운터
-  let globalPotCounter = 0;
-  
   // 사용자 입장 시뮬레이션
   for (let entryOrder = 1; entryOrder <= totalUsers; entryOrder++) {
     // 신규 사용자 생성
@@ -184,37 +181,26 @@ export function calculateSingleFarm(
     
     users.set(entryOrder, newUser);
     
-    // 화분을 하나씩 생성하면서 하트허용치 업데이트
+    // 화분 생성 (한 번에 maxPots개)
     for (let potNum = 1; potNum <= maxPots; potNum++) {
-      // 새 화분 생성 (전체 순서 기록)
-      const newPot: PotState = {
+      newUser.pots.push({
         potNumber: potNum,
         currentLevel: 0,
-        createdAt: globalPotCounter++,
-      };
-      newUser.pots.push(newPot);
-      
-      // 각 사용자의 하트허용치 업데이트
-      // 각 사용자의 마지막 화분보다 늦게 생성된 화분 개수 계산
-      users.forEach((user) => {
-        // 해당 사용자의 마지막 화분 생성 시간
-        const lastPotTime = user.pots.length > 0 
-          ? user.pots[user.pots.length - 1].createdAt
-          : -1;
-        
-        // 모든 사용자의 화분 중에서 이 사용자의 마지막 화분보다 늦게 생성된 화분 개수
-        let laterPotsCount = 0;
-        users.forEach(otherUser => {
-          otherUser.pots.forEach(pot => {
-            if (pot.createdAt > lastPotTime) {
-              laterPotsCount++;
-            }
-          });
-        });
-        
-        user.heartAllowance = laterPotsCount;
+        createdAt: 0, // 시간은 더 이상 사용하지 않음
       });
     }
+    
+    // 모든 사용자의 하트허용치 재계산
+    // 허용치 = 나보다 늦게 입장한 사용자들의 화분 개수 합계
+    users.forEach((user) => {
+      let allowance = 0;
+      users.forEach((otherUser) => {
+        if (otherUser.entryOrder > user.entryOrder) {
+          allowance += otherUser.pots.length;
+        }
+      });
+      user.heartAllowance = allowance;
+    });
     
     // 모든 화분 생성 후, 모든 사용자의 레벨업 시도
     users.forEach(user => {
