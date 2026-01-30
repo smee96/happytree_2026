@@ -22,35 +22,35 @@ const LEVELS = [
   { farm: 1, level: 7, hearts_required: 64, stars: 1, coins: 48, hearts_reward: 8594 },
   { farm: 1, level: 8, hearts_required: 128, stars: 1, coins: 96, hearts_reward: 0 },
   
-  // 농장 2
+  // 농장 2 - 코인 보상 50% 감소
   { farm: 2, level: 1, hearts_required: 1, stars: 1, coins: 0, hearts_reward: 1 },
   { farm: 2, level: 2, hearts_required: 3, stars: 2, coins: 0, hearts_reward: 2 },
   { farm: 2, level: 3, hearts_required: 9, stars: 3, coins: 0, hearts_reward: 9 },
-  { farm: 2, level: 4, hearts_required: 27, stars: 4, coins: 20, hearts_reward: 35 },
-  { farm: 2, level: 5, hearts_required: 81, stars: 5, coins: 60, hearts_reward: 141 },
-  { farm: 2, level: 6, hearts_required: 243, stars: 6, coins: 180, hearts_reward: 563 },
-  { farm: 2, level: 7, hearts_required: 729, stars: 7, coins: 550, hearts_reward: 2253 },
-  { farm: 2, level: 8, hearts_required: 2187, stars: 8, coins: 1750, hearts_reward: 0 },
+  { farm: 2, level: 4, hearts_required: 27, stars: 4, coins: 10, hearts_reward: 35 },
+  { farm: 2, level: 5, hearts_required: 81, stars: 5, coins: 30, hearts_reward: 141 },
+  { farm: 2, level: 6, hearts_required: 243, stars: 6, coins: 90, hearts_reward: 563 },
+  { farm: 2, level: 7, hearts_required: 729, stars: 7, coins: 275, hearts_reward: 2253 },
+  { farm: 2, level: 8, hearts_required: 2187, stars: 8, coins: 875, hearts_reward: 0 },
   
-  // 농장 3
+  // 농장 3 - 코인 보상 50% 감소
   { farm: 3, level: 1, hearts_required: 1, stars: 2, coins: 0, hearts_reward: 1 },
   { farm: 3, level: 2, hearts_required: 4, stars: 4, coins: 0, hearts_reward: 2 },
   { farm: 3, level: 3, hearts_required: 16, stars: 6, coins: 0, hearts_reward: 5 },
-  { farm: 3, level: 4, hearts_required: 64, stars: 8, coins: 50, hearts_reward: 15 },
-  { farm: 3, level: 5, hearts_required: 256, stars: 10, coins: 190, hearts_reward: 45 },
-  { farm: 3, level: 6, hearts_required: 1024, stars: 12, coins: 770, hearts_reward: 134 },
-  { farm: 3, level: 7, hearts_required: 4096, stars: 14, coins: 3070, hearts_reward: 401 },
-  { farm: 3, level: 8, hearts_required: 16384, stars: 16, coins: 13110, hearts_reward: 0 },
+  { farm: 3, level: 4, hearts_required: 64, stars: 8, coins: 25, hearts_reward: 15 },
+  { farm: 3, level: 5, hearts_required: 256, stars: 10, coins: 95, hearts_reward: 45 },
+  { farm: 3, level: 6, hearts_required: 1024, stars: 12, coins: 385, hearts_reward: 134 },
+  { farm: 3, level: 7, hearts_required: 4096, stars: 14, coins: 1535, hearts_reward: 401 },
+  { farm: 3, level: 8, hearts_required: 16384, stars: 16, coins: 6555, hearts_reward: 0 },
   
-  // 농장 4
+  // 농장 4 - 코인 보상 50% 감소
   { farm: 4, level: 1, hearts_required: 1, stars: 3, coins: 0, hearts_reward: 1 },
   { farm: 4, level: 2, hearts_required: 5, stars: 6, coins: 0, hearts_reward: 1 },
   { farm: 4, level: 3, hearts_required: 25, stars: 9, coins: 0, hearts_reward: 2 },
-  { farm: 4, level: 4, hearts_required: 125, stars: 12, coins: 90, hearts_reward: 4 },
-  { farm: 4, level: 5, hearts_required: 625, stars: 15, coins: 470, hearts_reward: 9 },
-  { farm: 4, level: 6, hearts_required: 3125, stars: 18, coins: 2340, hearts_reward: 18 },
-  { farm: 4, level: 7, hearts_required: 15625, stars: 21, coins: 11720, hearts_reward: 35 },
-  { farm: 4, level: 8, hearts_required: 78125, stars: 24, coins: 62500, hearts_reward: 0 },
+  { farm: 4, level: 4, hearts_required: 125, stars: 12, coins: 45, hearts_reward: 4 },
+  { farm: 4, level: 5, hearts_required: 625, stars: 15, coins: 235, hearts_reward: 9 },
+  { farm: 4, level: 6, hearts_required: 3125, stars: 18, coins: 1170, hearts_reward: 18 },
+  { farm: 4, level: 7, hearts_required: 15625, stars: 21, coins: 5860, hearts_reward: 35 },
+  { farm: 4, level: 8, hearts_required: 78125, stars: 24, coins: 31250, hearts_reward: 0 },
 ];
 
 // 화분 상태
