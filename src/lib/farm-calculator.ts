@@ -206,18 +206,23 @@ export function calculateSingleFarm(
 
   // 통계 집계
   const levelStats = levels.map((level, idx) => {
-    // 해당 레벨을 달성한 사용자 수 (화분 단위가 아닌 사용자 단위)
+    // 해당 레벨을 달성한 사용자 수 (사용자 단위로 집계)
     const achievers = new Set<number>();
+    // 해당 레벨을 달성한 화분 수 (실제 별/코인 판매량)
+    let potsAtLevel = 0;
+    
     users.forEach(user => {
-      const hasPotAtLevel = user.pots.some(pot => pot.currentLevel > idx);
-      if (hasPotAtLevel) {
+      const potsReachedLevel = user.pots.filter(pot => pot.currentLevel > idx);
+      if (potsReachedLevel.length > 0) {
         achievers.add(user.entryOrder);
+        potsAtLevel += potsReachedLevel.length;
       }
     });
     
     const achieversCount = achievers.size;
-    const totalStars = achieversCount * level.stars;
-    const totalCoins = achieversCount * level.coins;
+    // 플랫폼 수익은 화분 단위로 계산 (화분마다 별/코인 구매)
+    const totalStars = potsAtLevel * level.stars;
+    const totalCoins = potsAtLevel * level.coins;
     
     return {
       level: idx + 1,
