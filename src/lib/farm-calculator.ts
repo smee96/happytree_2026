@@ -170,12 +170,12 @@ export function calculateSingleFarm(
     // 신규 사용자 생성
     const newUser: UserState = {
       entryOrder,
-      heartsBalance: 5, // 환영 하트
+      heartsBalance: 300000, // 충분한 초기 하트 (하트 부족으로 인한 레벨업 실패 방지)
       heartAllowance: 0,
       pots: [],
       starsPurchased: 0,
       coinsEarned: 0,
-      heartsEarned: 5, // 환영 하트 포함
+      heartsEarned: 300000, // 초기 하트 포함
       heartsSpent: 0,
     };
     
