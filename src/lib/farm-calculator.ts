@@ -112,15 +112,20 @@ interface FarmStats {
  * @param farmId 농장 번호 (1~4)
  * @param totalUsers 총 입장 인원
  * @param maxPots 화분 개수 (1~10)
- * @param starPrice 별 가격 ($1~$5)
+ * @param starPrice 별 가격
+ * @param initialHearts 초기 보유 하트
+ * @param customLevels 커스텀 레벨 데이터 (선택사항)
  */
 export function calculateSingleFarm(
   farmId: number,
   totalUsers: number,
   maxPots: number,
-  starPrice: number
+  starPrice: number,
+  initialHearts: number = 300000,
+  customLevels?: FarmLevel[]
 ): FarmStats {
-  const levels = FARM_LEVELS[farmId];
+  // 커스텀 레벨이 제공되면 사용, 아니면 기본 레벨 사용
+  const levels = customLevels || FARM_LEVELS[farmId];
   if (!levels) {
     throw new Error(`Invalid farm ID: ${farmId}`);
   }
@@ -170,12 +175,12 @@ export function calculateSingleFarm(
     // 신규 사용자 생성
     const newUser: UserState = {
       entryOrder,
-      heartsBalance: 300000, // 충분한 초기 하트 (하트 부족으로 인한 레벨업 실패 방지)
+      heartsBalance: initialHearts, // 사용자가 설정한 초기 하트
       heartAllowance: 0,
       pots: [],
       starsPurchased: 0,
       coinsEarned: 0,
-      heartsEarned: 300000, // 초기 하트 포함
+      heartsEarned: initialHearts, // 초기 하트 포함
       heartsSpent: 0,
     };
     

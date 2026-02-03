@@ -81,13 +81,14 @@ app.get('/api/five-pots/:total_users', async (c) => {
   }
 });
 
-// 농장별 독립 계산 API
+// 농장별 독립 계산 API (GET - 기본 레벨 사용)
 app.get('/api/farm/:farm_id/:total_users/:max_pots', async (c) => {
   try {
     const farmId = parseInt(c.req.param('farm_id'));
     const totalUsers = parseInt(c.req.param('total_users'));
     const maxPots = parseInt(c.req.param('max_pots'));
     const starPrice = parseFloat(c.req.query('starPrice') || '2');
+    const initialHearts = parseFloat(c.req.query('initialHearts') || '300000');
     
     if (!farmId || farmId < 1 || farmId > 4) {
       return c.json({ error: '농장 ID는 1~4 사이여야 합니다' }, 400);
@@ -101,11 +102,46 @@ app.get('/api/farm/:farm_id/:total_users/:max_pots', async (c) => {
       return c.json({ error: '화분 개수는 1~10 사이여야 합니다' }, 400);
     }
     
-    if (starPrice < 1 || starPrice > 5) {
-      return c.json({ error: '별 가격은 $1~$5 사이여야 합니다' }, 400);
+    if (starPrice < 0.1 || starPrice > 100) {
+      return c.json({ error: '별 가격은 $0.1~$100 사이여야 합니다' }, 400);
     }
     
-    const result = calculateSingleFarm(farmId, totalUsers, maxPots, starPrice);
+    const result = calculateSingleFarm(farmId, totalUsers, maxPots, starPrice, initialHearts);
+    return c.json(result);
+  } catch (error: any) {
+    return c.json({ error: '계산 실패: ' + error.message }, 500);
+  }
+});
+
+// 농장별 독립 계산 API (POST - 커스텀 레벨 사용)
+app.post('/api/farm/:farm_id/:total_users/:max_pots', async (c) => {
+  try {
+    const farmId = parseInt(c.req.param('farm_id'));
+    const totalUsers = parseInt(c.req.param('total_users'));
+    const maxPots = parseInt(c.req.param('max_pots'));
+    const starPrice = parseFloat(c.req.query('starPrice') || '2');
+    const initialHearts = parseFloat(c.req.query('initialHearts') || '300000');
+    
+    const body = await c.req.json();
+    const customLevels = body.levels;
+    
+    if (!farmId || farmId < 1 || farmId > 4) {
+      return c.json({ error: '농장 ID는 1~4 사이여야 합니다' }, 400);
+    }
+    
+    if (!totalUsers || totalUsers < 1 || totalUsers > 1000000) {
+      return c.json({ error: '사용자 수는 1~1,000,000 사이여야 합니다' }, 400);
+    }
+    
+    if (!maxPots || maxPots < 1 || maxPots > 10) {
+      return c.json({ error: '화분 개수는 1~10 사이여야 합니다' }, 400);
+    }
+    
+    if (starPrice < 0.1 || starPrice > 100) {
+      return c.json({ error: '별 가격은 $0.1~$100 사이여야 합니다' }, 400);
+    }
+    
+    const result = calculateSingleFarm(farmId, totalUsers, maxPots, starPrice, initialHearts, customLevels);
     return c.json(result);
   } catch (error: any) {
     return c.json({ error: '계산 실패: ' + error.message }, 500);

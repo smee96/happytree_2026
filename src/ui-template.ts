@@ -52,35 +52,107 @@ export const farmUITemplate = `<!DOCTYPE html>
 
             <!-- Farm 1 Content -->
             <div id="farm-1" class="tab-content active p-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">입장 인원</label>
-                        <input type="number" id="users-1" class="w-full px-4 py-2 border rounded-lg" value="100" min="1">
+                <!-- Basic Settings -->
+                <div class="bg-white rounded-lg p-4 mb-6 border-2 border-green-200">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">⚙️ 기본 설정</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">입장 인원</label>
+                            <input type="number" id="users-1" class="w-full px-4 py-2 border rounded-lg" value="100" min="1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
+                            <input type="number" id="pots-1" class="w-full px-4 py-2 border rounded-lg" value="3" min="1" max="10">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">별 가격 ($)</label>
+                            <input type="number" id="price-1" class="w-full px-4 py-2 border rounded-lg" value="2" min="0.1" step="0.1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">초기 하트</label>
+                            <input type="number" id="initial-hearts-1" class="w-full px-4 py-2 border rounded-lg" value="300000" min="0">
+                        </div>
+                        <div class="flex items-end">
+                            <button onclick="calculate(1)" class="w-full px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
+                                계산하기
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
-                        <select id="pots-1" class="w-full px-4 py-2 border rounded-lg">
-                            <option value="1">1개</option>
-                            <option value="2">2개</option>
-                            <option value="3" selected>3개</option>
-                            <option value="4">4개</option>
-                            <option value="5">5개</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">별 가격 ($)</label>
-                        <select id="price-1" class="w-full px-4 py-2 border rounded-lg">
-                            <option value="1">$1</option>
-                            <option value="2" selected>$2</option>
-                            <option value="3">$3</option>
-                            <option value="4">$4</option>
-                            <option value="5">$5</option>
-                        </select>
-                    </div>
-                    <div class="flex items-end">
-                        <button onclick="calculate(1)" class="w-full px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
-                            계산하기
+                </div>
+                
+                <!-- Level Configuration -->
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 mb-6 border-2 border-blue-200">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-bold text-gray-800">📊 레벨별 조건 및 보상 설정</h3>
+                        <button onclick="toggleLevelConfig(1)" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">
+                            <span id="toggle-text-1">펼치기 ▼</span>
                         </button>
+                    </div>
+                    <div id="level-config-1" class="hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm bg-white rounded-lg">
+                                <thead class="bg-blue-100">
+                                    <tr>
+                                        <th class="px-3 py-2 text-center">레벨</th>
+                                        <th class="px-3 py-2 text-center">필요 하트허용치</th>
+                                        <th class="px-3 py-2 text-center">필요 별</th>
+                                        <th class="px-3 py-2 text-center">보상 코인</th>
+                                        <th class="px-3 py-2 text-center">보상 하트</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="level-config-body-1">
+                                    <tr><td class="px-2 py-2 text-center font-semibold">Lv.1</td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="1" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="1" data-field="stars"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="1" data-field="coins"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="1" data-field="hearts_reward"></td>
+                                    </tr>
+                                    <tr><td class="px-2 py-2 text-center font-semibold">Lv.2</td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="2" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="2" data-field="stars"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="2" data-field="coins"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="3" min="0" data-level="2" data-field="hearts_reward"></td>
+                                    </tr>
+                                    <tr><td class="px-2 py-2 text-center font-semibold">Lv.3</td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="3" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="3" data-field="stars"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="3" data-field="coins"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="14" min="0" data-level="3" data-field="hearts_reward"></td>
+                                    </tr>
+                                    <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.4</td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="15" min="0" data-level="4" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="4" data-field="stars"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="6" min="0" data-level="4" data-field="coins"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="69" min="0" data-level="4" data-field="hearts_reward"></td>
+                                    </tr>
+                                    <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.5</td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="23" min="0" data-level="5" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="5" data-field="stars"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="12" min="0" data-level="5" data-field="coins"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="344" min="0" data-level="5" data-field="hearts_reward"></td>
+                                    </tr>
+                                    <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.6</td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="39" min="0" data-level="6" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="6" data-field="stars"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="24" min="0" data-level="6" data-field="coins"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1719" min="0" data-level="6" data-field="hearts_reward"></td>
+                                    </tr>
+                                    <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.7</td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="71" min="0" data-level="7" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="7" data-field="stars"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="48" min="0" data-level="7" data-field="coins"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="8594" min="0" data-level="7" data-field="hearts_reward"></td>
+                                    </tr>
+                                    <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.8</td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="135" min="0" data-level="8" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="8" data-field="stars"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="96" min="0" data-level="8" data-field="coins"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="8" data-field="hearts_reward"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-2">💡 값을 수정한 후 "계산하기" 버튼을 눌러주세요.</p>
                     </div>
                 </div>
                 
@@ -727,6 +799,35 @@ export const farmUITemplate = `<!DOCTYPE html>
     </div>
 
     <script>
+        function toggleLevelConfig(farmId) {
+            const configDiv = document.getElementById(\`level-config-\${farmId}\`);
+            const toggleText = document.getElementById(\`toggle-text-\${farmId}\`);
+            
+            if (configDiv.classList.contains('hidden')) {
+                configDiv.classList.remove('hidden');
+                toggleText.textContent = '접기 ▲';
+            } else {
+                configDiv.classList.add('hidden');
+                toggleText.textContent = '펼치기 ▼';
+            }
+        }
+        
+        function getLevelConfig(farmId) {
+            const levels = [];
+            for (let i = 1; i <= 8; i++) {
+                const inputs = document.querySelectorAll(\`#level-config-body-\${farmId} input[data-level="\${i}"]\`);
+                const levelData = { level: i };
+                
+                inputs.forEach(input => {
+                    const field = input.getAttribute('data-field');
+                    levelData[field] = parseFloat(input.value) || 0;
+                });
+                
+                levels.push(levelData);
+            }
+            return levels;
+        }
+        
         function switchTab(farmId) {
             // Hide all tabs
             for (let i = 1; i <= 4; i++) {
@@ -745,6 +846,8 @@ export const farmUITemplate = `<!DOCTYPE html>
             const users = document.getElementById(\`users-\${farmId}\`).value;
             const pots = document.getElementById(\`pots-\${farmId}\`).value;
             const price = document.getElementById(\`price-\${farmId}\`).value;
+            const initialHearts = document.getElementById(\`initial-hearts-\${farmId}\`).value;
+            const levels = getLevelConfig(farmId);
             
             if (!users || users < 1) {
                 alert('유효한 인원수를 입력하세요');
@@ -758,7 +861,13 @@ export const farmUITemplate = `<!DOCTYPE html>
             result.classList.add('hidden');
             
             try {
-                const response = await fetch(\`/api/farm/\${farmId}/\${users}/\${pots}?starPrice=\${price}\`);
+                const response = await fetch(\`/api/farm/\${farmId}/\${users}/\${pots}?starPrice=\${price}&initialHearts=\${initialHearts}\`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ levels })
+                });
                 const data = await response.json();
                 
                 if (!response.ok) {
