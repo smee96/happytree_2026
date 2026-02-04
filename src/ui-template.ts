@@ -794,8 +794,9 @@ export const farmUITemplate = `<!DOCTYPE html>
                     
                     // 레벨 설정 복원
                     if (allData.levels && allData.levels.length > 0) {
+                        const tbodyId = farmId === 1 ? \`level-config-body-\${farmId}\` : \`level-inputs-\${farmId}\`;
                         allData.levels.forEach((level, idx) => {
-                            const row = document.querySelector(\`#level-inputs-\${farmId} tr[data-level="\${idx + 1}"]\`);
+                            const row = document.querySelector(\`#\${tbodyId} tr:nth-child(\${idx + 1})\`);
                             if (row) {
                                 const inputs = row.querySelectorAll('input[data-field]');
                                 inputs.forEach(input => {
@@ -817,8 +818,11 @@ export const farmUITemplate = `<!DOCTYPE html>
         
         function getLevelConfig(farmId) {
             const levels = [];
+            // 농장 1은 level-config-body-1, 나머지는 level-inputs-X
+            const tbodyId = farmId === 1 ? \`level-config-body-\${farmId}\` : \`level-inputs-\${farmId}\`;
+            
             for (let i = 1; i <= 8; i++) {
-                const row = document.querySelector(\`#level-inputs-\${farmId} tr[data-level="\${i}"]\`);
+                const row = document.querySelector(\`#\${tbodyId} tr:nth-child(\${i})\`);
                 const levelData = { level: i };
                 
                 if (row) {
