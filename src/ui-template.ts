@@ -249,42 +249,6 @@ export const farmUITemplate = `<!DOCTYPE html>
                             </table>
                         </div>
                     </div>
-                    
-                    <!-- Farm 1 Reward Plan -->
-                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border-2 border-blue-200">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">🎁 농장 1 보상 플랜</h3>
-                        <div class="bg-white rounded-lg p-4 mb-4">
-                            <p class="text-sm text-gray-700 mb-2"><strong>레벨업 조건:</strong></p>
-                            <ul class="text-sm text-gray-600 space-y-1 ml-4">
-                                <li>✅ <strong>조건 1:</strong> 하트허용치 ≥ 필요 하트허용치</li>
-                                <li>✅ <strong>조건 2:</strong> 보유 하트 ≥ 필요 하트허용치</li>
-                                <li>💡 두 조건을 모두 만족하면 레벨업 성공!</li>
-                            </ul>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead class="bg-blue-100">
-                                    <tr>
-                                        <th class="px-3 py-2 text-center">레벨</th>
-                                        <th class="px-3 py-2 text-center">필요 하트허용치</th>
-                                        <th class="px-3 py-2 text-center">필요 별</th>
-                                        <th class="px-3 py-2 text-center">보상 코인</th>
-                                        <th class="px-3 py-2 text-center">보상 하트</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y bg-white">
-                                    <tr><td class="px-3 py-2 text-center font-semibold">Lv.1</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-pink-600 font-bold">1</td></tr>
-                                    <tr><td class="px-3 py-2 text-center font-semibold">Lv.2</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-pink-600 font-bold">3</td></tr>
-                                    <tr><td class="px-3 py-2 text-center font-semibold">Lv.3</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-blue-600 font-bold">1</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-pink-600 font-bold">14</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.4</td><td class="px-3 py-2 text-center text-orange-600 font-bold">15</td><td class="px-3 py-2 text-center text-blue-600 font-bold">1</td><td class="px-3 py-2 text-center text-green-600 font-bold">6</td><td class="px-3 py-2 text-center text-pink-600 font-bold">69</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.5</td><td class="px-3 py-2 text-center text-orange-600 font-bold">23</td><td class="px-3 py-2 text-center text-blue-600 font-bold">1</td><td class="px-3 py-2 text-center text-green-600 font-bold">12</td><td class="px-3 py-2 text-center text-pink-600 font-bold">344</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.6</td><td class="px-3 py-2 text-center text-orange-600 font-bold">39</td><td class="px-3 py-2 text-center text-blue-600 font-bold">1</td><td class="px-3 py-2 text-center text-green-600 font-bold">24</td><td class="px-3 py-2 text-center text-pink-600 font-bold">1,719</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.7</td><td class="px-3 py-2 text-center text-orange-600 font-bold">71</td><td class="px-3 py-2 text-center text-blue-600 font-bold">1</td><td class="px-3 py-2 text-center text-green-600 font-bold">48</td><td class="px-3 py-2 text-center text-pink-600 font-bold">8,594</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.8</td><td class="px-3 py-2 text-center text-orange-600 font-bold">135</td><td class="px-3 py-2 text-center text-blue-600 font-bold">1</td><td class="px-3 py-2 text-center text-green-600 font-bold">96</td><td class="px-3 py-2 text-center">0</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -411,42 +375,6 @@ export const farmUITemplate = `<!DOCTYPE html>
                                 </thead>
                                 <tbody class="divide-y" id="level-stats-2">
                                     <tr><td colspan="7" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    <!-- Farm 2 Reward Plan -->
-                    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6 border-2 border-blue-200">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">🎁 농장 2 보상 플랜</h3>
-                        <div class="bg-white rounded-lg p-4 mb-4">
-                            <p class="text-sm text-gray-700 mb-2"><strong>레벨업 조건:</strong></p>
-                            <ul class="text-sm text-gray-600 space-y-1 ml-4">
-                                <li>✅ <strong>조건 1:</strong> 하트허용치 ≥ 필요 하트허용치</li>
-                                <li>✅ <strong>조건 2:</strong> 보유 하트 ≥ 필요 하트허용치</li>
-                                <li>💡 두 조건을 모두 만족하면 레벨업 성공!</li>
-                            </ul>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead class="bg-blue-100">
-                                    <tr>
-                                        <th class="px-3 py-2 text-center">레벨</th>
-                                        <th class="px-3 py-2 text-center">필요 하트허용치</th>
-                                        <th class="px-3 py-2 text-center">필요 별</th>
-                                        <th class="px-3 py-2 text-center">보상 코인</th>
-                                        <th class="px-3 py-2 text-center">보상 하트</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y bg-white">
-                                    <tr><td class="px-3 py-2 text-center font-semibold">Lv.1</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-blue-600 font-bold">1</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-pink-600 font-bold">1</td></tr>
-                                    <tr><td class="px-3 py-2 text-center font-semibold">Lv.2</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-blue-600 font-bold">2</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-pink-600 font-bold">2</td></tr>
-                                    <tr><td class="px-3 py-2 text-center font-semibold">Lv.3</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-blue-600 font-bold">3</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-pink-600 font-bold">9</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.4</td><td class="px-3 py-2 text-center text-orange-600 font-bold">40</td><td class="px-3 py-2 text-center text-blue-600 font-bold">4</td><td class="px-3 py-2 text-center text-green-600 font-bold">10</td><td class="px-3 py-2 text-center text-pink-600 font-bold">35</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.5</td><td class="px-3 py-2 text-center text-orange-600 font-bold">94</td><td class="px-3 py-2 text-center text-blue-600 font-bold">5</td><td class="px-3 py-2 text-center text-green-600 font-bold">30</td><td class="px-3 py-2 text-center text-pink-600 font-bold">141</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.6</td><td class="px-3 py-2 text-center text-orange-600 font-bold">256</td><td class="px-3 py-2 text-center text-blue-600 font-bold">6</td><td class="px-3 py-2 text-center text-green-600 font-bold">90</td><td class="px-3 py-2 text-center text-pink-600 font-bold">563</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.7</td><td class="px-3 py-2 text-center text-orange-600 font-bold">742</td><td class="px-3 py-2 text-center text-blue-600 font-bold">7</td><td class="px-3 py-2 text-center text-green-600 font-bold">275</td><td class="px-3 py-2 text-center text-pink-600 font-bold">2,253</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.8</td><td class="px-3 py-2 text-center text-orange-600 font-bold">2,200</td><td class="px-3 py-2 text-center text-blue-600 font-bold">8</td><td class="px-3 py-2 text-center text-green-600 font-bold">875</td><td class="px-3 py-2 text-center">0</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -581,42 +509,6 @@ export const farmUITemplate = `<!DOCTYPE html>
                             </table>
                         </div>
                     </div>
-                    
-                    <!-- Farm 3 Reward Plan -->
-                    <div class="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-lg p-6 border-2 border-emerald-200">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">🎁 농장 3 보상 플랜</h3>
-                        <div class="bg-white rounded-lg p-4 mb-4">
-                            <p class="text-sm text-gray-700 mb-2"><strong>레벨업 조건:</strong></p>
-                            <ul class="text-sm text-gray-600 space-y-1 ml-4">
-                                <li>✅ <strong>조건 1:</strong> 하트허용치 ≥ 필요 하트허용치</li>
-                                <li>✅ <strong>조건 2:</strong> 보유 하트 ≥ 필요 하트허용치</li>
-                                <li>💡 두 조건을 모두 만족하면 레벨업 성공!</li>
-                            </ul>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead class="bg-emerald-100">
-                                    <tr>
-                                        <th class="px-3 py-2 text-center">레벨</th>
-                                        <th class="px-3 py-2 text-center">필요 하트허용치</th>
-                                        <th class="px-3 py-2 text-center">필요 별</th>
-                                        <th class="px-3 py-2 text-center">보상 코인</th>
-                                        <th class="px-3 py-2 text-center">보상 하트</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y bg-white">
-                                    <tr><td class="px-3 py-2 text-center font-semibold">Lv.1</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-blue-600 font-bold">2</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-pink-600 font-bold">1</td></tr>
-                                    <tr><td class="px-3 py-2 text-center font-semibold">Lv.2</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-blue-600 font-bold">4</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-pink-600 font-bold">2</td></tr>
-                                    <tr><td class="px-3 py-2 text-center font-semibold">Lv.3</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-blue-600 font-bold">6</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-pink-600 font-bold">5</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.4</td><td class="px-3 py-2 text-center text-orange-600 font-bold">85</td><td class="px-3 py-2 text-center text-blue-600 font-bold">8</td><td class="px-3 py-2 text-center text-green-600 font-bold">25</td><td class="px-3 py-2 text-center text-pink-600 font-bold">15</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.5</td><td class="px-3 py-2 text-center text-orange-600 font-bold">277</td><td class="px-3 py-2 text-center text-blue-600 font-bold">10</td><td class="px-3 py-2 text-center text-green-600 font-bold">95</td><td class="px-3 py-2 text-center text-pink-600 font-bold">45</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.6</td><td class="px-3 py-2 text-center text-orange-600 font-bold">1,045</td><td class="px-3 py-2 text-center text-blue-600 font-bold">12</td><td class="px-3 py-2 text-center text-green-600 font-bold">385</td><td class="px-3 py-2 text-center text-pink-600 font-bold">134</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.7</td><td class="px-3 py-2 text-center text-orange-600 font-bold">4,117</td><td class="px-3 py-2 text-center text-blue-600 font-bold">14</td><td class="px-3 py-2 text-center text-green-600 font-bold">1,535</td><td class="px-3 py-2 text-center text-pink-600 font-bold">401</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.8</td><td class="px-3 py-2 text-center text-orange-600 font-bold">16,405</td><td class="px-3 py-2 text-center text-blue-600 font-bold">16</td><td class="px-3 py-2 text-center text-green-600 font-bold">6,555</td><td class="px-3 py-2 text-center">0</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -747,42 +639,6 @@ export const farmUITemplate = `<!DOCTYPE html>
                             </table>
                         </div>
                     </div>
-                    
-                    <!-- Farm 4 Reward Plan -->
-                    <div class="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg p-6 border-2 border-purple-200">
-                        <h3 class="text-xl font-bold text-gray-800 mb-4">🎁 농장 4 보상 플랜</h3>
-                        <div class="bg-white rounded-lg p-4 mb-4">
-                            <p class="text-sm text-gray-700 mb-2"><strong>레벨업 조건:</strong></p>
-                            <ul class="text-sm text-gray-600 space-y-1 ml-4">
-                                <li>✅ <strong>조건 1:</strong> 하트허용치 ≥ 필요 하트허용치</li>
-                                <li>✅ <strong>조건 2:</strong> 보유 하트 ≥ 필요 하트허용치</li>
-                                <li>💡 두 조건을 모두 만족하면 레벨업 성공!</li>
-                            </ul>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead class="bg-purple-100">
-                                    <tr>
-                                        <th class="px-3 py-2 text-center">레벨</th>
-                                        <th class="px-3 py-2 text-center">필요 하트허용치</th>
-                                        <th class="px-3 py-2 text-center">필요 별</th>
-                                        <th class="px-3 py-2 text-center">보상 코인</th>
-                                        <th class="px-3 py-2 text-center">보상 하트</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y bg-white">
-                                    <tr><td class="px-3 py-2 text-center font-semibold">Lv.1</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-blue-600 font-bold">3</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-pink-600 font-bold">1</td></tr>
-                                    <tr><td class="px-3 py-2 text-center font-semibold">Lv.2</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-blue-600 font-bold">6</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-pink-600 font-bold">1</td></tr>
-                                    <tr><td class="px-3 py-2 text-center font-semibold">Lv.3</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-blue-600 font-bold">9</td><td class="px-3 py-2 text-center">0</td><td class="px-3 py-2 text-center text-pink-600 font-bold">2</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.4</td><td class="px-3 py-2 text-center text-orange-600 font-bold">156</td><td class="px-3 py-2 text-center text-blue-600 font-bold">12</td><td class="px-3 py-2 text-center text-green-600 font-bold">45</td><td class="px-3 py-2 text-center text-pink-600 font-bold">4</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.5</td><td class="px-3 py-2 text-center text-orange-600 font-bold">656</td><td class="px-3 py-2 text-center text-blue-600 font-bold">15</td><td class="px-3 py-2 text-center text-green-600 font-bold">235</td><td class="px-3 py-2 text-center text-pink-600 font-bold">9</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.6</td><td class="px-3 py-2 text-center text-orange-600 font-bold">3,156</td><td class="px-3 py-2 text-center text-blue-600 font-bold">18</td><td class="px-3 py-2 text-center text-green-600 font-bold">1,170</td><td class="px-3 py-2 text-center text-pink-600 font-bold">18</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.7</td><td class="px-3 py-2 text-center text-orange-600 font-bold">15,656</td><td class="px-3 py-2 text-center text-blue-600 font-bold">21</td><td class="px-3 py-2 text-center text-green-600 font-bold">5,860</td><td class="px-3 py-2 text-center text-pink-600 font-bold">35</td></tr>
-                                    <tr class="bg-yellow-50"><td class="px-3 py-2 text-center font-semibold">Lv.8</td><td class="px-3 py-2 text-center text-orange-600 font-bold">78,156</td><td class="px-3 py-2 text-center text-blue-600 font-bold">24</td><td class="px-3 py-2 text-center text-green-600 font-bold">31,250</td><td class="px-3 py-2 text-center">0</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -812,6 +668,33 @@ export const farmUITemplate = `<!DOCTYPE html>
             }
         }
         
+        function saveLevelConfig(farmId) {
+            const levels = getLevelConfig(farmId);
+            localStorage.setItem(\`farm\${farmId}_levels\`, JSON.stringify(levels));
+            console.log(\`Farm \${farmId} level config saved\`);
+        }
+        
+        function loadLevelConfig(farmId) {
+            const saved = localStorage.getItem(\`farm\${farmId}_levels\`);
+            if (saved) {
+                try {
+                    const levels = JSON.parse(saved);
+                    levels.forEach((level, idx) => {
+                        const inputs = document.querySelectorAll(\`#level-config-body-\${farmId} input[data-level="\${idx + 1}"]\`);
+                        inputs.forEach(input => {
+                            const field = input.getAttribute('data-field');
+                            if (level[field] !== undefined) {
+                                input.value = level[field];
+                            }
+                        });
+                    });
+                    console.log(\`Farm \${farmId} level config loaded\`);
+                } catch (e) {
+                    console.error('Failed to load level config:', e);
+                }
+            }
+        }
+        
         function getLevelConfig(farmId) {
             const levels = [];
             for (let i = 1; i <= 8; i++) {
@@ -825,6 +708,10 @@ export const farmUITemplate = `<!DOCTYPE html>
                 
                 levels.push(levelData);
             }
+            
+            // Save to localStorage whenever config is retrieved
+            saveLevelConfig(farmId);
+            
             return levels;
         }
         
@@ -928,6 +815,12 @@ export const farmUITemplate = `<!DOCTYPE html>
                 loading.classList.add('hidden');
             }
         }
+        
+        // Load saved level configs when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            loadLevelConfig(1);
+            console.log('Level configurations loaded from localStorage');
+        });
     </script>
 </body>
 </html>`;
