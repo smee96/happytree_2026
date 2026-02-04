@@ -885,29 +885,31 @@ export const farmUITemplate = `<!DOCTYPE html>
                 }
                 
                 // Platform data
-                document.getElementById(\`platform-stars-\${farmId}\`).textContent = data.platform.total_stars_sold.toLocaleString() + '개';
-                document.getElementById(\`platform-revenue-\${farmId}\`).textContent = '$' + data.platform.star_revenue_usd.toLocaleString();
-                document.getElementById(\`platform-cost-\${farmId}\`).textContent = '$' + data.platform.coin_cost_usd.toLocaleString();
-                document.getElementById(\`platform-net-\${farmId}\`).textContent = '$' + data.platform.net_revenue_usd.toLocaleString();
-                
-                const margin = parseFloat(data.platform.profit_margin_percent);
-                const marginEl = document.getElementById(\`platform-margin-\${farmId}\`);
-                marginEl.textContent = data.platform.profit_margin_percent + '%';
-                marginEl.className = 'text-lg font-bold ' + (margin >= 0 ? 'text-green-600' : 'text-red-600');
+                if (data.platform) {
+                    document.getElementById(\`platform-stars-\${farmId}\`).textContent = (data.platform.total_stars_sold || 0).toLocaleString() + '개';
+                    document.getElementById(\`platform-revenue-\${farmId}\`).textContent = '$' + (data.platform.star_revenue_usd || 0).toLocaleString();
+                    document.getElementById(\`platform-cost-\${farmId}\`).textContent = '$' + (data.platform.coin_cost_usd || 0).toLocaleString();
+                    document.getElementById(\`platform-net-\${farmId}\`).textContent = '$' + (data.platform.net_revenue_usd || 0).toLocaleString();
+                    
+                    const margin = parseFloat(data.platform.profit_margin_percent || '0');
+                    const marginEl = document.getElementById(\`platform-margin-\${farmId}\`);
+                    marginEl.textContent = (data.platform.profit_margin_percent || '0') + '%';
+                    marginEl.className = 'text-lg font-bold ' + (margin >= 0 ? 'text-green-600' : 'text-red-600');
+                }
                 
                 // User 1 data
                 if (data.user_1) {
-                    document.getElementById(\`user-pots-\${farmId}\`).textContent = data.user_1.pots_count + '개';
-                    document.getElementById(\`user-level-\${farmId}\`).textContent = 'Lv.' + data.user_1.highest_level;
-                    document.getElementById(\`user-stars-\${farmId}\`).textContent = data.user_1.stars_purchased + '개';
-                    document.getElementById(\`user-hearts-\${farmId}\`).textContent = data.user_1.hearts_balance.toLocaleString() + '개';
-                    document.getElementById(\`user-allowance-\${farmId}\`).textContent = data.user_1.heart_allowance.toLocaleString();
-                    document.getElementById(\`user-investment-\${farmId}\`).textContent = '$' + data.user_1.investment_usd.toLocaleString();
-                    document.getElementById(\`user-return-\${farmId}\`).textContent = '$' + data.user_1.return_usd.toLocaleString();
+                    document.getElementById(\`user-pots-\${farmId}\`).textContent = (data.user_1.pots_count || 0) + '개';
+                    document.getElementById(\`user-level-\${farmId}\`).textContent = 'Lv.' + (data.user_1.highest_level || 0);
+                    document.getElementById(\`user-stars-\${farmId}\`).textContent = (data.user_1.stars_purchased || 0) + '개';
+                    document.getElementById(\`user-hearts-\${farmId}\`).textContent = (data.user_1.hearts_balance || 0).toLocaleString() + '개';
+                    document.getElementById(\`user-allowance-\${farmId}\`).textContent = (data.user_1.heart_allowance || 0).toLocaleString();
+                    document.getElementById(\`user-investment-\${farmId}\`).textContent = '$' + (data.user_1.investment_usd || 0).toLocaleString();
+                    document.getElementById(\`user-return-\${farmId}\`).textContent = '$' + (data.user_1.return_usd || 0).toLocaleString();
                     
-                    const roi = parseFloat(data.user_1.roi_percent);
+                    const roi = parseFloat(data.user_1.roi_percent || '0');
                     const roiEl = document.getElementById(\`user-roi-\${farmId}\`);
-                    roiEl.textContent = data.user_1.roi_percent + '%';
+                    roiEl.textContent = (data.user_1.roi_percent || '0') + '%';
                     roiEl.className = 'text-lg font-bold ' + (roi >= 0 ? 'text-green-600' : 'text-red-600');
                 }
                 
@@ -919,13 +921,13 @@ export const farmUITemplate = `<!DOCTYPE html>
                     data.level_stats.forEach(stat => {
                         const row = document.createElement('tr');
                         row.innerHTML = \`
-                            <td class="px-3 py-2">Lv.\${stat.level}</td>
-                            <td class="px-3 py-2 text-right font-semibold text-blue-600">\${stat.achievers_count.toLocaleString()}명</td>
-                            <td class="px-3 py-2 text-right font-semibold text-green-600">\${stat.pots_count.toLocaleString()}개</td>
-                            <td class="px-3 py-2 text-right">\${stat.stars_per_person}</td>
-                            <td class="px-3 py-2 text-right">\${stat.hearts_required.toLocaleString()}</td>
-                            <td class="px-3 py-2 text-right">\${stat.coins_per_person}</td>
-                            <td class="px-3 py-2 text-right">\${stat.hearts_reward > 0 ? stat.hearts_reward.toLocaleString() : 'X'}</td>
+                            <td class="px-3 py-2">Lv.\${stat.level || 0}</td>
+                            <td class="px-3 py-2 text-right font-semibold text-blue-600">\${(stat.achievers_count || 0).toLocaleString()}명</td>
+                            <td class="px-3 py-2 text-right font-semibold text-green-600">\${(stat.pots_count || 0).toLocaleString()}개</td>
+                            <td class="px-3 py-2 text-right">\${stat.stars_per_person || 0}</td>
+                            <td class="px-3 py-2 text-right">\${(stat.hearts_required || 0).toLocaleString()}</td>
+                            <td class="px-3 py-2 text-right">\${stat.coins_per_person || 0}</td>
+                            <td class="px-3 py-2 text-right">\${(stat.hearts_reward || 0) > 0 ? (stat.hearts_reward || 0).toLocaleString() : 'X'}</td>
                         \`;
                         tbody.appendChild(row);
                     });
