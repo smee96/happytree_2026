@@ -254,35 +254,64 @@ export const farmUITemplate = `<!DOCTYPE html>
 
             <!-- Farm 2 Content -->
             <div id="farm-2" class="tab-content p-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">입장 인원</label>
                         <input type="number" id="users-2" class="w-full px-4 py-2 border rounded-lg" value="100" min="1">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
-                        <select id="pots-2" class="w-full px-4 py-2 border rounded-lg">
-                            <option value="1">1개</option>
-                            <option value="2">2개</option>
-                            <option value="3" selected>3개</option>
-                            <option value="4">4개</option>
-                            <option value="5">5개</option>
-                        </select>
+                        <input type="number" id="pots-2" class="w-full px-4 py-2 border rounded-lg" value="3" min="1" max="10">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">별 가격 ($)</label>
-                        <select id="price-2" class="w-full px-4 py-2 border rounded-lg">
-                            <option value="1">$1</option>
-                            <option value="2" selected>$2</option>
-                            <option value="3">$3</option>
-                            <option value="4">$4</option>
-                            <option value="5">$5</option>
-                        </select>
+                        <input type="number" id="price-2" class="w-full px-4 py-2 border rounded-lg" value="2" min="0.1" step="0.1">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">초기 하트</label>
+                        <input type="number" id="initialHearts-2" class="w-full px-4 py-2 border rounded-lg" value="300000" min="0">
                     </div>
                     <div class="flex items-end">
                         <button onclick="calculate(2)" class="w-full px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
                             계산하기
                         </button>
+                    </div>
+                </div>
+                
+                <!-- Level Configuration Farm 2 -->
+                <div class="mb-6">
+                    <button onclick="toggleLevelConfig(2)" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                        레벨별 조건 및 보상 설정
+                    </button>
+                    <div id="level-config-2" class="hidden mt-4 bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-bold mb-4">레벨별 설정 (Farm 2)</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="bg-gray-200">
+                                        <th class="p-2">레벨</th>
+                                        <th class="p-2">필요 하트허용치</th>
+                                        <th class="p-2">필요 별</th>
+                                        <th class="p-2">보상 코인</th>
+                                        <th class="p-2">보상 하트</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="level-inputs-2">
+                                    ${Array.from({ length: 8 }, (_, i) => {
+                                        const level = i + 1;
+                                        const defaults = {hearts_required: 0, stars: 0, coins: 0, hearts_reward: 1};
+                                        return `
+                                        <tr data-level="${level}">
+                                            <td class="p-2 text-center font-bold">${level}</td>
+                                            <td class="p-2"><input type="number" data-field="hearts_required" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_required}" min="0"></td>
+                                            <td class="p-2"><input type="number" data-field="stars" class="w-full px-2 py-1 border rounded" value="${defaults.stars}" min="0"></td>
+                                            <td class="p-2"><input type="number" data-field="coins" class="w-full px-2 py-1 border rounded" value="${defaults.coins}" min="0"></td>
+                                            <td class="p-2"><input type="number" data-field="hearts_reward" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_reward}" min="0"></td>
+                                        </tr>`;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 
@@ -391,28 +420,57 @@ export const farmUITemplate = `<!DOCTYPE html>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
-                        <select id="pots-3" class="w-full px-4 py-2 border rounded-lg">
-                            <option value="1">1개</option>
-                            <option value="2">2개</option>
-                            <option value="3" selected>3개</option>
-                            <option value="4">4개</option>
-                            <option value="5">5개</option>
-                        </select>
+                        <input type="number" id="pots-3" class="w-full px-4 py-2 border rounded-lg" value="3" min="1" max="10">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">별 가격 ($)</label>
-                        <select id="price-3" class="w-full px-4 py-2 border rounded-lg">
-                            <option value="1">$1</option>
-                            <option value="2" selected>$2</option>
-                            <option value="3">$3</option>
-                            <option value="4">$4</option>
-                            <option value="5">$5</option>
-                        </select>
+                        <input type="number" id="price-3" class="w-full px-4 py-2 border rounded-lg" value="2" min="0.1" step="0.1">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">초기 하트</label>
+                        <input type="number" id="initialHearts-3" class="w-full px-4 py-2 border rounded-lg" value="300000" min="0">
                     </div>
                     <div class="flex items-end">
                         <button onclick="calculate(3)" class="w-full px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
                             계산하기
                         </button>
+                    </div>
+                </div>
+                
+                <!-- Level Configuration Farm 3 -->
+                <div class="mb-6">
+                    <button onclick="toggleLevelConfig(3)" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                        레벨별 조건 및 보상 설정
+                    </button>
+                    <div id="level-config-3" class="hidden mt-4 bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-bold mb-4">레벨별 설정 (Farm 3)</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="bg-gray-200">
+                                        <th class="p-2">레벨</th>
+                                        <th class="p-2">필요 하트허용치</th>
+                                        <th class="p-2">필요 별</th>
+                                        <th class="p-2">보상 코인</th>
+                                        <th class="p-2">보상 하트</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="level-inputs-3">
+                                    ${Array.from({ length: 8 }, (_, i) => {
+                                        const level = i + 1;
+                                        const defaults = {hearts_required: 0, stars: 0, coins: 0, hearts_reward: 1};
+                                        return `
+                                        <tr data-level="${level}">
+                                            <td class="p-2 text-center font-bold">${level}</td>
+                                            <td class="p-2"><input type="number" data-field="hearts_required" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_required}" min="0"></td>
+                                            <td class="p-2"><input type="number" data-field="stars" class="w-full px-2 py-1 border rounded" value="${defaults.stars}" min="0"></td>
+                                            <td class="p-2"><input type="number" data-field="coins" class="w-full px-2 py-1 border rounded" value="${defaults.coins}" min="0"></td>
+                                            <td class="p-2"><input type="number" data-field="hearts_reward" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_reward}" min="0"></td>
+                                        </tr>`;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 
@@ -521,28 +579,57 @@ export const farmUITemplate = `<!DOCTYPE html>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
-                        <select id="pots-4" class="w-full px-4 py-2 border rounded-lg">
-                            <option value="1">1개</option>
-                            <option value="2">2개</option>
-                            <option value="3" selected>3개</option>
-                            <option value="4">4개</option>
-                            <option value="5">5개</option>
-                        </select>
+                        <input type="number" id="pots-4" class="w-full px-4 py-2 border rounded-lg" value="3" min="1" max="10">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">별 가격 ($)</label>
-                        <select id="price-4" class="w-full px-4 py-2 border rounded-lg">
-                            <option value="1">$1</option>
-                            <option value="2" selected>$2</option>
-                            <option value="3">$3</option>
-                            <option value="4">$4</option>
-                            <option value="5">$5</option>
-                        </select>
+                        <input type="number" id="price-4" class="w-full px-4 py-2 border rounded-lg" value="2" min="0.1" step="0.1">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">초기 하트</label>
+                        <input type="number" id="initialHearts-4" class="w-full px-4 py-2 border rounded-lg" value="300000" min="0">
                     </div>
                     <div class="flex items-end">
                         <button onclick="calculate(4)" class="w-full px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
                             계산하기
                         </button>
+                    </div>
+                </div>
+                
+                <!-- Level Configuration Farm 4 -->
+                <div class="mb-6">
+                    <button onclick="toggleLevelConfig(4)" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                        레벨별 조건 및 보상 설정
+                    </button>
+                    <div id="level-config-4" class="hidden mt-4 bg-gray-50 p-4 rounded-lg">
+                        <h4 class="font-bold mb-4">레벨별 설정 (Farm 4)</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm">
+                                <thead>
+                                    <tr class="bg-gray-200">
+                                        <th class="p-2">레벨</th>
+                                        <th class="p-2">필요 하트허용치</th>
+                                        <th class="p-2">필요 별</th>
+                                        <th class="p-2">보상 코인</th>
+                                        <th class="p-2">보상 하트</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="level-inputs-4">
+                                    ${Array.from({ length: 8 }, (_, i) => {
+                                        const level = i + 1;
+                                        const defaults = {hearts_required: 0, stars: 0, coins: 0, hearts_reward: 1};
+                                        return `
+                                        <tr data-level="${level}">
+                                            <td class="p-2 text-center font-bold">${level}</td>
+                                            <td class="p-2"><input type="number" data-field="hearts_required" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_required}" min="0"></td>
+                                            <td class="p-2"><input type="number" data-field="stars" class="w-full px-2 py-1 border rounded" value="${defaults.stars}" min="0"></td>
+                                            <td class="p-2"><input type="number" data-field="coins" class="w-full px-2 py-1 border rounded" value="${defaults.coins}" min="0"></td>
+                                            <td class="p-2"><input type="number" data-field="hearts_reward" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_reward}" min="0"></td>
+                                        </tr>`;
+                                    }).join('')}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 
@@ -668,29 +755,62 @@ export const farmUITemplate = `<!DOCTYPE html>
             }
         }
         
-        function saveLevelConfig(farmId) {
+        function saveAllSettings(farmId) {
+            // 기본 설정 저장
+            const settings = {
+                users: document.getElementById(\`users-\${farmId}\`)?.value || '100',
+                pots: document.getElementById(\`pots-\${farmId}\`)?.value || '3',
+                price: document.getElementById(\`price-\${farmId}\`)?.value || '2',
+                initialHearts: document.getElementById(\`initialHearts-\${farmId}\`)?.value || '300000'
+            };
+            
+            // 레벨 설정 저장
             const levels = getLevelConfig(farmId);
-            localStorage.setItem(\`farm\${farmId}_levels\`, JSON.stringify(levels));
-            console.log(\`Farm \${farmId} level config saved\`);
+            
+            // 전체 저장
+            const allData = { settings, levels };
+            localStorage.setItem(\`farm\${farmId}_config\`, JSON.stringify(allData));
+            console.log(\`Farm \${farmId} all settings saved\`, allData);
         }
         
-        function loadLevelConfig(farmId) {
-            const saved = localStorage.getItem(\`farm\${farmId}_levels\`);
+        function loadAllSettings(farmId) {
+            const saved = localStorage.getItem(\`farm\${farmId}_config\`);
             if (saved) {
                 try {
-                    const levels = JSON.parse(saved);
-                    levels.forEach((level, idx) => {
-                        const inputs = document.querySelectorAll(\`#level-config-body-\${farmId} input[data-level="\${idx + 1}"]\`);
-                        inputs.forEach(input => {
-                            const field = input.getAttribute('data-field');
-                            if (level[field] !== undefined) {
-                                input.value = level[field];
+                    const allData = JSON.parse(saved);
+                    
+                    // 기본 설정 복원
+                    if (allData.settings) {
+                        const usersInput = document.getElementById(\`users-\${farmId}\`);
+                        const potsInput = document.getElementById(\`pots-\${farmId}\`);
+                        const priceInput = document.getElementById(\`price-\${farmId}\`);
+                        const heartsInput = document.getElementById(\`initialHearts-\${farmId}\`);
+                        
+                        if (usersInput) usersInput.value = allData.settings.users;
+                        if (potsInput) potsInput.value = allData.settings.pots;
+                        if (priceInput) priceInput.value = allData.settings.price;
+                        if (heartsInput) heartsInput.value = allData.settings.initialHearts;
+                    }
+                    
+                    // 레벨 설정 복원
+                    if (allData.levels && allData.levels.length > 0) {
+                        allData.levels.forEach((level, idx) => {
+                            const row = document.querySelector(\`#level-inputs-\${farmId} tr[data-level="\${idx + 1}"]\`);
+                            if (row) {
+                                const inputs = row.querySelectorAll('input[data-field]');
+                                inputs.forEach(input => {
+                                    const field = input.getAttribute('data-field');
+                                    if (level[field] !== undefined) {
+                                        input.value = level[field];
+                                    }
+                                });
                             }
                         });
-                    });
-                    console.log(\`Farm \${farmId} level config loaded\`);
+                    }
+                    
+                    console.log(\`Farm \${farmId} all settings loaded\`, allData);
                 } catch (e) {
-                    console.error('Failed to load level config:', e);
+                    console.error('Failed to load settings:', e);
                 }
             }
         }
@@ -698,19 +818,19 @@ export const farmUITemplate = `<!DOCTYPE html>
         function getLevelConfig(farmId) {
             const levels = [];
             for (let i = 1; i <= 8; i++) {
-                const inputs = document.querySelectorAll(\`#level-config-body-\${farmId} input[data-level="\${i}"]\`);
+                const row = document.querySelector(\`#level-inputs-\${farmId} tr[data-level="\${i}"]\`);
                 const levelData = { level: i };
                 
-                inputs.forEach(input => {
-                    const field = input.getAttribute('data-field');
-                    levelData[field] = parseFloat(input.value) || 0;
-                });
+                if (row) {
+                    const inputs = row.querySelectorAll('input[data-field]');
+                    inputs.forEach(input => {
+                        const field = input.getAttribute('data-field');
+                        levelData[field] = parseFloat(input.value) || 0;
+                    });
+                }
                 
                 levels.push(levelData);
             }
-            
-            // Save to localStorage whenever config is retrieved
-            saveLevelConfig(farmId);
             
             return levels;
         }
@@ -733,13 +853,16 @@ export const farmUITemplate = `<!DOCTYPE html>
             const users = document.getElementById(\`users-\${farmId}\`).value;
             const pots = document.getElementById(\`pots-\${farmId}\`).value;
             const price = document.getElementById(\`price-\${farmId}\`).value;
-            const initialHearts = document.getElementById(\`initial-hearts-\${farmId}\`).value;
+            const initialHearts = document.getElementById(\`initialHearts-\${farmId}\`)?.value || '300000';
             const levels = getLevelConfig(farmId);
             
             if (!users || users < 1) {
                 alert('유효한 인원수를 입력하세요');
                 return;
             }
+            
+            // 모든 설정 저장
+            saveAllSettings(farmId);
             
             const loading = document.getElementById(\`loading-\${farmId}\`);
             const result = document.getElementById(\`result-\${farmId}\`);
@@ -816,10 +939,13 @@ export const farmUITemplate = `<!DOCTYPE html>
             }
         }
         
-        // Load saved level configs when page loads
+        // Load saved settings for all farms when page loads
         window.addEventListener('DOMContentLoaded', function() {
-            loadLevelConfig(1);
-            console.log('Level configurations loaded from localStorage');
+            // Load settings for all 4 farms
+            for (let i = 1; i <= 4; i++) {
+                loadAllSettings(i);
+            }
+            console.log('All farm settings loaded from localStorage');
         });
     </script>
 </body>
