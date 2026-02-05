@@ -303,7 +303,17 @@ export const farmUITemplate = `<!DOCTYPE html>
                                 <tbody id="level-inputs-2">
                                     ${Array.from({ length: 8 }, (_, i) => {
                                         const level = i + 1;
-                                        const defaults = {hearts_required: 0, stars: 0, coins: 0, hearts_reward: 1};
+                                        const defaultValues = [
+                                            {hearts_required: 1, stars: 0, coins: 0, hearts_reward: 1},
+                                            {hearts_required: 2, stars: 0, coins: 0, hearts_reward: 3},
+                                            {hearts_required: 4, stars: 1, coins: 0, hearts_reward: 8},
+                                            {hearts_required: 8, stars: 1, coins: 6, hearts_reward: 16},
+                                            {hearts_required: 16, stars: 1, coins: 12, hearts_reward: 32},
+                                            {hearts_required: 32, stars: 1, coins: 24, hearts_reward: 62},
+                                            {hearts_required: 64, stars: 1, coins: 48, hearts_reward: 100},
+                                            {hearts_required: 128, stars: 1, coins: 96, hearts_reward: 0}
+                                        ];
+                                        const defaults = defaultValues[i];
                                         return `
                                         <tr data-level="${level}">
                                             <td class="p-2 text-center font-bold">${level}</td>
@@ -315,10 +325,10 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     }).join('')}
                                     <tr class="bg-blue-100 font-bold">
                                         <td class="p-2 text-center">합계</td>
-                                        <td class="p-2 text-center" id="sum-hearts-required-2">0</td>
-                                        <td class="p-2 text-center" id="sum-stars-2">0</td>
-                                        <td class="p-2 text-center" id="sum-coins-2">0</td>
-                                        <td class="p-2 text-center" id="sum-hearts-reward-2">0</td>
+                                        <td class="p-2 text-center" id="sum-hearts-required-2">255</td>
+                                        <td class="p-2 text-center" id="sum-stars-2">7</td>
+                                        <td class="p-2 text-center" id="sum-coins-2">186</td>
+                                        <td class="p-2 text-center" id="sum-hearts-reward-2">222</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -475,7 +485,17 @@ export const farmUITemplate = `<!DOCTYPE html>
                                 <tbody id="level-inputs-3">
                                     ${Array.from({ length: 8 }, (_, i) => {
                                         const level = i + 1;
-                                        const defaults = {hearts_required: 0, stars: 0, coins: 0, hearts_reward: 1};
+                                        const defaultValues = [
+                                            {hearts_required: 1, stars: 0, coins: 0, hearts_reward: 1},
+                                            {hearts_required: 2, stars: 0, coins: 0, hearts_reward: 3},
+                                            {hearts_required: 4, stars: 1, coins: 0, hearts_reward: 8},
+                                            {hearts_required: 8, stars: 1, coins: 6, hearts_reward: 16},
+                                            {hearts_required: 16, stars: 1, coins: 12, hearts_reward: 32},
+                                            {hearts_required: 32, stars: 1, coins: 24, hearts_reward: 62},
+                                            {hearts_required: 64, stars: 1, coins: 48, hearts_reward: 100},
+                                            {hearts_required: 128, stars: 1, coins: 96, hearts_reward: 0}
+                                        ];
+                                        const defaults = defaultValues[i];
                                         return `
                                         <tr data-level="${level}">
                                             <td class="p-2 text-center font-bold">${level}</td>
@@ -487,10 +507,10 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     }).join('')}
                                     <tr class="bg-blue-100 font-bold">
                                         <td class="p-2 text-center">합계</td>
-                                        <td class="p-2 text-center" id="sum-hearts-required-3">0</td>
-                                        <td class="p-2 text-center" id="sum-stars-3">0</td>
-                                        <td class="p-2 text-center" id="sum-coins-3">0</td>
-                                        <td class="p-2 text-center" id="sum-hearts-reward-3">0</td>
+                                        <td class="p-2 text-center" id="sum-hearts-required-3">255</td>
+                                        <td class="p-2 text-center" id="sum-stars-3">7</td>
+                                        <td class="p-2 text-center" id="sum-coins-3">186</td>
+                                        <td class="p-2 text-center" id="sum-hearts-reward-3">222</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -647,7 +667,17 @@ export const farmUITemplate = `<!DOCTYPE html>
                                 <tbody id="level-inputs-4">
                                     ${Array.from({ length: 8 }, (_, i) => {
                                         const level = i + 1;
-                                        const defaults = {hearts_required: 0, stars: 0, coins: 0, hearts_reward: 1};
+                                        const defaultValues = [
+                                            {hearts_required: 1, stars: 0, coins: 0, hearts_reward: 1},
+                                            {hearts_required: 2, stars: 0, coins: 0, hearts_reward: 3},
+                                            {hearts_required: 4, stars: 1, coins: 0, hearts_reward: 8},
+                                            {hearts_required: 8, stars: 1, coins: 6, hearts_reward: 16},
+                                            {hearts_required: 16, stars: 1, coins: 12, hearts_reward: 32},
+                                            {hearts_required: 32, stars: 1, coins: 24, hearts_reward: 62},
+                                            {hearts_required: 64, stars: 1, coins: 48, hearts_reward: 100},
+                                            {hearts_required: 128, stars: 1, coins: 96, hearts_reward: 0}
+                                        ];
+                                        const defaults = defaultValues[i];
                                         return `
                                         <tr data-level="${level}">
                                             <td class="p-2 text-center font-bold">${level}</td>
@@ -659,10 +689,10 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     }).join('')}
                                     <tr class="bg-blue-100 font-bold">
                                         <td class="p-2 text-center">합계</td>
-                                        <td class="p-2 text-center" id="sum-hearts-required-4">0</td>
-                                        <td class="p-2 text-center" id="sum-stars-4">0</td>
-                                        <td class="p-2 text-center" id="sum-coins-4">0</td>
-                                        <td class="p-2 text-center" id="sum-hearts-reward-4">0</td>
+                                        <td class="p-2 text-center" id="sum-hearts-required-4">255</td>
+                                        <td class="p-2 text-center" id="sum-stars-4">7</td>
+                                        <td class="p-2 text-center" id="sum-coins-4">186</td>
+                                        <td class="p-2 text-center" id="sum-hearts-reward-4">222</td>
                                     </tr>
                                 </tbody>
                             </table>
