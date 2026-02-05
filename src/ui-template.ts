@@ -247,10 +247,14 @@ export const farmUITemplate = `<!DOCTYPE html>
                                         <th class="px-3 py-2 text-right">필요 하트허용치</th>
                                         <th class="px-3 py-2 text-right">보상 코인</th>
                                         <th class="px-3 py-2 text-right">보상 하트</th>
+                                        <th class="px-3 py-2 text-right">1명당 투자</th>
+                                        <th class="px-3 py-2 text-right">1명당 수익</th>
+                                        <th class="px-3 py-2 text-right">1명당 순익</th>
+                                        <th class="px-3 py-2 text-right">1명당 ROI</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y" id="level-stats-1">
-                                    <tr><td colspan="7" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
+                                    <tr><td colspan="11" class="px-3 py-4 text-center text-gray-500">계산하기를 눌러주세요</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -429,6 +433,10 @@ export const farmUITemplate = `<!DOCTYPE html>
                                         <th class="px-3 py-2 text-right">필요 하트허용치</th>
                                         <th class="px-3 py-2 text-right">보상 코인</th>
                                         <th class="px-3 py-2 text-right">보상 하트</th>
+                                        <th class="px-3 py-2 text-right">1명당 투자</th>
+                                        <th class="px-3 py-2 text-right">1명당 수익</th>
+                                        <th class="px-3 py-2 text-right">1명당 순익</th>
+                                        <th class="px-3 py-2 text-right">1명당 ROI</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y" id="level-stats-2">
@@ -611,6 +619,10 @@ export const farmUITemplate = `<!DOCTYPE html>
                                         <th class="px-3 py-2 text-right">필요 하트허용치</th>
                                         <th class="px-3 py-2 text-right">보상 코인</th>
                                         <th class="px-3 py-2 text-right">보상 하트</th>
+                                        <th class="px-3 py-2 text-right">1명당 투자</th>
+                                        <th class="px-3 py-2 text-right">1명당 수익</th>
+                                        <th class="px-3 py-2 text-right">1명당 순익</th>
+                                        <th class="px-3 py-2 text-right">1명당 ROI</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y" id="level-stats-3">
@@ -793,6 +805,10 @@ export const farmUITemplate = `<!DOCTYPE html>
                                         <th class="px-3 py-2 text-right">필요 하트허용치</th>
                                         <th class="px-3 py-2 text-right">보상 코인</th>
                                         <th class="px-3 py-2 text-right">보상 하트</th>
+                                        <th class="px-3 py-2 text-right">1명당 투자</th>
+                                        <th class="px-3 py-2 text-right">1명당 수익</th>
+                                        <th class="px-3 py-2 text-right">1명당 순익</th>
+                                        <th class="px-3 py-2 text-right">1명당 ROI</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y" id="level-stats-4">
@@ -1028,6 +1044,7 @@ export const farmUITemplate = `<!DOCTYPE html>
                     
                     data.level_stats.forEach(stat => {
                         const row = document.createElement('tr');
+                        const roiColor = parseFloat(stat.avg_roi_per_user) >= 0 ? 'text-green-600' : 'text-red-600';
                         row.innerHTML = \`
                             <td class="px-3 py-2">Lv.\${stat.level || 0}</td>
                             <td class="px-3 py-2 text-right font-semibold text-blue-600">\${(stat.achievers_count || 0).toLocaleString()}명</td>
@@ -1036,6 +1053,10 @@ export const farmUITemplate = `<!DOCTYPE html>
                             <td class="px-3 py-2 text-right">\${(stat.hearts_required || 0).toLocaleString()}</td>
                             <td class="px-3 py-2 text-right">\${stat.coins_per_person || 0}</td>
                             <td class="px-3 py-2 text-right">\${(stat.hearts_reward || 0) > 0 ? (stat.hearts_reward || 0).toLocaleString() : 'X'}</td>
+                            <td class="px-3 py-2 text-right text-orange-600">$\${stat.avg_investment_per_user || '0.00'}</td>
+                            <td class="px-3 py-2 text-right text-green-600">$\${stat.avg_return_per_user || '0.00'}</td>
+                            <td class="px-3 py-2 text-right font-semibold \${parseFloat(stat.avg_net_profit_per_user) >= 0 ? 'text-green-600' : 'text-red-600'}">$\${stat.avg_net_profit_per_user || '0.00'}</td>
+                            <td class="px-3 py-2 text-right font-bold \${roiColor}">\${stat.avg_roi_per_user || '0.00'}%</td>
                         \`;
                         tbody.appendChild(row);
                     });

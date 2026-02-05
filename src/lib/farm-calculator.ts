@@ -75,11 +75,17 @@ interface FarmStats {
   level_stats: {
     level: number;
     achievers_count: number;
+    pots_count: number;
     stars_per_person: number;
     coins_per_person: number;
     hearts_required: number;
+    hearts_reward: number;
     total_stars_sold: number;
     total_coins_paid: number;
+    avg_investment_per_user: string;
+    avg_return_per_user: string;
+    avg_net_profit_per_user: string;
+    avg_roi_per_user: string;
   }[];
   platform: {
     total_stars_sold: number;
@@ -257,11 +263,19 @@ export function calculateSingleFarm(
     // 해당 레벨을 달성한 화분 수 (실제 별/코인 판매량)
     let potsAtLevel = 0;
     
+    // 레벨별 사용자 1명 평균 수익 계산용
+    let totalInvestment = 0;
+    let totalReturn = 0;
+    
     users.forEach(user => {
       const potsReachedLevel = user.pots.filter(pot => pot.currentLevel > idx);
       if (potsReachedLevel.length > 0) {
         achievers.add(user.entryOrder);
         potsAtLevel += potsReachedLevel.length;
+        
+        // 이 사용자가 해당 레벨에 도달했으므로 수익 계산
+        totalInvestment += user.starsPurchased * starPrice;
+        totalReturn += user.coinsEarned * 0.1;
       }
     });
     
@@ -269,6 +283,12 @@ export function calculateSingleFarm(
     // 플랫폼 수익은 화분 단위로 계산 (화분마다 별/코인 구매)
     const totalStars = potsAtLevel * level.stars;
     const totalCoins = potsAtLevel * level.coins;
+    
+    // 1명당 평균 수익
+    const avgInvestmentPerUser = achieversCount > 0 ? totalInvestment / achieversCount : 0;
+    const avgReturnPerUser = achieversCount > 0 ? totalReturn / achieversCount : 0;
+    const avgNetProfitPerUser = avgReturnPerUser - avgInvestmentPerUser;
+    const avgRoiPerUser = avgInvestmentPerUser > 0 ? ((avgNetProfitPerUser / avgInvestmentPerUser) * 100).toFixed(2) : '0.00';
     
     return {
       level: idx + 1,
@@ -280,6 +300,11 @@ export function calculateSingleFarm(
       hearts_reward: level.hearts_reward,
       total_stars_sold: totalStars,
       total_coins_paid: totalCoins,
+      // 1명당 평균 수익 정보 추가
+      avg_investment_per_user: avgInvestmentPerUser.toFixed(2),
+      avg_return_per_user: avgReturnPerUser.toFixed(2),
+      avg_net_profit_per_user: avgNetProfitPerUser.toFixed(2),
+      avg_roi_per_user: avgRoiPerUser,
     };
   });
 
