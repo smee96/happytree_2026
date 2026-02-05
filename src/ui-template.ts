@@ -70,24 +70,16 @@ export const farmUITemplate = `<!DOCTYPE html>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">초기 하트</label>
-                            <input type="number" id="initial-hearts-1" class="w-full px-4 py-2 border rounded-lg" value="300000" min="0">
-                        </div>
-                        <div class="flex items-end">
-                            <button onclick="calculate(1)" class="w-full px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
-                                계산하기
-                            </button>
+                            <input type="number" id="initialHearts-1" class="w-full px-4 py-2 border rounded-lg" value="300000" min="0">
                         </div>
                     </div>
                 </div>
                 
                 <!-- Level Configuration -->
                 <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 mb-6 border-2 border-blue-200">
-                    <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-lg font-bold text-gray-800">📊 레벨별 조건 및 보상 설정</h3>
-                        <button onclick="toggleLevelConfig(1)" class="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700">
-                            <span id="toggle-text-1">펼치기 ▼</span>
-                        </button>
-                    </div>
+                    <button onclick="toggleLevelConfig(1)" class="w-full px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 mb-4">
+                        <span id="toggle-text-1">📊 레벨별 조건 및 보상 설정 (펼치기 ▼)</span>
+                    </button>
                     <div id="level-config-1" class="hidden">
                         <div class="overflow-x-auto">
                             <table class="w-full text-sm bg-white rounded-lg">
@@ -154,6 +146,13 @@ export const farmUITemplate = `<!DOCTYPE html>
                         </div>
                         <p class="text-xs text-gray-600 mt-2">💡 값을 수정한 후 "계산하기" 버튼을 눌러주세요.</p>
                     </div>
+                </div>
+                
+                <!-- Calculate Button -->
+                <div class="mb-6">
+                    <button onclick="calculate(1)" class="w-full px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 shadow-lg">
+                        🚀 계산하기
+                    </button>
                 </div>
                 
                 <div id="loading-1" class="hidden text-center py-8">
@@ -254,46 +253,44 @@ export const farmUITemplate = `<!DOCTYPE html>
 
             <!-- Farm 2 Content -->
             <div id="farm-2" class="tab-content p-6">
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">입장 인원</label>
-                        <input type="number" id="users-2" class="w-full px-4 py-2 border rounded-lg" value="100" min="1">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
-                        <input type="number" id="pots-2" class="w-full px-4 py-2 border rounded-lg" value="3" min="1" max="10">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">별 가격 ($)</label>
-                        <input type="number" id="price-2" class="w-full px-4 py-2 border rounded-lg" value="2" min="0.1" step="0.1">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">초기 하트</label>
-                        <input type="number" id="initialHearts-2" class="w-full px-4 py-2 border rounded-lg" value="300000" min="0">
-                    </div>
-                    <div class="flex items-end">
-                        <button onclick="calculate(2)" class="w-full px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
-                            계산하기
-                        </button>
+                <!-- Basic Settings -->
+                <div class="bg-white rounded-lg p-4 mb-6 border-2 border-green-200">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">⚙️ 기본 설정</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">입장 인원</label>
+                            <input type="number" id="users-2" class="w-full px-4 py-2 border rounded-lg" value="100" min="1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
+                            <input type="number" id="pots-2" class="w-full px-4 py-2 border rounded-lg" value="3" min="1" max="10">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">별 가격 ($)</label>
+                            <input type="number" id="price-2" class="w-full px-4 py-2 border rounded-lg" value="2" min="0.1" step="0.1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">초기 하트</label>
+                            <input type="number" id="initialHearts-2" class="w-full px-4 py-2 border rounded-lg" value="300000" min="0">
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Level Configuration Farm 2 -->
-                <div class="mb-6">
-                    <button onclick="toggleLevelConfig(2)" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                        레벨별 조건 및 보상 설정
+                <!-- Level Configuration -->
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 mb-6 border-2 border-blue-200">
+                    <button onclick="toggleLevelConfig(2)" class="w-full px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 mb-4">
+                        <span id="toggle-text-2">📊 레벨별 조건 및 보상 설정 (펼치기 ▼)</span>
                     </button>
-                    <div id="level-config-2" class="hidden mt-4 bg-gray-50 p-4 rounded-lg">
-                        <h4 class="font-bold mb-4">레벨별 설정 (Farm 2)</h4>
+                    <div id="level-config-2" class="hidden">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead>
-                                    <tr class="bg-gray-200">
-                                        <th class="p-2">레벨</th>
-                                        <th class="p-2">필요 하트허용치</th>
-                                        <th class="p-2">필요 별</th>
-                                        <th class="p-2">보상 코인</th>
-                                        <th class="p-2">보상 하트</th>
+                            <table class="w-full text-sm bg-white rounded-lg">
+                                <thead class="bg-blue-100">
+                                    <tr>
+                                        <th class="px-3 py-2 text-center">레벨</th>
+                                        <th class="px-3 py-2 text-center">필요 하트허용치</th>
+                                        <th class="px-3 py-2 text-center">필요 별</th>
+                                        <th class="px-3 py-2 text-center">보상 코인</th>
+                                        <th class="px-3 py-2 text-center">보상 하트</th>
                                     </tr>
                                 </thead>
                                 <tbody id="level-inputs-2">
@@ -312,7 +309,15 @@ export const farmUITemplate = `<!DOCTYPE html>
                                 </tbody>
                             </table>
                         </div>
+                        <p class="text-xs text-gray-600 mt-2">💡 값을 수정한 후 "계산하기" 버튼을 눌러주세요.</p>
                     </div>
+                </div>
+                
+                <!-- Calculate Button -->
+                <div class="mb-6">
+                    <button onclick="calculate(2)" class="w-full px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 shadow-lg">
+                        🚀 계산하기
+                    </button>
                 </div>
                 
                 <div id="loading-2" class="hidden text-center py-8">
@@ -413,46 +418,44 @@ export const farmUITemplate = `<!DOCTYPE html>
 
             <!-- Farm 3 Content -->
             <div id="farm-3" class="tab-content p-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">입장 인원</label>
-                        <input type="number" id="users-3" class="w-full px-4 py-2 border rounded-lg" value="100" min="1">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
-                        <input type="number" id="pots-3" class="w-full px-4 py-2 border rounded-lg" value="3" min="1" max="10">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">별 가격 ($)</label>
-                        <input type="number" id="price-3" class="w-full px-4 py-2 border rounded-lg" value="2" min="0.1" step="0.1">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">초기 하트</label>
-                        <input type="number" id="initialHearts-3" class="w-full px-4 py-2 border rounded-lg" value="300000" min="0">
-                    </div>
-                    <div class="flex items-end">
-                        <button onclick="calculate(3)" class="w-full px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
-                            계산하기
-                        </button>
+                <!-- Basic Settings -->
+                <div class="bg-white rounded-lg p-4 mb-6 border-2 border-green-200">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">⚙️ 기본 설정</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">입장 인원</label>
+                            <input type="number" id="users-3" class="w-full px-4 py-2 border rounded-lg" value="100" min="1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
+                            <input type="number" id="pots-3" class="w-full px-4 py-2 border rounded-lg" value="3" min="1" max="10">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">별 가격 ($)</label>
+                            <input type="number" id="price-3" class="w-full px-4 py-2 border rounded-lg" value="2" min="0.1" step="0.1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">초기 하트</label>
+                            <input type="number" id="initialHearts-3" class="w-full px-4 py-2 border rounded-lg" value="300000" min="0">
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Level Configuration Farm 3 -->
-                <div class="mb-6">
-                    <button onclick="toggleLevelConfig(3)" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                        레벨별 조건 및 보상 설정
+                <!-- Level Configuration -->
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 mb-6 border-2 border-blue-200">
+                    <button onclick="toggleLevelConfig(3)" class="w-full px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 mb-4">
+                        <span id="toggle-text-3">📊 레벨별 조건 및 보상 설정 (펼치기 ▼)</span>
                     </button>
-                    <div id="level-config-3" class="hidden mt-4 bg-gray-50 p-4 rounded-lg">
-                        <h4 class="font-bold mb-4">레벨별 설정 (Farm 3)</h4>
+                    <div id="level-config-3" class="hidden">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead>
-                                    <tr class="bg-gray-200">
-                                        <th class="p-2">레벨</th>
-                                        <th class="p-2">필요 하트허용치</th>
-                                        <th class="p-2">필요 별</th>
-                                        <th class="p-2">보상 코인</th>
-                                        <th class="p-2">보상 하트</th>
+                            <table class="w-full text-sm bg-white rounded-lg">
+                                <thead class="bg-blue-100">
+                                    <tr>
+                                        <th class="px-3 py-2 text-center">레벨</th>
+                                        <th class="px-3 py-2 text-center">필요 하트허용치</th>
+                                        <th class="px-3 py-2 text-center">필요 별</th>
+                                        <th class="px-3 py-2 text-center">보상 코인</th>
+                                        <th class="px-3 py-2 text-center">보상 하트</th>
                                     </tr>
                                 </thead>
                                 <tbody id="level-inputs-3">
@@ -471,7 +474,15 @@ export const farmUITemplate = `<!DOCTYPE html>
                                 </tbody>
                             </table>
                         </div>
+                        <p class="text-xs text-gray-600 mt-2">💡 값을 수정한 후 "계산하기" 버튼을 눌러주세요.</p>
                     </div>
+                </div>
+                
+                <!-- Calculate Button -->
+                <div class="mb-6">
+                    <button onclick="calculate(3)" class="w-full px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 shadow-lg">
+                        🚀 계산하기
+                    </button>
                 </div>
                 
                 <div id="loading-3" class="hidden text-center py-8">
@@ -572,46 +583,44 @@ export const farmUITemplate = `<!DOCTYPE html>
 
             <!-- Farm 4 Content -->
             <div id="farm-4" class="tab-content p-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">입장 인원</label>
-                        <input type="number" id="users-4" class="w-full px-4 py-2 border rounded-lg" value="100" min="1">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
-                        <input type="number" id="pots-4" class="w-full px-4 py-2 border rounded-lg" value="3" min="1" max="10">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">별 가격 ($)</label>
-                        <input type="number" id="price-4" class="w-full px-4 py-2 border rounded-lg" value="2" min="0.1" step="0.1">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">초기 하트</label>
-                        <input type="number" id="initialHearts-4" class="w-full px-4 py-2 border rounded-lg" value="300000" min="0">
-                    </div>
-                    <div class="flex items-end">
-                        <button onclick="calculate(4)" class="w-full px-6 py-2 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700">
-                            계산하기
-                        </button>
+                <!-- Basic Settings -->
+                <div class="bg-white rounded-lg p-4 mb-6 border-2 border-green-200">
+                    <h3 class="text-lg font-bold text-gray-800 mb-4">⚙️ 기본 설정</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">입장 인원</label>
+                            <input type="number" id="users-4" class="w-full px-4 py-2 border rounded-lg" value="100" min="1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">화분 개수</label>
+                            <input type="number" id="pots-4" class="w-full px-4 py-2 border rounded-lg" value="3" min="1" max="10">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">별 가격 ($)</label>
+                            <input type="number" id="price-4" class="w-full px-4 py-2 border rounded-lg" value="2" min="0.1" step="0.1">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">초기 하트</label>
+                            <input type="number" id="initialHearts-4" class="w-full px-4 py-2 border rounded-lg" value="300000" min="0">
+                        </div>
                     </div>
                 </div>
                 
-                <!-- Level Configuration Farm 4 -->
-                <div class="mb-6">
-                    <button onclick="toggleLevelConfig(4)" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                        레벨별 조건 및 보상 설정
+                <!-- Level Configuration -->
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-4 mb-6 border-2 border-blue-200">
+                    <button onclick="toggleLevelConfig(4)" class="w-full px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 mb-4">
+                        <span id="toggle-text-4">📊 레벨별 조건 및 보상 설정 (펼치기 ▼)</span>
                     </button>
-                    <div id="level-config-4" class="hidden mt-4 bg-gray-50 p-4 rounded-lg">
-                        <h4 class="font-bold mb-4">레벨별 설정 (Farm 4)</h4>
+                    <div id="level-config-4" class="hidden">
                         <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead>
-                                    <tr class="bg-gray-200">
-                                        <th class="p-2">레벨</th>
-                                        <th class="p-2">필요 하트허용치</th>
-                                        <th class="p-2">필요 별</th>
-                                        <th class="p-2">보상 코인</th>
-                                        <th class="p-2">보상 하트</th>
+                            <table class="w-full text-sm bg-white rounded-lg">
+                                <thead class="bg-blue-100">
+                                    <tr>
+                                        <th class="px-3 py-2 text-center">레벨</th>
+                                        <th class="px-3 py-2 text-center">필요 하트허용치</th>
+                                        <th class="px-3 py-2 text-center">필요 별</th>
+                                        <th class="px-3 py-2 text-center">보상 코인</th>
+                                        <th class="px-3 py-2 text-center">보상 하트</th>
                                     </tr>
                                 </thead>
                                 <tbody id="level-inputs-4">
@@ -630,7 +639,15 @@ export const farmUITemplate = `<!DOCTYPE html>
                                 </tbody>
                             </table>
                         </div>
+                        <p class="text-xs text-gray-600 mt-2">💡 값을 수정한 후 "계산하기" 버튼을 눌러주세요.</p>
                     </div>
+                </div>
+                
+                <!-- Calculate Button -->
+                <div class="mb-6">
+                    <button onclick="calculate(4)" class="w-full px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 shadow-lg">
+                        🚀 계산하기
+                    </button>
                 </div>
                 
                 <div id="loading-4" class="hidden text-center py-8">
@@ -748,10 +765,10 @@ export const farmUITemplate = `<!DOCTYPE html>
             
             if (configDiv.classList.contains('hidden')) {
                 configDiv.classList.remove('hidden');
-                toggleText.textContent = '접기 ▲';
+                toggleText.textContent = '📊 레벨별 조건 및 보상 설정 (접기 ▲)';
             } else {
                 configDiv.classList.add('hidden');
-                toggleText.textContent = '펼치기 ▼';
+                toggleText.textContent = '📊 레벨별 조건 및 보상 설정 (펼치기 ▼)';
             }
         }
         
