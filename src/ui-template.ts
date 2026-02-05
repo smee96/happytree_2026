@@ -141,6 +141,13 @@ export const farmUITemplate = `<!DOCTYPE html>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="96" min="0" data-level="8" data-field="coins"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="8" data-field="hearts_reward"></td>
                                     </tr>
+                                    <tr class="bg-blue-100 font-bold">
+                                        <td class="px-2 py-2 text-center">합계</td>
+                                        <td class="px-2 py-2 text-center" id="sum-hearts-required-1">255</td>
+                                        <td class="px-2 py-2 text-center" id="sum-stars-1">7</td>
+                                        <td class="px-2 py-2 text-center" id="sum-coins-1">186</td>
+                                        <td class="px-2 py-2 text-center" id="sum-hearts-reward-1">222</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -306,6 +313,13 @@ export const farmUITemplate = `<!DOCTYPE html>
                                             <td class="p-2"><input type="number" data-field="hearts_reward" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_reward}" min="0"></td>
                                         </tr>`;
                                     }).join('')}
+                                    <tr class="bg-blue-100 font-bold">
+                                        <td class="p-2 text-center">합계</td>
+                                        <td class="p-2 text-center" id="sum-hearts-required-2">0</td>
+                                        <td class="p-2 text-center" id="sum-stars-2">0</td>
+                                        <td class="p-2 text-center" id="sum-coins-2">0</td>
+                                        <td class="p-2 text-center" id="sum-hearts-reward-2">0</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -471,6 +485,13 @@ export const farmUITemplate = `<!DOCTYPE html>
                                             <td class="p-2"><input type="number" data-field="hearts_reward" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_reward}" min="0"></td>
                                         </tr>`;
                                     }).join('')}
+                                    <tr class="bg-blue-100 font-bold">
+                                        <td class="p-2 text-center">합계</td>
+                                        <td class="p-2 text-center" id="sum-hearts-required-3">0</td>
+                                        <td class="p-2 text-center" id="sum-stars-3">0</td>
+                                        <td class="p-2 text-center" id="sum-coins-3">0</td>
+                                        <td class="p-2 text-center" id="sum-hearts-reward-3">0</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -636,6 +657,13 @@ export const farmUITemplate = `<!DOCTYPE html>
                                             <td class="p-2"><input type="number" data-field="hearts_reward" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_reward}" min="0"></td>
                                         </tr>`;
                                     }).join('')}
+                                    <tr class="bg-blue-100 font-bold">
+                                        <td class="p-2 text-center">합계</td>
+                                        <td class="p-2 text-center" id="sum-hearts-required-4">0</td>
+                                        <td class="p-2 text-center" id="sum-stars-4">0</td>
+                                        <td class="p-2 text-center" id="sum-coins-4">0</td>
+                                        <td class="p-2 text-center" id="sum-hearts-reward-4">0</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -856,6 +884,35 @@ export const farmUITemplate = `<!DOCTYPE html>
             return levels;
         }
         
+        function updateSums(farmId) {
+            const tbodyId = farmId === 1 ? \`level-config-body-\${farmId}\` : \`level-inputs-\${farmId}\`;
+            let sumHeartsRequired = 0;
+            let sumStars = 0;
+            let sumCoins = 0;
+            let sumHeartsReward = 0;
+            
+            for (let i = 1; i <= 8; i++) {
+                const row = document.querySelector(\`#\${tbodyId} tr:nth-child(\${i})\`);
+                if (row) {
+                    const inputs = row.querySelectorAll('input[data-field]');
+                    inputs.forEach(input => {
+                        const field = input.getAttribute('data-field');
+                        const value = parseFloat(input.value) || 0;
+                        
+                        if (field === 'hearts_required') sumHeartsRequired += value;
+                        if (field === 'stars') sumStars += value;
+                        if (field === 'coins') sumCoins += value;
+                        if (field === 'hearts_reward') sumHeartsReward += value;
+                    });
+                }
+            }
+            
+            document.getElementById(\`sum-hearts-required-\${farmId}\`).textContent = sumHeartsRequired;
+            document.getElementById(\`sum-stars-\${farmId}\`).textContent = sumStars;
+            document.getElementById(\`sum-coins-\${farmId}\`).textContent = sumCoins;
+            document.getElementById(\`sum-hearts-reward-\${farmId}\`).textContent = sumHeartsReward;
+        }
+        
         function switchTab(farmId) {
             // Hide all tabs
             for (let i = 1; i <= 4; i++) {
@@ -967,6 +1024,16 @@ export const farmUITemplate = `<!DOCTYPE html>
             // Load settings for all 4 farms
             for (let i = 1; i <= 4; i++) {
                 loadAllSettings(i);
+                updateSums(i);
+                
+                // Add input event listeners for sum updates
+                const tbodyId = i === 1 ? \`level-config-body-\${i}\` : \`level-inputs-\${i}\`;
+                const tbody = document.getElementById(tbodyId);
+                if (tbody) {
+                    tbody.addEventListener('input', function() {
+                        updateSums(i);
+                    });
+                }
             }
             console.log('All farm settings loaded from localStorage');
         });
