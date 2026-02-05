@@ -94,49 +94,49 @@ export const farmUITemplate = `<!DOCTYPE html>
                                 </thead>
                                 <tbody id="level-config-body-1">
                                     <tr><td class="px-2 py-2 text-center font-semibold">Lv.1</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="1" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="1" data-field="hearts_required"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="1" data-field="stars"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="1" data-field="coins"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="1" data-field="hearts_reward"></td>
                                     </tr>
                                     <tr><td class="px-2 py-2 text-center font-semibold">Lv.2</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="2" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="2" min="0" data-level="2" data-field="hearts_required"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="2" data-field="stars"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="2" data-field="coins"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="3" min="0" data-level="2" data-field="hearts_reward"></td>
                                     </tr>
                                     <tr><td class="px-2 py-2 text-center font-semibold">Lv.3</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="3" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="4" min="0" data-level="3" data-field="hearts_required"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="3" data-field="stars"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="3" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="14" min="0" data-level="3" data-field="hearts_reward"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="8" min="0" data-level="3" data-field="hearts_reward"></td>
                                     </tr>
                                     <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.4</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="15" min="0" data-level="4" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="8" min="0" data-level="4" data-field="hearts_required"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="4" data-field="stars"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="6" min="0" data-level="4" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="69" min="0" data-level="4" data-field="hearts_reward"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="16" min="0" data-level="4" data-field="hearts_reward"></td>
                                     </tr>
                                     <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.5</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="23" min="0" data-level="5" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="16" min="0" data-level="5" data-field="hearts_required"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="5" data-field="stars"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="12" min="0" data-level="5" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="344" min="0" data-level="5" data-field="hearts_reward"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="32" min="0" data-level="5" data-field="hearts_reward"></td>
                                     </tr>
                                     <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.6</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="39" min="0" data-level="6" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="32" min="0" data-level="6" data-field="hearts_required"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="6" data-field="stars"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="24" min="0" data-level="6" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1719" min="0" data-level="6" data-field="hearts_reward"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="62" min="0" data-level="6" data-field="hearts_reward"></td>
                                     </tr>
                                     <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.7</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="71" min="0" data-level="7" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="64" min="0" data-level="7" data-field="hearts_required"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="7" data-field="stars"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="48" min="0" data-level="7" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="8594" min="0" data-level="7" data-field="hearts_reward"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="100" min="0" data-level="7" data-field="hearts_reward"></td>
                                     </tr>
                                     <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.8</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="135" min="0" data-level="8" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="128" min="0" data-level="8" data-field="hearts_required"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="8" data-field="stars"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="96" min="0" data-level="8" data-field="coins"></td>
                                         <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="8" data-field="hearts_reward"></td>
