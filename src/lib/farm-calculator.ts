@@ -202,52 +202,17 @@ export function calculateSingleFarm(
     }
   }
   
-  // 완전 2진 트리 기반 하트허용치 계산
-  // 각 노드는 자신의 하위 트리에 속한 모든 사용자의 화분 개수 합을 받음
+  // 리니어 방식: 나보다 먼저 입장한 모든 사용자에게 하트허용치 지급
+  // 허용치 = 나보다 늦게 입장한 사용자들의 화분 개수 합계
   users.forEach((user) => {
     let allowance = 0;
-    
-    // 현재 사용자의 하위 트리에 속한 모든 노드 찾기
-    const descendants = getDescendants(user.entryOrder, totalUsers);
-    
-    descendants.forEach(descendantOrder => {
-      const descendant = users.get(descendantOrder);
-      if (descendant) {
-        allowance += descendant.pots.length;
+    users.forEach((otherUser) => {
+      if (otherUser.entryOrder > user.entryOrder) {
+        allowance += otherUser.pots.length;
       }
     });
-    
     user.heartAllowance = allowance;
   });
-  
-  /**
-   * 완전 2진 트리에서 특정 노드의 모든 하위 노드 찾기
-   * @param nodeIndex 노드 번호 (1부터 시작)
-   * @param totalNodes 전체 노드 수
-   * @returns 하위 노드 번호 배열
-   */
-  function getDescendants(nodeIndex: number, totalNodes: number): number[] {
-    const descendants: number[] = [];
-    const queue = [nodeIndex];
-    
-    while (queue.length > 0) {
-      const current = queue.shift()!;
-      const leftChild = 2 * current;
-      const rightChild = 2 * current + 1;
-      
-      if (leftChild <= totalNodes) {
-        descendants.push(leftChild);
-        queue.push(leftChild);
-      }
-      
-      if (rightChild <= totalNodes) {
-        descendants.push(rightChild);
-        queue.push(rightChild);
-      }
-    }
-    
-    return descendants;
-  }
   
   // 모든 사용자의 레벨업 시도 (한 번만!)
   users.forEach(user => {
