@@ -202,18 +202,67 @@ export function calculateSingleFarm(
     }
   }
   
-  // 리니어 방식: 나보다 늦게 입장한 사람들의 화분 개수만 하트허용치로 받음
-  // 허용치 = 나보다 늦게 입장한 사용자들의 화분 개수 합계 (자신 제외)
-  users.forEach((user) => {
-    let allowance = 0;
-    users.forEach((otherUser) => {
-      // 나보다 늦게 입장한 사용자들만 (자신 제외)
-      if (otherUser.entryOrder > user.entryOrder) {
-        allowance += otherUser.pots.length;
-      }
+  // 하트허용치 계산 (농장별 다른 방식)
+  if (farmId === 1) {
+    // 농장 1: 완전 2진 트리 방식
+    // 나 자신 + 하위 트리의 모든 노드들의 화분 개수
+    users.forEach((user) => {
+      let allowance = user.pots.length; // 나 자신의 화분
+      
+      // 하위 트리에 속한 모든 노드 찾기
+      const descendants = getDescendants(user.entryOrder, totalUsers);
+      
+      descendants.forEach(descendantOrder => {
+        const descendant = users.get(descendantOrder);
+        if (descendant) {
+          allowance += descendant.pots.length;
+        }
+      });
+      
+      user.heartAllowance = allowance;
     });
-    user.heartAllowance = allowance;
-  });
+  } else {
+    // 농장 2, 3, 4: 리니어 방식
+    // 나 자신 + 나보다 늦게 입장한 사람들의 화분 개수
+    users.forEach((user) => {
+      let allowance = user.pots.length; // 나 자신의 화분
+      users.forEach((otherUser) => {
+        if (otherUser.entryOrder > user.entryOrder) {
+          allowance += otherUser.pots.length;
+        }
+      });
+      user.heartAllowance = allowance;
+    });
+  }
+  
+  /**
+   * 완전 2진 트리에서 특정 노드의 모든 하위 노드 찾기
+   * @param nodeIndex 노드 번호 (1부터 시작)
+   * @param totalNodes 전체 노드 수
+   * @returns 하위 노드 번호 배열
+   */
+  function getDescendants(nodeIndex: number, totalNodes: number): number[] {
+    const descendants: number[] = [];
+    const queue = [nodeIndex];
+    
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      const leftChild = 2 * current;
+      const rightChild = 2 * current + 1;
+      
+      if (leftChild <= totalNodes) {
+        descendants.push(leftChild);
+        queue.push(leftChild);
+      }
+      
+      if (rightChild <= totalNodes) {
+        descendants.push(rightChild);
+        queue.push(rightChild);
+      }
+    }
+    
+    return descendants;
+  }
   
   // 모든 사용자의 레벨업 시도 (한 번만!)
   users.forEach(user => {
