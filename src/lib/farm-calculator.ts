@@ -202,13 +202,13 @@ export function calculateSingleFarm(
     }
   }
   
-  // 리니어 방식: 나를 포함하여 나보다 늦게 입장한 사람들의 화분 개수만 하트허용치로 받음
-  // 허용치 = 나 자신 + 나보다 늦게 입장한 사용자들의 화분 개수 합계
+  // 리니어 방식: 나보다 늦게 입장한 사람들의 화분 개수만 하트허용치로 받음
+  // 허용치 = 나보다 늦게 입장한 사용자들의 화분 개수 합계 (자신 제외)
   users.forEach((user) => {
     let allowance = 0;
     users.forEach((otherUser) => {
-      // 나 자신(>=) + 나보다 늦게 입장한 사용자들
-      if (otherUser.entryOrder >= user.entryOrder) {
+      // 나보다 늦게 입장한 사용자들만 (자신 제외)
+      if (otherUser.entryOrder > user.entryOrder) {
         allowance += otherUser.pots.length;
       }
     });
