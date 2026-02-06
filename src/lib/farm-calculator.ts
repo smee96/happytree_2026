@@ -230,16 +230,22 @@ export function calculateSingleFarm(
     let potsAtLevel = 0;
     
     // 레벨별 사용자 1명 평균 수익 계산용
+    // 정확히 이 레벨에서 멈춘 사람들만 계산
     let totalInvestment = 0;
     let totalReturn = 0;
+    let stoppedAtThisLevel = 0; // 이 레벨에서 멈춘 사람 수
     
     users.forEach(user => {
       const potsReachedLevel = user.pots.filter(pot => pot.currentLevel > idx);
       if (potsReachedLevel.length > 0) {
         achievers.add(user.entryOrder);
         potsAtLevel += potsReachedLevel.length;
-        
-        // 이 사용자가 해당 레벨에 도달했으므로 수익 계산
+      }
+      
+      // 정확히 이 레벨에서 멈춘 사용자 찾기 (최고 레벨이 현재 레벨인 경우)
+      const highestLevel = Math.max(0, ...user.pots.map(p => p.currentLevel));
+      if (highestLevel === idx + 1) {
+        stoppedAtThisLevel++;
         totalInvestment += user.starsPurchased * starPrice;
         totalReturn += user.coinsEarned * 0.1;
       }
@@ -250,9 +256,9 @@ export function calculateSingleFarm(
     const totalStars = potsAtLevel * level.stars;
     const totalCoins = potsAtLevel * level.coins;
     
-    // 1명당 평균 수익
-    const avgInvestmentPerUser = achieversCount > 0 ? totalInvestment / achieversCount : 0;
-    const avgReturnPerUser = achieversCount > 0 ? totalReturn / achieversCount : 0;
+    // 1명당 평균 수익 (이 레벨에서 멈춘 사람들만)
+    const avgInvestmentPerUser = stoppedAtThisLevel > 0 ? totalInvestment / stoppedAtThisLevel : 0;
+    const avgReturnPerUser = stoppedAtThisLevel > 0 ? totalReturn / stoppedAtThisLevel : 0;
     const avgNetProfitPerUser = avgReturnPerUser - avgInvestmentPerUser;
     const avgRoiPerUser = avgInvestmentPerUser > 0 ? ((avgNetProfitPerUser / avgInvestmentPerUser) * 100).toFixed(2) : '0.00';
     
