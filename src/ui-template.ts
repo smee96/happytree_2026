@@ -308,14 +308,14 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     ${Array.from({ length: 8 }, (_, i) => {
                                         const level = i + 1;
                                         const defaultValues = [
-                                            {hearts_required: 1, stars: 0, coins: 0, hearts_reward: 1},
-                                            {hearts_required: 2, stars: 0, coins: 0, hearts_reward: 3},
-                                            {hearts_required: 4, stars: 1, coins: 0, hearts_reward: 8},
-                                            {hearts_required: 8, stars: 1, coins: 6, hearts_reward: 16},
-                                            {hearts_required: 16, stars: 1, coins: 12, hearts_reward: 32},
-                                            {hearts_required: 32, stars: 1, coins: 24, hearts_reward: 62},
-                                            {hearts_required: 64, stars: 1, coins: 48, hearts_reward: 100},
-                                            {hearts_required: 128, stars: 1, coins: 96, hearts_reward: 0}
+                                            {hearts_required: 0, stars: 1, coins: 0, hearts_reward: 1},
+                                            {hearts_required: 0, stars: 2, coins: 0, hearts_reward: 2},
+                                            {hearts_required: 0, stars: 3, coins: 0, hearts_reward: 9},
+                                            {hearts_required: 40, stars: 4, coins: 10, hearts_reward: 35},
+                                            {hearts_required: 94, stars: 5, coins: 30, hearts_reward: 141},
+                                            {hearts_required: 256, stars: 6, coins: 90, hearts_reward: 563},
+                                            {hearts_required: 742, stars: 7, coins: 275, hearts_reward: 2253},
+                                            {hearts_required: 2200, stars: 8, coins: 875, hearts_reward: 0}
                                         ];
                                         const defaults = defaultValues[i];
                                         return `
@@ -329,10 +329,10 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     }).join('')}
                                     <tr class="bg-blue-100 font-bold">
                                         <td class="p-2 text-center">합계</td>
-                                        <td class="p-2 text-center" id="sum-hearts-required-2">255</td>
-                                        <td class="p-2 text-center" id="sum-stars-2">7</td>
-                                        <td class="p-2 text-center" id="sum-coins-2">186</td>
-                                        <td class="p-2 text-center" id="sum-hearts-reward-2">222</td>
+                                        <td class="p-2 text-center" id="sum-hearts-required-2">3332</td>
+                                        <td class="p-2 text-center" id="sum-stars-2">36</td>
+                                        <td class="p-2 text-center" id="sum-coins-2">1280</td>
+                                        <td class="p-2 text-center" id="sum-hearts-reward-2">3004</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -494,14 +494,14 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     ${Array.from({ length: 8 }, (_, i) => {
                                         const level = i + 1;
                                         const defaultValues = [
-                                            {hearts_required: 1, stars: 0, coins: 0, hearts_reward: 1},
-                                            {hearts_required: 2, stars: 0, coins: 0, hearts_reward: 3},
-                                            {hearts_required: 4, stars: 1, coins: 0, hearts_reward: 8},
-                                            {hearts_required: 8, stars: 1, coins: 6, hearts_reward: 16},
-                                            {hearts_required: 16, stars: 1, coins: 12, hearts_reward: 32},
-                                            {hearts_required: 32, stars: 1, coins: 24, hearts_reward: 62},
-                                            {hearts_required: 64, stars: 1, coins: 48, hearts_reward: 100},
-                                            {hearts_required: 128, stars: 1, coins: 96, hearts_reward: 0}
+                                            {hearts_required: 0, stars: 2, coins: 0, hearts_reward: 1},
+                                            {hearts_required: 0, stars: 4, coins: 0, hearts_reward: 2},
+                                            {hearts_required: 0, stars: 6, coins: 0, hearts_reward: 5},
+                                            {hearts_required: 85, stars: 8, coins: 25, hearts_reward: 15},
+                                            {hearts_required: 277, stars: 10, coins: 95, hearts_reward: 45},
+                                            {hearts_required: 1045, stars: 12, coins: 385, hearts_reward: 134},
+                                            {hearts_required: 4117, stars: 14, coins: 1535, hearts_reward: 401},
+                                            {hearts_required: 16405, stars: 16, coins: 6555, hearts_reward: 0}
                                         ];
                                         const defaults = defaultValues[i];
                                         return `
@@ -515,10 +515,10 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     }).join('')}
                                     <tr class="bg-blue-100 font-bold">
                                         <td class="p-2 text-center">합계</td>
-                                        <td class="p-2 text-center" id="sum-hearts-required-3">255</td>
-                                        <td class="p-2 text-center" id="sum-stars-3">7</td>
-                                        <td class="p-2 text-center" id="sum-coins-3">186</td>
-                                        <td class="p-2 text-center" id="sum-hearts-reward-3">222</td>
+                                        <td class="p-2 text-center" id="sum-hearts-required-3">21929</td>
+                                        <td class="p-2 text-center" id="sum-stars-3">72</td>
+                                        <td class="p-2 text-center" id="sum-coins-3">8595</td>
+                                        <td class="p-2 text-center" id="sum-hearts-reward-3">603</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -680,14 +680,14 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     ${Array.from({ length: 8 }, (_, i) => {
                                         const level = i + 1;
                                         const defaultValues = [
-                                            {hearts_required: 1, stars: 0, coins: 0, hearts_reward: 1},
-                                            {hearts_required: 2, stars: 0, coins: 0, hearts_reward: 3},
-                                            {hearts_required: 4, stars: 1, coins: 0, hearts_reward: 8},
-                                            {hearts_required: 8, stars: 1, coins: 6, hearts_reward: 16},
-                                            {hearts_required: 16, stars: 1, coins: 12, hearts_reward: 32},
-                                            {hearts_required: 32, stars: 1, coins: 24, hearts_reward: 62},
-                                            {hearts_required: 64, stars: 1, coins: 48, hearts_reward: 100},
-                                            {hearts_required: 128, stars: 1, coins: 96, hearts_reward: 0}
+                                            {hearts_required: 0, stars: 3, coins: 0, hearts_reward: 1},
+                                            {hearts_required: 0, stars: 6, coins: 0, hearts_reward: 1},
+                                            {hearts_required: 0, stars: 9, coins: 0, hearts_reward: 2},
+                                            {hearts_required: 156, stars: 12, coins: 45, hearts_reward: 4},
+                                            {hearts_required: 656, stars: 15, coins: 235, hearts_reward: 9},
+                                            {hearts_required: 3156, stars: 18, coins: 1170, hearts_reward: 18},
+                                            {hearts_required: 15656, stars: 21, coins: 5860, hearts_reward: 35},
+                                            {hearts_required: 78156, stars: 24, coins: 31250, hearts_reward: 0}
                                         ];
                                         const defaults = defaultValues[i];
                                         return `
@@ -701,10 +701,10 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     }).join('')}
                                     <tr class="bg-blue-100 font-bold">
                                         <td class="p-2 text-center">합계</td>
-                                        <td class="p-2 text-center" id="sum-hearts-required-4">255</td>
-                                        <td class="p-2 text-center" id="sum-stars-4">7</td>
-                                        <td class="p-2 text-center" id="sum-coins-4">186</td>
-                                        <td class="p-2 text-center" id="sum-hearts-reward-4">222</td>
+                                        <td class="p-2 text-center" id="sum-hearts-required-4">97780</td>
+                                        <td class="p-2 text-center" id="sum-stars-4">108</td>
+                                        <td class="p-2 text-center" id="sum-coins-4">38560</td>
+                                        <td class="p-2 text-center" id="sum-hearts-reward-4">70</td>
                                     </tr>
                                 </tbody>
                             </table>
