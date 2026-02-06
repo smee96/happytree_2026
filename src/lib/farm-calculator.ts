@@ -202,12 +202,13 @@ export function calculateSingleFarm(
     }
   }
   
-  // 리니어 방식: 나보다 먼저 입장한 모든 사용자에게 하트허용치 지급
-  // 허용치 = 나보다 늦게 입장한 사용자들의 화분 개수 합계
+  // 리니어 방식: 나를 포함하여 나보다 먼저 입장한 모든 사용자에게 하트허용치 지급
+  // 허용치 = 나를 포함한 나보다 늦게 입장한 사용자들의 화분 개수 합계
   users.forEach((user) => {
     let allowance = 0;
     users.forEach((otherUser) => {
-      if (otherUser.entryOrder > user.entryOrder) {
+      // 나 자신(>=)을 포함하여 나보다 늦게 입장한 사용자들
+      if (otherUser.entryOrder >= user.entryOrder) {
         allowance += otherUser.pots.length;
       }
     });
