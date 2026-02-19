@@ -202,38 +202,23 @@ export function calculateSingleFarm(
     }
   }
   
-  // 하트허용치 계산 (농장별 다른 방식)
-  if (farmId === 1) {
-    // 농장 1: 완전 2진 트리 방식
-    // 나 자신 + 하위 트리의 모든 노드들의 화분 개수
-    users.forEach((user) => {
-      let allowance = user.pots.length; // 나 자신의 화분
-      
-      // 하위 트리에 속한 모든 노드 찾기
-      const descendants = getDescendants(user.entryOrder, totalUsers);
-      
-      descendants.forEach(descendantOrder => {
-        const descendant = users.get(descendantOrder);
-        if (descendant) {
-          allowance += descendant.pots.length;
-        }
-      });
-      
-      user.heartAllowance = allowance;
+  // 하트허용치 계산 (모든 농장: 완전 2진 트리 방식)
+  // 나 자신 + 하위 트리의 모든 노드들의 화분 개수
+  users.forEach((user) => {
+    let allowance = user.pots.length; // 나 자신의 화분
+    
+    // 하위 트리에 속한 모든 노드 찾기
+    const descendants = getDescendants(user.entryOrder, totalUsers);
+    
+    descendants.forEach(descendantOrder => {
+      const descendant = users.get(descendantOrder);
+      if (descendant) {
+        allowance += descendant.pots.length;
+      }
     });
-  } else {
-    // 농장 2, 3, 4: 리니어 방식
-    // 나 자신 + 나보다 늦게 입장한 사람들의 화분 개수
-    users.forEach((user) => {
-      let allowance = user.pots.length; // 나 자신의 화분
-      users.forEach((otherUser) => {
-        if (otherUser.entryOrder > user.entryOrder) {
-          allowance += otherUser.pots.length;
-        }
-      });
-      user.heartAllowance = allowance;
-    });
-  }
+    
+    user.heartAllowance = allowance;
+  });
   
   /**
    * 완전 2진 트리에서 특정 노드의 모든 하위 노드 찾기
