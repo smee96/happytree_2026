@@ -4,7 +4,7 @@ import { calculateCorrectReport } from './lib/correct-calculator';
 import { calculateMultiPotReport } from './lib/multi-pot-calculator';
 import { calculateFivePotsReport } from './lib/five-pots-calculator';
 import { calculateSingleFarm, FARM_LEVELS } from './lib/farm-calculator';
-import { farmUITemplate } from './ui-template';
+import { generateFarmUITemplate } from './ui-template';
 import { mainPageTemplate } from './ui-main';
 import { gamePageTemplate } from './ui-game';
 
@@ -167,7 +167,7 @@ app.get('/game', (c) => {
 
 // 시뮬레이터 페이지
 app.get('/simulator', (c) => {
-  return c.html(farmUITemplate);
+  return c.html(generateFarmUITemplate());
 });
 
 export default app;

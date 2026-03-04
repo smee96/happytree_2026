@@ -1,4 +1,7 @@
-export const farmUITemplate = `<!DOCTYPE html>
+import { FARM_LEVELS } from './lib/farm-calculator';
+
+export function generateFarmUITemplate() {
+  return `<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -93,60 +96,19 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     </tr>
                                 </thead>
                                 <tbody id="level-config-body-1">
-                                    <tr><td class="px-2 py-2 text-center font-semibold">Lv.1</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="1" data-field="hearts_required"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="1" data-field="stars"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="1" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="1" data-field="hearts_reward"></td>
-                                    </tr>
-                                    <tr><td class="px-2 py-2 text-center font-semibold">Lv.2</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="2" min="0" data-level="2" data-field="hearts_required"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="2" data-field="stars"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="2" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="3" min="0" data-level="2" data-field="hearts_reward"></td>
-                                    </tr>
-                                    <tr><td class="px-2 py-2 text-center font-semibold">Lv.3</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="4" min="0" data-level="3" data-field="hearts_required"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="3" data-field="stars"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="3" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="8" min="0" data-level="3" data-field="hearts_reward"></td>
-                                    </tr>
-                                    <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.4</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="8" min="0" data-level="4" data-field="hearts_required"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="4" data-field="stars"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="6" min="0" data-level="4" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="16" min="0" data-level="4" data-field="hearts_reward"></td>
-                                    </tr>
-                                    <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.5</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="16" min="0" data-level="5" data-field="hearts_required"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="5" data-field="stars"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="12" min="0" data-level="5" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="32" min="0" data-level="5" data-field="hearts_reward"></td>
-                                    </tr>
-                                    <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.6</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="32" min="0" data-level="6" data-field="hearts_required"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="6" data-field="stars"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="24" min="0" data-level="6" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="62" min="0" data-level="6" data-field="hearts_reward"></td>
-                                    </tr>
-                                    <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.7</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="64" min="0" data-level="7" data-field="hearts_required"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="7" data-field="stars"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="48" min="0" data-level="7" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="100" min="0" data-level="7" data-field="hearts_reward"></td>
-                                    </tr>
-                                    <tr class="bg-yellow-50"><td class="px-2 py-2 text-center font-semibold">Lv.8</td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="128" min="0" data-level="8" data-field="hearts_required"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="1" min="0" data-level="8" data-field="stars"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="96" min="0" data-level="8" data-field="coins"></td>
-                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="0" min="0" data-level="8" data-field="hearts_reward"></td>
-                                    </tr>
+                                    ${FARM_LEVELS[1].map((level, idx) => `
+                                    <tr${idx >= 3 ? ' class="bg-yellow-50"' : ''}><td class="px-2 py-2 text-center font-semibold">Lv.${level.level}</td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.hearts_required}" min="0" data-level="${level.level}" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.stars}" min="0" data-level="${level.level}" data-field="stars"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.coins}" min="0" data-level="${level.level}" data-field="coins"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.hearts_reward}" min="0" data-level="${level.level}" data-field="hearts_reward"></td>
+                                    </tr>`).join('')}
                                     <tr class="bg-blue-100 font-bold">
                                         <td class="px-2 py-2 text-center">합계</td>
-                                        <td class="px-2 py-2 text-center" id="sum-hearts-required-1">255</td>
-                                        <td class="px-2 py-2 text-center" id="sum-stars-1">7</td>
-                                        <td class="px-2 py-2 text-center" id="sum-coins-1">186</td>
-                                        <td class="px-2 py-2 text-center" id="sum-hearts-reward-1">222</td>
+                                        <td class="px-2 py-2 text-center" id="sum-hearts-required-1">${FARM_LEVELS[1].reduce((sum, l) => sum + l.hearts_required, 0)}</td>
+                                        <td class="px-2 py-2 text-center" id="sum-stars-1">${FARM_LEVELS[1].reduce((sum, l) => sum + l.stars, 0)}</td>
+                                        <td class="px-2 py-2 text-center" id="sum-coins-1">${FARM_LEVELS[1].reduce((sum, l) => sum + l.coins, 0)}</td>
+                                        <td class="px-2 py-2 text-center" id="sum-hearts-reward-1">${FARM_LEVELS[1].reduce((sum, l) => sum + l.hearts_reward, 0)}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -305,34 +267,19 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     </tr>
                                 </thead>
                                 <tbody id="level-inputs-2">
-                                    ${Array.from({ length: 8 }, (_, i) => {
-                                        const level = i + 1;
-                                        const defaultValues = [
-                                            {hearts_required: 0, stars: 1, coins: 0, hearts_reward: 1},
-                                            {hearts_required: 0, stars: 2, coins: 0, hearts_reward: 2},
-                                            {hearts_required: 0, stars: 3, coins: 0, hearts_reward: 9},
-                                            {hearts_required: 40, stars: 4, coins: 10, hearts_reward: 35},
-                                            {hearts_required: 94, stars: 5, coins: 30, hearts_reward: 141},
-                                            {hearts_required: 256, stars: 6, coins: 90, hearts_reward: 563},
-                                            {hearts_required: 742, stars: 7, coins: 275, hearts_reward: 2253},
-                                            {hearts_required: 2200, stars: 8, coins: 875, hearts_reward: 0}
-                                        ];
-                                        const defaults = defaultValues[i];
-                                        return `
-                                        <tr data-level="${level}">
-                                            <td class="p-2 text-center font-bold">${level}</td>
-                                            <td class="p-2"><input type="number" data-field="hearts_required" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_required}" min="0"></td>
-                                            <td class="p-2"><input type="number" data-field="stars" class="w-full px-2 py-1 border rounded" value="${defaults.stars}" min="0"></td>
-                                            <td class="p-2"><input type="number" data-field="coins" class="w-full px-2 py-1 border rounded" value="${defaults.coins}" min="0"></td>
-                                            <td class="p-2"><input type="number" data-field="hearts_reward" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_reward}" min="0"></td>
-                                        </tr>`;
-                                    }).join('')}
+                                    ${FARM_LEVELS[2].map((level, idx) => `
+                                    <tr${idx >= 3 ? ' class="bg-yellow-50"' : ''}><td class="px-2 py-2 text-center font-semibold">Lv.${level.level}</td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.hearts_required}" min="0" data-level="${level.level}" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.stars}" min="0" data-level="${level.level}" data-field="stars"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.coins}" min="0" data-level="${level.level}" data-field="coins"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.hearts_reward}" min="0" data-level="${level.level}" data-field="hearts_reward"></td>
+                                    </tr>`).join('')}
                                     <tr class="bg-blue-100 font-bold">
-                                        <td class="p-2 text-center">합계</td>
-                                        <td class="p-2 text-center" id="sum-hearts-required-2">3332</td>
-                                        <td class="p-2 text-center" id="sum-stars-2">36</td>
-                                        <td class="p-2 text-center" id="sum-coins-2">1280</td>
-                                        <td class="p-2 text-center" id="sum-hearts-reward-2">3004</td>
+                                        <td class="px-2 py-2 text-center">합계</td>
+                                        <td class="px-2 py-2 text-center" id="sum-hearts-required-2">${FARM_LEVELS[2].reduce((sum, l) => sum + l.hearts_required, 0)}</td>
+                                        <td class="px-2 py-2 text-center" id="sum-stars-2">${FARM_LEVELS[2].reduce((sum, l) => sum + l.stars, 0)}</td>
+                                        <td class="px-2 py-2 text-center" id="sum-coins-2">${FARM_LEVELS[2].reduce((sum, l) => sum + l.coins, 0)}</td>
+                                        <td class="px-2 py-2 text-center" id="sum-hearts-reward-2">${FARM_LEVELS[2].reduce((sum, l) => sum + l.hearts_reward, 0)}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -491,34 +438,19 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     </tr>
                                 </thead>
                                 <tbody id="level-inputs-3">
-                                    ${Array.from({ length: 8 }, (_, i) => {
-                                        const level = i + 1;
-                                        const defaultValues = [
-                                            {hearts_required: 0, stars: 2, coins: 0, hearts_reward: 1},
-                                            {hearts_required: 0, stars: 4, coins: 0, hearts_reward: 2},
-                                            {hearts_required: 0, stars: 6, coins: 0, hearts_reward: 5},
-                                            {hearts_required: 85, stars: 8, coins: 25, hearts_reward: 15},
-                                            {hearts_required: 277, stars: 10, coins: 95, hearts_reward: 45},
-                                            {hearts_required: 1045, stars: 12, coins: 385, hearts_reward: 134},
-                                            {hearts_required: 4117, stars: 14, coins: 1535, hearts_reward: 401},
-                                            {hearts_required: 16405, stars: 16, coins: 6555, hearts_reward: 0}
-                                        ];
-                                        const defaults = defaultValues[i];
-                                        return `
-                                        <tr data-level="${level}">
-                                            <td class="p-2 text-center font-bold">${level}</td>
-                                            <td class="p-2"><input type="number" data-field="hearts_required" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_required}" min="0"></td>
-                                            <td class="p-2"><input type="number" data-field="stars" class="w-full px-2 py-1 border rounded" value="${defaults.stars}" min="0"></td>
-                                            <td class="p-2"><input type="number" data-field="coins" class="w-full px-2 py-1 border rounded" value="${defaults.coins}" min="0"></td>
-                                            <td class="p-2"><input type="number" data-field="hearts_reward" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_reward}" min="0"></td>
-                                        </tr>`;
-                                    }).join('')}
+                                    ${FARM_LEVELS[3].map((level, idx) => `
+                                    <tr${idx >= 3 ? ' class="bg-yellow-50"' : ''}><td class="px-2 py-2 text-center font-semibold">Lv.${level.level}</td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.hearts_required}" min="0" data-level="${level.level}" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.stars}" min="0" data-level="${level.level}" data-field="stars"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.coins}" min="0" data-level="${level.level}" data-field="coins"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.hearts_reward}" min="0" data-level="${level.level}" data-field="hearts_reward"></td>
+                                    </tr>`).join('')}
                                     <tr class="bg-blue-100 font-bold">
-                                        <td class="p-2 text-center">합계</td>
-                                        <td class="p-2 text-center" id="sum-hearts-required-3">21929</td>
-                                        <td class="p-2 text-center" id="sum-stars-3">72</td>
-                                        <td class="p-2 text-center" id="sum-coins-3">8595</td>
-                                        <td class="p-2 text-center" id="sum-hearts-reward-3">603</td>
+                                        <td class="px-2 py-2 text-center">합계</td>
+                                        <td class="px-2 py-2 text-center" id="sum-hearts-required-3">${FARM_LEVELS[3].reduce((sum, l) => sum + l.hearts_required, 0)}</td>
+                                        <td class="px-2 py-2 text-center" id="sum-stars-3">${FARM_LEVELS[3].reduce((sum, l) => sum + l.stars, 0)}</td>
+                                        <td class="px-2 py-2 text-center" id="sum-coins-3">${FARM_LEVELS[3].reduce((sum, l) => sum + l.coins, 0)}</td>
+                                        <td class="px-2 py-2 text-center" id="sum-hearts-reward-3">${FARM_LEVELS[3].reduce((sum, l) => sum + l.hearts_reward, 0)}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -677,34 +609,19 @@ export const farmUITemplate = `<!DOCTYPE html>
                                     </tr>
                                 </thead>
                                 <tbody id="level-inputs-4">
-                                    ${Array.from({ length: 8 }, (_, i) => {
-                                        const level = i + 1;
-                                        const defaultValues = [
-                                            {hearts_required: 0, stars: 3, coins: 0, hearts_reward: 1},
-                                            {hearts_required: 0, stars: 6, coins: 0, hearts_reward: 1},
-                                            {hearts_required: 0, stars: 9, coins: 0, hearts_reward: 2},
-                                            {hearts_required: 156, stars: 12, coins: 45, hearts_reward: 4},
-                                            {hearts_required: 656, stars: 15, coins: 235, hearts_reward: 9},
-                                            {hearts_required: 3156, stars: 18, coins: 1170, hearts_reward: 18},
-                                            {hearts_required: 15656, stars: 21, coins: 5860, hearts_reward: 35},
-                                            {hearts_required: 78156, stars: 24, coins: 31250, hearts_reward: 0}
-                                        ];
-                                        const defaults = defaultValues[i];
-                                        return `
-                                        <tr data-level="${level}">
-                                            <td class="p-2 text-center font-bold">${level}</td>
-                                            <td class="p-2"><input type="number" data-field="hearts_required" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_required}" min="0"></td>
-                                            <td class="p-2"><input type="number" data-field="stars" class="w-full px-2 py-1 border rounded" value="${defaults.stars}" min="0"></td>
-                                            <td class="p-2"><input type="number" data-field="coins" class="w-full px-2 py-1 border rounded" value="${defaults.coins}" min="0"></td>
-                                            <td class="p-2"><input type="number" data-field="hearts_reward" class="w-full px-2 py-1 border rounded" value="${defaults.hearts_reward}" min="0"></td>
-                                        </tr>`;
-                                    }).join('')}
+                                    ${FARM_LEVELS[4].map((level, idx) => `
+                                    <tr${idx >= 3 ? ' class="bg-yellow-50"' : ''}><td class="px-2 py-2 text-center font-semibold">Lv.${level.level}</td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.hearts_required}" min="0" data-level="${level.level}" data-field="hearts_required"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.stars}" min="0" data-level="${level.level}" data-field="stars"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.coins}" min="0" data-level="${level.level}" data-field="coins"></td>
+                                        <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="${level.hearts_reward}" min="0" data-level="${level.level}" data-field="hearts_reward"></td>
+                                    </tr>`).join('')}
                                     <tr class="bg-blue-100 font-bold">
-                                        <td class="p-2 text-center">합계</td>
-                                        <td class="p-2 text-center" id="sum-hearts-required-4">97780</td>
-                                        <td class="p-2 text-center" id="sum-stars-4">108</td>
-                                        <td class="p-2 text-center" id="sum-coins-4">38560</td>
-                                        <td class="p-2 text-center" id="sum-hearts-reward-4">70</td>
+                                        <td class="px-2 py-2 text-center">합계</td>
+                                        <td class="px-2 py-2 text-center" id="sum-hearts-required-4">${FARM_LEVELS[4].reduce((sum, l) => sum + l.hearts_required, 0)}</td>
+                                        <td class="px-2 py-2 text-center" id="sum-stars-4">${FARM_LEVELS[4].reduce((sum, l) => sum + l.stars, 0)}</td>
+                                        <td class="px-2 py-2 text-center" id="sum-coins-4">${FARM_LEVELS[4].reduce((sum, l) => sum + l.coins, 0)}</td>
+                                        <td class="px-2 py-2 text-center" id="sum-hearts-reward-4">${FARM_LEVELS[4].reduce((sum, l) => sum + l.hearts_reward, 0)}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -1091,3 +1008,4 @@ export const farmUITemplate = `<!DOCTYPE html>
     </script>
 </body>
 </html>`;
+}
