@@ -444,6 +444,19 @@ export const gamePageTemplate = `<!DOCTYPE html>
                 gameState.starPrice = savedState.starPrice || 2;
                 gameState.testMode = savedState.testMode || false;
                 gameState.testStats = savedState.testStats || { stars: 0, coins: 0, allowance: 0 };
+                
+                // 기존 화분에 farmId가 없으면 currentFarm으로 설정
+                gameState.pots = gameState.pots.map(pot => ({
+                    ...pot,
+                    farmId: pot.farmId || gameState.currentFarm
+                }));
+                
+                // 창고 화분에도 farmId가 없으면 농장 1로 설정
+                gameState.warehouse = gameState.warehouse.map(pot => ({
+                    ...pot,
+                    farmId: pot.farmId || 1
+                }));
+                
                 // farmLevels는 loadFarmLevels()에서 이미 로드됨
                 console.log('Game state loaded', gameState);
             }
