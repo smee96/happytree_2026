@@ -101,7 +101,12 @@ export const gamePageTemplate = `<!DOCTYPE html>
 
         <!-- User Stats -->
         <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">📊 내 상태</h2>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">📊 내 상태</h2>
+                <button onclick="toggleTestMode()" id="test-mode-btn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold transition">
+                    🧪 테스트 모드: OFF
+                </button>
+            </div>
             <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
                 <div class="bg-purple-50 rounded-lg p-4 text-center cursor-pointer" onclick="showWalletModal()">
                     <div class="text-2xl mb-1">💰</div>
@@ -262,7 +267,8 @@ export const gamePageTemplate = `<!DOCTYPE html>
                 { id: 1, level: 0 }
             ],
             farmLevels: {},
-            starPrice: 2  // 별 1개당 $2
+            starPrice: 2,  // 별 1개당 $2
+            testMode: false  // 🧪 테스트 모드 (조건 무시)
         };
 
         // Load farm levels configuration
@@ -355,8 +361,11 @@ export const gamePageTemplate = `<!DOCTYPE html>
                     \`;
                 }
 
-                const canLevelUp = gameState.heartAllowance >= nextLevel.hearts_required && 
-                    gameState.heartsBalance >= nextLevel.hearts_required;
+                // 🧪 테스트 모드: 조건 무시
+                const canLevelUp = gameState.testMode ? true : (
+                    gameState.heartAllowance >= nextLevel.hearts_required && 
+                    gameState.heartsBalance >= nextLevel.hearts_required
+                );
 
                 const needsAllowance = nextLevel.hearts_required - gameState.heartAllowance;
                 const needsHearts = nextLevel.hearts_required - gameState.heartsBalance;
@@ -374,14 +383,25 @@ export const gamePageTemplate = `<!DOCTYPE html>
                     tooltipText = reasons.join(', ');
                 }
 
+                // 레벨 0 화분 삭제 버튼
+                const deleteButton = pot.level === 0 && gameState.pots.length > 1 ? \`
+                    <button 
+                        onclick="deletePot(\${pot.id})" 
+                        class="w-full py-2 mt-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold transition text-sm"
+                    >
+                        🗑️ 삭제
+                    </button>
+                \` : '';
+
                 return \`
                     <div class="pot-card bg-gradient-to-br from-green-100 to-blue-100 rounded-xl p-4 border-2 border-green-300">
                         <div class="text-center mb-3">
                             <div class="text-6xl mb-2">\${POT_EMOJIS[pot.level] || '🏺'}</div>
                             <div class="text-lg font-bold text-gray-800">화분 \${pot.id}</div>
                             <div class="text-2xl font-bold text-green-600">Lv.\${pot.level}</div>
+                            \${gameState.testMode ? '<div class="text-xs text-orange-600 mt-1">🧪 테스트 모드</div>' : ''}
                         </div>
-                        \${!canLevelUp && tooltipText ? \`
+                        \${!canLevelUp && tooltipText && !gameState.testMode ? \`
                             <div class="text-xs text-red-500 mb-2 text-center bg-red-50 rounded p-2">
                                 \${tooltipText}
                             </div>
@@ -393,6 +413,7 @@ export const gamePageTemplate = `<!DOCTYPE html>
                         >
                             \${buttonText}
                         </button>
+                        \${deleteButton}
                     </div>
                 \`;
             }).join('');
@@ -429,32 +450,38 @@ export const gamePageTemplate = `<!DOCTYPE html>
                 return;
             }
 
-            // Check conditions
-            if (gameState.heartAllowance < nextLevel.hearts_required) {
-                alert(\`하트 허용치가 부족합니다!\\n필요: \${nextLevel.hearts_required}, 보유: \${gameState.heartAllowance}\\n부족: \${nextLevel.hearts_required - gameState.heartAllowance}\`);
-                return;
-            }
+            // 🧪 테스트 모드가 아닐 때만 조건 체크
+            if (!gameState.testMode) {
+                // Check conditions
+                if (gameState.heartAllowance < nextLevel.hearts_required) {
+                    alert(\`하트 허용치가 부족합니다!\\n필요: \${nextLevel.hearts_required}, 보유: \${gameState.heartAllowance}\\n부족: \${nextLevel.hearts_required - gameState.heartAllowance}\`);
+                    return;
+                }
 
-            if (gameState.heartsBalance < nextLevel.hearts_required) {
-                alert(\`하트가 부족합니다!\\n필요: \${nextLevel.hearts_required}, 보유: \${gameState.heartsBalance}\\n부족: \${nextLevel.hearts_required - gameState.heartsBalance}\`);
-                return;
-            }
+                if (gameState.heartsBalance < nextLevel.hearts_required) {
+                    alert(\`하트가 부족합니다!\\n필요: \${nextLevel.hearts_required}, 보유: \${gameState.heartsBalance}\\n부족: \${nextLevel.hearts_required - gameState.heartsBalance}\`);
+                    return;
+                }
 
-            // Check wallet balance for stars
-            const starCost = nextLevel.stars * gameState.starPrice;
-            if (nextLevel.stars > 0 && gameState.walletBalance < starCost) {
-                alert(\`지갑 잔액이 부족합니다!\\n필요: $\${starCost.toFixed(2)}, 보유: $\${gameState.walletBalance.toFixed(2)}\\n부족: $\${(starCost - gameState.walletBalance).toFixed(2)}\\n\\n💰 지갑을 충전해주세요!\`);
-                return;
+                // Check wallet balance for stars
+                const starCost = nextLevel.stars * gameState.starPrice;
+                if (nextLevel.stars > 0 && gameState.walletBalance < starCost) {
+                    alert(\`지갑 잔액이 부족합니다!\\n필요: $\${starCost.toFixed(2)}, 보유: $\${gameState.walletBalance.toFixed(2)}\\n부족: $\${(starCost - gameState.walletBalance).toFixed(2)}\\n\\n💰 지갑을 충전해주세요!\`);
+                    return;
+                }
             }
 
             // Level up!
-            gameState.heartsBalance -= nextLevel.hearts_required;
-            gameState.heartAllowance -= nextLevel.hearts_required;
-            
-            // Charge for stars
-            if (nextLevel.stars > 0) {
-                gameState.walletBalance -= starCost;
-                gameState.starsPurchased += nextLevel.stars;
+            if (!gameState.testMode) {
+                gameState.heartsBalance -= nextLevel.hearts_required;
+                gameState.heartAllowance -= nextLevel.hearts_required;
+                
+                // Charge for stars
+                const starCost = nextLevel.stars * gameState.starPrice;
+                if (nextLevel.stars > 0) {
+                    gameState.walletBalance -= starCost;
+                    gameState.starsPurchased += nextLevel.stars;
+                }
             }
             
             gameState.coinsEarned += nextLevel.coins;
@@ -490,6 +517,51 @@ export const gamePageTemplate = `<!DOCTYPE html>
 
         function closeModal() {
             document.getElementById('levelup-modal').classList.add('hidden');
+        }
+
+        // 🧪 Toggle Test Mode
+        function toggleTestMode() {
+            gameState.testMode = !gameState.testMode;
+            const btn = document.getElementById('test-mode-btn');
+            if (gameState.testMode) {
+                btn.textContent = '🧪 테스트 모드: ON';
+                btn.className = 'px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-semibold transition';
+            } else {
+                btn.textContent = '🧪 테스트 모드: OFF';
+                btn.className = 'px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold transition';
+            }
+            renderPots();
+            saveGameState();
+        }
+
+        // 🗑️ Delete Pot
+        function deletePot(potId) {
+            const pot = gameState.pots.find(p => p.id === potId);
+            if (!pot) return;
+
+            if (pot.level !== 0) {
+                alert('레벨 0인 화분만 삭제할 수 있습니다!');
+                return;
+            }
+
+            if (gameState.pots.length <= 1) {
+                alert('최소 1개의 화분은 있어야 합니다!');
+                return;
+            }
+
+            if (confirm(\`화분 \${potId}을(를) 삭제하시겠습니까?\`)) {
+                gameState.pots = gameState.pots.filter(p => p.id !== potId);
+                gameState.heartAllowance -= 1; // 화분 삭제로 허용치 감소
+                
+                // ID 재정렬
+                gameState.pots.forEach((p, idx) => {
+                    p.id = idx + 1;
+                });
+
+                renderPots();
+                updateStats();
+                saveGameState();
+            }
         }
 
         // Update Stats Display
