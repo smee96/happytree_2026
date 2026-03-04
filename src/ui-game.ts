@@ -103,10 +103,37 @@ export const gamePageTemplate = `<!DOCTYPE html>
         <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-gray-800">📊 내 상태</h2>
-                <button onclick="toggleTestMode()" id="test-mode-btn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold transition">
-                    🧪 테스트 모드: OFF
-                </button>
+                <div class="flex gap-2">
+                    <button onclick="resetFarm()" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-semibold transition">
+                        🔄 농장 초기화
+                    </button>
+                    <button onclick="toggleTestMode()" id="test-mode-btn" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold transition">
+                        🧪 테스트 모드: OFF
+                    </button>
+                </div>
             </div>
+            
+            <!-- 테스트 모드 통계 -->
+            <div id="test-mode-stats" class="hidden bg-orange-50 border-2 border-orange-300 rounded-lg p-4 mb-4">
+                <div class="text-center mb-2">
+                    <span class="text-sm font-bold text-orange-600">🧪 테스트 모드 활성화 - 아래 데이터는 실제 차감/획득되지 않습니다</span>
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="text-center">
+                        <div class="text-xs text-gray-600">테스트 별 구매</div>
+                        <div class="text-lg font-bold text-yellow-600" id="test-stars">0개</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xs text-gray-600">테스트 코인 획득</div>
+                        <div class="text-lg font-bold text-amber-600" id="test-coins">0개</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xs text-gray-600">테스트 허용치 사용</div>
+                        <div class="text-lg font-bold text-pink-600" id="test-allowance">0개</div>
+                    </div>
+                </div>
+            </div>
+            
             <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
                 <div class="bg-purple-50 rounded-lg p-4 text-center cursor-pointer" onclick="showWalletModal()">
                     <div class="text-2xl mb-1">💰</div>
@@ -268,7 +295,12 @@ export const gamePageTemplate = `<!DOCTYPE html>
             ],
             farmLevels: {},
             starPrice: 2,  // 별 1개당 $2
-            testMode: false  // 🧪 테스트 모드 (조건 무시)
+            testMode: false,  // 🧪 테스트 모드 (조건 무시)
+            testStats: {  // 테스트 모드 전용 통계
+                stars: 0,
+                coins: 0,
+                allowance: 0
+            }
         };
 
         // Load farm levels configuration
@@ -482,6 +514,12 @@ export const gamePageTemplate = `<!DOCTYPE html>
                     gameState.walletBalance -= starCost;
                     gameState.starsPurchased += nextLevel.stars;
                 }
+            } else {
+                // 🧪 테스트 모드: 통계만 기록
+                gameState.testStats.stars += nextLevel.stars;
+                gameState.testStats.coins += nextLevel.coins;
+                gameState.testStats.allowance += nextLevel.hearts_required;
+                updateTestStats();
             }
             
             gameState.coinsEarned += nextLevel.coins;
@@ -523,15 +561,51 @@ export const gamePageTemplate = `<!DOCTYPE html>
         function toggleTestMode() {
             gameState.testMode = !gameState.testMode;
             const btn = document.getElementById('test-mode-btn');
+            const statsDiv = document.getElementById('test-mode-stats');
+            
             if (gameState.testMode) {
                 btn.textContent = '🧪 테스트 모드: ON';
                 btn.className = 'px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-sm font-semibold transition';
+                statsDiv.classList.remove('hidden');
+                // 테스트 통계 초기화
+                gameState.testStats = { stars: 0, coins: 0, allowance: 0 };
+                updateTestStats();
             } else {
                 btn.textContent = '🧪 테스트 모드: OFF';
                 btn.className = 'px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold transition';
+                statsDiv.classList.add('hidden');
             }
             renderPots();
             saveGameState();
+        }
+
+        // 🔄 Reset Farm
+        function resetFarm() {
+            if (!confirm(\`농장 \${gameState.currentFarm}을(를) 초기화하시겠습니까?\\n\\n모든 화분이 삭제되고 초기 상태로 돌아갑니다.\`)) {
+                return;
+            }
+
+            // 초기 상태로 리셋
+            gameState.walletBalance = 0;
+            gameState.heartsBalance = 300000;
+            gameState.heartAllowance = 1;
+            gameState.starsPurchased = 0;
+            gameState.coinsEarned = 0;
+            gameState.pots = [{ id: 1, level: 0 }];
+            gameState.testMode = false;
+            gameState.testStats = { stars: 0, coins: 0, allowance: 0 };
+
+            // UI 업데이트
+            const btn = document.getElementById('test-mode-btn');
+            btn.textContent = '🧪 테스트 모드: OFF';
+            btn.className = 'px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold transition';
+            document.getElementById('test-mode-stats').classList.add('hidden');
+
+            renderPots();
+            updateStats();
+            saveGameState();
+            
+            alert('농장이 초기화되었습니다!');
         }
 
         // 🗑️ Delete Pot
@@ -572,6 +646,15 @@ export const gamePageTemplate = `<!DOCTYPE html>
             document.getElementById('stars-purchased').textContent = gameState.starsPurchased;
             document.getElementById('coins-earned').textContent = gameState.coinsEarned;
             document.getElementById('pots-count').textContent = gameState.pots.length;
+        }
+
+        // Update Test Mode Stats
+        function updateTestStats() {
+            if (gameState.testMode) {
+                document.getElementById('test-stars').textContent = \`\${gameState.testStats.stars}개\`;
+                document.getElementById('test-coins').textContent = \`\${gameState.testStats.coins}개\`;
+                document.getElementById('test-allowance').textContent = \`\${gameState.testStats.allowance}개\`;
+            }
         }
 
         // Render Level Info
