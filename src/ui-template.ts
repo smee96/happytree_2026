@@ -40,9 +40,16 @@ export function generateFarmUITemplate() {
 <body class="bg-gradient-to-br from-green-50 to-blue-50 min-h-screen p-4">
     <div class="max-w-7xl mx-auto">
         <!-- Header -->
-        <div class="text-center mb-6">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">🌳 HappyTree - 농장별 시뮬레이터</h1>
-            <p class="text-gray-600">각 농장은 독립적으로 운영됩니다. 하트허용치는 같은 농장 내에서만 증가합니다.</p>
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="flex justify-between items-center">
+                <div class="text-center flex-1">
+                    <h1 class="text-4xl font-bold text-gray-800 mb-2">🌳 HappyTree - 농장별 시뮬레이터</h1>
+                    <p class="text-gray-600">각 농장은 독립적으로 운영됩니다. 하트허용치는 같은 농장 내에서만 증가합니다.</p>
+                </div>
+                <a href="/" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg font-semibold text-gray-700 transition whitespace-nowrap">
+                    ← 메인으로
+                </a>
+            </div>
         </div>
 
         <!-- Farm Tabs -->
