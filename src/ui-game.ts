@@ -104,9 +104,6 @@ export const gamePageTemplate = `<!DOCTYPE html>
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-gray-800">📊 내 상태</h2>
                 <div class="flex gap-2">
-                    <button onclick="showLevelConfigModal()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-semibold transition">
-                        ⚙️ 레벨 설정
-                    </button>
                     <button onclick="resetFarm()" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-semibold transition">
                         🔄 농장 초기화
                     </button>
@@ -182,6 +179,20 @@ export const gamePageTemplate = `<!DOCTYPE html>
             </div>
             <div id="pots-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 <!-- Pots will be rendered here -->
+            </div>
+        </div>
+
+        <!-- Warehouse -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">🏛️ 창고 (최대 레벨 달성 화분)</h2>
+                <span class="text-sm text-gray-600">창고 화분 수: <span id="warehouse-count" class="font-bold">0</span>개</span>
+            </div>
+            <div id="warehouse-container" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                <!-- Warehouse pots will be rendered here -->
+            </div>
+            <div id="warehouse-empty" class="text-center py-8 text-gray-500">
+                아직 창고에 보관된 화분이 없습니다. 최대 레벨을 달성한 화분을 창고로 보내세요!
             </div>
         </div>
 
@@ -336,9 +347,11 @@ export const gamePageTemplate = `<!DOCTYPE html>
             starsPurchased: 0,
             coinsEarned: 0,
             pots: [
-                { id: 1, level: 0 }
+                { id: 1, level: 0, farmId: 1 }  // farmId 추가
             ],
+            warehouse: [],  // 창고에 보관된 화분들
             farmLevels: {},
+            farmUnlocked: { 1: true, 2: false, 3: false, 4: false },  // 농장 잠금 상태
             starPrice: 2,  // 별 1개당 $2
             testMode: false,  // 🧪 테스트 모드 (조건 무시)
             testStats: {  // 테스트 모드 전용 통계
@@ -403,7 +416,9 @@ export const gamePageTemplate = `<!DOCTYPE html>
         function initGame() {
             loadFarmLevels();
             loadGameState();
+            updateFarmButtons();  // 농장 버튼 상태 업데이트
             renderPots();
+            renderWarehouse();  // 창고 렌더링
             updateStats();
         }
 
@@ -421,22 +436,65 @@ export const gamePageTemplate = `<!DOCTYPE html>
 
         // Select Farm
         function selectFarm(farmId) {
+            // 잠긴 농장 체크
+            if (!gameState.farmUnlocked[farmId]) {
+                alert(\`🔒 농장 \${farmId}은(는) 잠겨있습니다!\\n\\n농장 \${farmId - 1}에서 최대 레벨(Lv.8)을 달성한 화분이 있어야 해제됩니다.\`);
+                return;
+            }
+            
             gameState.currentFarm = farmId;
             
             // Update button styles
-            for (let i = 1; i <= 4; i++) {
-                const btn = document.getElementById(\`farm-btn-\${i}\`);
-                if (i === farmId) {
-                    btn.className = 'farm-btn px-6 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition';
-                } else {
-                    btn.className = 'farm-btn px-6 py-4 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition';
-                }
-            }
+            updateFarmButtons();
             
             document.getElementById('current-farm-display').textContent = farmId;
             renderLevelInfo();
             renderPots();
             saveGameState();
+        }
+        
+        // Update Farm Buttons with lock status
+        function updateFarmButtons() {
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById(\`farm-btn-\${i}\`);
+                const isUnlocked = gameState.farmUnlocked[i];
+                const isCurrent = i === gameState.currentFarm;
+                
+                if (!isUnlocked) {
+                    // 잠긴 농장
+                    btn.className = 'farm-btn px-6 py-4 bg-gray-400 text-gray-600 rounded-lg font-bold cursor-not-allowed opacity-50';
+                    btn.innerHTML = \`🔒 농장 \${i}\`;
+                } else if (isCurrent) {
+                    // 현재 선택된 농장
+                    btn.className = 'farm-btn px-6 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition';
+                    btn.innerHTML = \`농장 \${i}\`;
+                } else {
+                    // 해제된 다른 농장
+                    btn.className = 'farm-btn px-6 py-4 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition';
+                    btn.innerHTML = \`농장 \${i}\`;
+                }
+            }
+        }
+        
+        // Check and unlock next farm
+        function checkFarmUnlock() {
+            // 각 농장에서 최대 레벨 달성 확인
+            for (let farmId = 1; farmId <= 3; farmId++) {
+                const hasMaxLevelPot = gameState.pots.some(pot => 
+                    pot.farmId === farmId && pot.level === 8
+                );
+                
+                const hasWarehouseMaxLevel = gameState.warehouse.some(pot =>
+                    pot.farmId === farmId && pot.level === 8
+                );
+                
+                if ((hasMaxLevelPot || hasWarehouseMaxLevel) && !gameState.farmUnlocked[farmId + 1]) {
+                    gameState.farmUnlocked[farmId + 1] = true;
+                    alert(\`🎉 축하합니다!\\n\\n농장 \${farmId}에서 최대 레벨을 달성하여\\n농장 \${farmId + 1}이(가) 해제되었습니다!\`);
+                    updateFarmButtons();
+                    saveGameState();
+                }
+            }
         }
 
         // Wallet functions
@@ -473,6 +531,12 @@ export const gamePageTemplate = `<!DOCTYPE html>
                                 <div class="text-2xl font-bold text-yellow-600">Lv.\${pot.level}</div>
                                 <div class="text-xs text-yellow-600 mt-1">⭐ 최대 레벨!</div>
                             </div>
+                            <button 
+                                onclick="moveToWarehouse(\${pot.id})" 
+                                class="w-full py-2 bg-purple-500 hover:bg-purple-600 text-white rounded-lg font-semibold transition text-sm"
+                            >
+                                🏛️ 창고로 보내기
+                            </button>
                         </div>
                     \`;
                 }
@@ -544,15 +608,78 @@ export const gamePageTemplate = `<!DOCTYPE html>
 
             const newPot = {
                 id: gameState.pots.length + 1,
-                level: 0
+                level: 0,
+                farmId: gameState.currentFarm  // 현재 농장 ID 저장
             };
             
             gameState.pots.push(newPot);
             gameState.heartAllowance += 1; // 자신의 화분 추가로 허용치 증가
             
             renderPots();
+            renderWarehouse();
             updateStats();
             saveGameState();
+        }
+
+        // Move pot to warehouse
+        function moveToWarehouse(potId) {
+            const pot = gameState.pots.find(p => p.id === potId);
+            if (!pot) return;
+            
+            if (pot.level !== 8) {
+                alert('최대 레벨(Lv.8) 화분만 창고로 보낼 수 있습니다!');
+                return;
+            }
+            
+            if (confirm(\`화분 \${potId}을(를) 창고로 보내시겠습니까?\\n\\n창고로 보낸 화분은 다시 꺼낼 수 없지만, 다음 농장을 해제하는데 도움이 됩니다.\`)) {
+                // 창고로 이동
+                gameState.warehouse.push({ ...pot });
+                
+                // 화분 목록에서 제거
+                gameState.pots = gameState.pots.filter(p => p.id !== potId);
+                
+                // ID 재정렬
+                gameState.pots.forEach((p, idx) => {
+                    p.id = idx + 1;
+                });
+                
+                // 허용치 조정 (창고로 보낸 화분은 더 이상 허용치에 기여하지 않음)
+                gameState.heartAllowance -= 1;
+                
+                renderPots();
+                renderWarehouse();
+                updateStats();
+                checkFarmUnlock();  // 농장 해제 확인
+                saveGameState();
+                
+                alert('화분이 창고로 이동되었습니다! 🏛️');
+            }
+        }
+
+        // Render Warehouse
+        function renderWarehouse() {
+            const container = document.getElementById('warehouse-container');
+            const emptyMessage = document.getElementById('warehouse-empty');
+            const countDisplay = document.getElementById('warehouse-count');
+            
+            countDisplay.textContent = gameState.warehouse.length;
+            
+            if (gameState.warehouse.length === 0) {
+                container.innerHTML = '';
+                emptyMessage.classList.remove('hidden');
+            } else {
+                emptyMessage.classList.add('hidden');
+                container.innerHTML = gameState.warehouse.map((pot, idx) => \`
+                    <div class="pot-card bg-gradient-to-br from-purple-100 to-indigo-100 rounded-xl p-4 border-2 border-purple-300">
+                        <div class="text-center">
+                            <div class="text-6xl mb-2">\${POT_EMOJIS[pot.level] || '🌴'}</div>
+                            <div class="text-sm font-bold text-gray-800">창고 화분 #\${idx + 1}</div>
+                            <div class="text-lg font-bold text-purple-600">Lv.\${pot.level}</div>
+                            <div class="text-xs text-purple-600 mt-1">농장 \${pot.farmId}</div>
+                        </div>
+                    </div>
+                \`).join('');
+            }
         }
 
         // Attempt Level Up
@@ -615,7 +742,9 @@ export const gamePageTemplate = `<!DOCTYPE html>
             showLevelUpModal(pot.id, pot.level, nextLevel.coins, nextLevel.hearts_reward);
 
             renderPots();
+            renderWarehouse();
             updateStats();
+            checkFarmUnlock();  // 레벨업 후 농장 해제 확인
             saveGameState();
         }
 
@@ -665,7 +794,7 @@ export const gamePageTemplate = `<!DOCTYPE html>
 
         // 🔄 Reset Farm
         function resetFarm() {
-            if (!confirm(\`농장 \${gameState.currentFarm}을(를) 초기화하시겠습니까?\\n\\n모든 화분이 삭제되고 초기 상태로 돌아갑니다.\`)) {
+            if (!confirm(\`농장 \${gameState.currentFarm}을(를) 초기화하시겠습니까?\\n\\n모든 화분과 창고가 삭제되고 초기 상태로 돌아갑니다.\`)) {
                 return;
             }
 
@@ -675,7 +804,9 @@ export const gamePageTemplate = `<!DOCTYPE html>
             gameState.heartAllowance = 1;
             gameState.starsPurchased = 0;
             gameState.coinsEarned = 0;
-            gameState.pots = [{ id: 1, level: 0 }];
+            gameState.pots = [{ id: 1, level: 0, farmId: gameState.currentFarm }];
+            gameState.warehouse = [];  // 창고 초기화
+            gameState.farmUnlocked = { 1: true, 2: false, 3: false, 4: false };  // 농장 잠금 초기화
             gameState.testMode = false;
             gameState.testStats = { stars: 0, coins: 0, allowance: 0 };
 
@@ -685,7 +816,9 @@ export const gamePageTemplate = `<!DOCTYPE html>
             btn.className = 'px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold transition';
             document.getElementById('test-mode-stats').classList.add('hidden');
 
+            updateFarmButtons();  // 농장 버튼 업데이트
             renderPots();
+            renderWarehouse();
             updateStats();
             saveGameState();
             
@@ -717,6 +850,7 @@ export const gamePageTemplate = `<!DOCTYPE html>
                 });
 
                 renderPots();
+                renderWarehouse();
                 updateStats();
                 saveGameState();
             }
