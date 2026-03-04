@@ -1,8 +1,7 @@
-// 🔒 초기 레벨 데이터 백업 (읽기 전용)
-// 이 파일은 각 농장의 초기 레벨 설정을 보존합니다.
-// 수정하지 마세요! 필요시 farm-calculator.ts의 FARM_LEVELS를 수정하세요.
+// 농장별 레벨 초기값 (백업용)
+// 이 파일은 수정하지 마세요. 초기값 참조용입니다.
 
-interface FarmLevel {
+export interface FarmLevel {
   level: number;
   hearts_required: number;
   stars: number;
@@ -10,17 +9,17 @@ interface FarmLevel {
   hearts_reward: number;
 }
 
-// ⭐ 초기 레벨 데이터 (백업용)
+// 설정하기(시뮬레이터)의 초기값 = 현재 farm-calculator.ts의 값
 export const INITIAL_FARM_LEVELS: { [farmId: number]: FarmLevel[] } = {
   1: [
-    { level: 1, hearts_required: 0, stars: 0, coins: 0, hearts_reward: 1 },
-    { level: 2, hearts_required: 0, stars: 0, coins: 0, hearts_reward: 3 },
-    { level: 3, hearts_required: 0, stars: 1, coins: 0, hearts_reward: 14 },
-    { level: 4, hearts_required: 15, stars: 1, coins: 6, hearts_reward: 69 },
-    { level: 5, hearts_required: 23, stars: 1, coins: 12, hearts_reward: 344 },
-    { level: 6, hearts_required: 39, stars: 1, coins: 24, hearts_reward: 1719 },
-    { level: 7, hearts_required: 71, stars: 1, coins: 48, hearts_reward: 8594 },
-    { level: 8, hearts_required: 135, stars: 1, coins: 96, hearts_reward: 0 },
+    { level: 1, hearts_required: 1, stars: 0, coins: 0, hearts_reward: 1 },
+    { level: 2, hearts_required: 2, stars: 0, coins: 0, hearts_reward: 3 },
+    { level: 3, hearts_required: 4, stars: 1, coins: 0, hearts_reward: 8 },
+    { level: 4, hearts_required: 8, stars: 1, coins: 6, hearts_reward: 16 },
+    { level: 5, hearts_required: 16, stars: 1, coins: 12, hearts_reward: 32 },
+    { level: 6, hearts_required: 32, stars: 1, coins: 24, hearts_reward: 62 },
+    { level: 7, hearts_required: 64, stars: 1, coins: 48, hearts_reward: 100 },
+    { level: 8, hearts_required: 128, stars: 1, coins: 96, hearts_reward: 0 },
   ],
   2: [
     { level: 1, hearts_required: 0, stars: 1, coins: 0, hearts_reward: 1 },
@@ -54,12 +53,12 @@ export const INITIAL_FARM_LEVELS: { [farmId: number]: FarmLevel[] } = {
   ],
 };
 
-// 초기 데이터 복구 함수
-export function getInitialLevels(farmId: number): FarmLevel[] | undefined {
-  return INITIAL_FARM_LEVELS[farmId];
+// 특정 농장의 초기값 가져오기
+export function getInitialLevels(farmId: number): FarmLevel[] {
+  return JSON.parse(JSON.stringify(INITIAL_FARM_LEVELS[farmId] || []));
 }
 
-// 모든 농장 초기 데이터 복구
+// 모든 농장의 초기값 가져오기
 export function getAllInitialLevels(): { [farmId: number]: FarmLevel[] } {
-  return { ...INITIAL_FARM_LEVELS };
+  return JSON.parse(JSON.stringify(INITIAL_FARM_LEVELS));
 }

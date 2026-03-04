@@ -1,4 +1,5 @@
 import { FARM_LEVELS } from './lib/farm-calculator';
+import { INITIAL_FARM_LEVELS } from './lib/farm-levels-initial';
 
 export function generateFarmUITemplate() {
   return `<!DOCTYPE html>
@@ -118,9 +119,12 @@ export function generateFarmUITemplate() {
                 </div>
                 
                 <!-- Calculate Button -->
-                <div class="mb-6">
-                    <button onclick="calculate(1)" class="w-full px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 shadow-lg">
+                <div class="mb-6 flex gap-3">
+                    <button onclick="calculate(1)" class="flex-1 px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 shadow-lg">
                         🚀 계산하기
+                    </button>
+                    <button onclick="resetToInitial(1)" class="px-6 py-3 bg-gray-500 text-white font-bold text-lg rounded-lg hover:bg-gray-600 shadow-lg">
+                        🔄 초기화
                     </button>
                 </div>
                 
@@ -289,9 +293,12 @@ export function generateFarmUITemplate() {
                 </div>
                 
                 <!-- Calculate Button -->
-                <div class="mb-6">
-                    <button onclick="calculate(2)" class="w-full px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 shadow-lg">
+                <div class="mb-6 flex gap-3">
+                    <button onclick="calculate(2)" class="flex-1 px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 shadow-lg">
                         🚀 계산하기
+                    </button>
+                    <button onclick="resetToInitial(2)" class="px-6 py-3 bg-gray-500 text-white font-bold text-lg rounded-lg hover:bg-gray-600 shadow-lg">
+                        🔄 초기화
                     </button>
                 </div>
                 
@@ -460,9 +467,12 @@ export function generateFarmUITemplate() {
                 </div>
                 
                 <!-- Calculate Button -->
-                <div class="mb-6">
-                    <button onclick="calculate(3)" class="w-full px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 shadow-lg">
+                <div class="mb-6 flex gap-3">
+                    <button onclick="calculate(3)" class="flex-1 px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 shadow-lg">
                         🚀 계산하기
+                    </button>
+                    <button onclick="resetToInitial(3)" class="px-6 py-3 bg-gray-500 text-white font-bold text-lg rounded-lg hover:bg-gray-600 shadow-lg">
+                        🔄 초기화
                     </button>
                 </div>
                 
@@ -631,9 +641,12 @@ export function generateFarmUITemplate() {
                 </div>
                 
                 <!-- Calculate Button -->
-                <div class="mb-6">
-                    <button onclick="calculate(4)" class="w-full px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 shadow-lg">
+                <div class="mb-6 flex gap-3">
+                    <button onclick="calculate(4)" class="flex-1 px-6 py-3 bg-green-600 text-white font-bold text-lg rounded-lg hover:bg-green-700 shadow-lg">
                         🚀 계산하기
+                    </button>
+                    <button onclick="resetToInitial(4)" class="px-6 py-3 bg-gray-500 text-white font-bold text-lg rounded-lg hover:bg-gray-600 shadow-lg">
+                        🔄 초기화
                     </button>
                 </div>
                 
@@ -750,6 +763,9 @@ export function generateFarmUITemplate() {
     </div>
 
     <script>
+        // 초기 레벨 데이터
+        const INITIAL_FARM_LEVELS = ${JSON.stringify(INITIAL_FARM_LEVELS, null, 2)};
+        
         function toggleLevelConfig(farmId) {
             const configDiv = document.getElementById(\`level-config-\${farmId}\`);
             const toggleText = document.getElementById(\`toggle-text-\${farmId}\`);
@@ -822,6 +838,54 @@ export function generateFarmUITemplate() {
                     console.error('Failed to load settings:', e);
                 }
             }
+        }
+        
+        function resetToInitial(farmId) {
+            if (!confirm('농장 ' + farmId + '의 모든 설정을 초기값으로 되돌립니다. 계속하시겠습니까?')) {
+                return;
+            }
+            
+            // 초기값 가져오기
+            const initialLevels = INITIAL_FARM_LEVELS[farmId];
+            if (!initialLevels) {
+                alert('초기값을 찾을 수 없습니다.');
+                return;
+            }
+            
+            // 기본 설정을 기본값으로 리셋
+            const usersInput = document.getElementById(\`users-\${farmId}\`);
+            const potsInput = document.getElementById(\`pots-\${farmId}\`);
+            const priceInput = document.getElementById(\`price-\${farmId}\`);
+            const heartsInput = document.getElementById(\`initialHearts-\${farmId}\`);
+            
+            if (usersInput) usersInput.value = '100';
+            if (potsInput) potsInput.value = '3';
+            if (priceInput) priceInput.value = '2';
+            if (heartsInput) heartsInput.value = '300000';
+            
+            // 레벨 설정을 초기값으로 복원
+            const tbodyId = farmId === 1 ? \`level-config-body-\${farmId}\` : \`level-inputs-\${farmId}\`;
+            initialLevels.forEach((level, idx) => {
+                const row = document.querySelector(\`#\${tbodyId} tr:nth-child(\${idx + 1})\`);
+                if (row) {
+                    const inputs = row.querySelectorAll('input[data-field]');
+                    inputs.forEach(input => {
+                        const field = input.getAttribute('data-field');
+                        if (level[field] !== undefined) {
+                            input.value = level[field];
+                        }
+                    });
+                }
+            });
+            
+            // localStorage에서 삭제
+            localStorage.removeItem(\`farm\${farmId}_config\`);
+            
+            // 합계 업데이트
+            updateSums(farmId);
+            
+            alert(\`농장 \${farmId} 설정이 초기화되었습니다.\`);
+            console.log(\`Farm \${farmId} reset to initial values\`, initialLevels);
         }
         
         function getLevelConfig(farmId) {

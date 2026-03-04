@@ -12,14 +12,14 @@ interface FarmLevel {
 // 농장별 레벨 데이터
 export const FARM_LEVELS: { [farmId: number]: FarmLevel[] } = {
   1: [
-    { level: 1, hearts_required: 0, stars: 0, coins: 0, hearts_reward: 1 },
-    { level: 2, hearts_required: 0, stars: 0, coins: 0, hearts_reward: 3 },
-    { level: 3, hearts_required: 0, stars: 1, coins: 0, hearts_reward: 14 },
-    { level: 4, hearts_required: 15, stars: 1, coins: 6, hearts_reward: 69 },
-    { level: 5, hearts_required: 23, stars: 1, coins: 12, hearts_reward: 344 },
-    { level: 6, hearts_required: 39, stars: 1, coins: 24, hearts_reward: 1719 },
-    { level: 7, hearts_required: 71, stars: 1, coins: 48, hearts_reward: 8594 },
-    { level: 8, hearts_required: 135, stars: 1, coins: 96, hearts_reward: 0 },
+    { level: 1, hearts_required: 1, stars: 0, coins: 0, hearts_reward: 1 },
+    { level: 2, hearts_required: 2, stars: 0, coins: 0, hearts_reward: 3 },
+    { level: 3, hearts_required: 4, stars: 1, coins: 0, hearts_reward: 8 },
+    { level: 4, hearts_required: 8, stars: 1, coins: 6, hearts_reward: 16 },
+    { level: 5, hearts_required: 16, stars: 1, coins: 12, hearts_reward: 32 },
+    { level: 6, hearts_required: 32, stars: 1, coins: 24, hearts_reward: 62 },
+    { level: 7, hearts_required: 64, stars: 1, coins: 48, hearts_reward: 100 },
+    { level: 8, hearts_required: 128, stars: 1, coins: 96, hearts_reward: 0 },
   ],
   2: [
     { level: 1, hearts_required: 0, stars: 1, coins: 0, hearts_reward: 1 },

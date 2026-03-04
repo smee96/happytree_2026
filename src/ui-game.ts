@@ -104,6 +104,9 @@ export const gamePageTemplate = `<!DOCTYPE html>
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold text-gray-800">📊 내 상태</h2>
                 <div class="flex gap-2">
+                    <button onclick="showLevelConfigModal()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm font-semibold transition">
+                        ⚙️ 레벨 설정
+                    </button>
                     <button onclick="resetFarm()" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm font-semibold transition">
                         🔄 농장 초기화
                     </button>
@@ -184,7 +187,12 @@ export const gamePageTemplate = `<!DOCTYPE html>
 
         <!-- Level Info -->
         <div class="bg-white rounded-lg shadow-lg p-6">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">📋 레벨 정보 (농장 <span id="current-farm-display">1</span>)</h2>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">📋 레벨 정보 (농장 <span id="current-farm-display">1</span>)</h2>
+                <button onclick="showLevelEditModal()" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition">
+                    ⚙️ 레벨 설정 편집
+                </button>
+            </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
                     <thead class="bg-gray-100">
@@ -200,6 +208,43 @@ export const gamePageTemplate = `<!DOCTYPE html>
                         <!-- Level info will be rendered here -->
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Level Edit Modal -->
+    <div id="level-edit-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
+        <div class="bg-white rounded-2xl p-8 max-w-4xl w-full mx-4 my-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-4">⚙️ 레벨 설정 편집 (농장 <span id="edit-farm-display">1</span>)</h3>
+            <p class="text-sm text-gray-600 mb-4">💡 설정하기(시뮬레이터)의 값을 사용합니다. 여기서 수정하면 게임하기에만 적용됩니다.</p>
+            
+            <div class="overflow-x-auto mb-4">
+                <table class="w-full text-sm bg-white">
+                    <thead class="bg-blue-100">
+                        <tr>
+                            <th class="px-3 py-2 text-center">레벨</th>
+                            <th class="px-3 py-2 text-center">필요 하트허용치</th>
+                            <th class="px-3 py-2 text-center">필요 별</th>
+                            <th class="px-3 py-2 text-center">보상 코인</th>
+                            <th class="px-3 py-2 text-center">보상 하트</th>
+                        </tr>
+                    </thead>
+                    <tbody id="level-edit-tbody">
+                        <!-- Level edit inputs will be rendered here -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="flex gap-3">
+                <button onclick="saveLevelEdit()" class="flex-1 px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-bold transition">
+                    💾 저장하기
+                </button>
+                <button onclick="resetLevelToSimulator()" class="flex-1 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg font-bold transition">
+                    🔄 시뮬레이터 값으로 복원
+                </button>
+                <button onclick="closeLevelEditModal()" class="px-6 py-3 bg-gray-300 hover:bg-gray-400 text-gray-700 rounded-lg font-bold transition">
+                    취소
+                </button>
             </div>
         </div>
     </div>
@@ -304,11 +349,50 @@ export const gamePageTemplate = `<!DOCTYPE html>
         };
 
         // Load farm levels configuration
+        // 게임하기는 다음 우선순위로 값을 사용합니다:
+        // 1. 게임하기 전용 설정 (game_farmX_levels)
+        // 2. 설정하기(시뮬레이터)의 현재값 (farmX_config)
+        // 3. API 기본값
         async function loadFarmLevels() {
             try {
+                // API에서 기본값 로드
                 const response = await fetch('/api/farm-levels');
-                const data = await response.json();
-                gameState.farmLevels = data;
+                const apiData = await response.json();
+                
+                // 각 농장별로 적용
+                for (let farmId = 1; farmId <= 4; farmId++) {
+                    // 1순위: 게임하기 전용 설정
+                    const gameLevels = localStorage.getItem(\`game_farm\${farmId}_levels\`);
+                    if (gameLevels) {
+                        try {
+                            gameState.farmLevels[farmId] = JSON.parse(gameLevels);
+                            console.log(\`Farm \${farmId}: Using game-specific levels\`);
+                            continue;
+                        } catch (e) {
+                            console.error(\`Failed to parse game_farm\${farmId}_levels:\`, e);
+                        }
+                    }
+                    
+                    // 2순위: 설정하기(시뮬레이터)의 현재값
+                    const simulatorConfig = localStorage.getItem(\`farm\${farmId}_config\`);
+                    if (simulatorConfig) {
+                        try {
+                            const config = JSON.parse(simulatorConfig);
+                            if (config.levels && config.levels.length > 0) {
+                                gameState.farmLevels[farmId] = config.levels;
+                                console.log(\`Farm \${farmId}: Using simulator levels\`);
+                                continue;
+                            }
+                        } catch (e) {
+                            console.error(\`Failed to parse farm\${farmId}_config:\`, e);
+                        }
+                    }
+                    
+                    // 3순위: API 기본값
+                    gameState.farmLevels[farmId] = apiData[farmId];
+                    console.log(\`Farm \${farmId}: Using API default levels\`);
+                }
+                
                 renderLevelInfo();
             } catch (error) {
                 console.error('Failed to load farm levels:', error);
@@ -671,6 +755,107 @@ export const gamePageTemplate = `<!DOCTYPE html>
                     <td class="px-4 py-2 text-center">\${level.hearts_reward}</td>
                 </tr>
             \`).join('');
+        }
+
+        // Level Edit Modal Functions
+        function showLevelEditModal() {
+            const modal = document.getElementById('level-edit-modal');
+            const farmDisplay = document.getElementById('edit-farm-display');
+            const tbody = document.getElementById('level-edit-tbody');
+            
+            farmDisplay.textContent = gameState.currentFarm;
+            
+            const levels = gameState.farmLevels[gameState.currentFarm] || [];
+            tbody.innerHTML = levels.map((level, idx) => \`
+                <tr>
+                    <td class="px-3 py-2 text-center font-semibold">Lv.\${level.level}</td>
+                    <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="\${level.hearts_required}" min="0" data-level="\${level.level}" data-field="hearts_required"></td>
+                    <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="\${level.stars}" min="0" data-level="\${level.level}" data-field="stars"></td>
+                    <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="\${level.coins}" min="0" data-level="\${level.level}" data-field="coins"></td>
+                    <td class="px-2 py-2"><input type="number" class="w-full px-2 py-1 border rounded text-center" value="\${level.hearts_reward}" min="0" data-level="\${level.level}" data-field="hearts_reward"></td>
+                </tr>
+            \`).join('');
+            
+            modal.classList.remove('hidden');
+        }
+
+        function closeLevelEditModal() {
+            document.getElementById('level-edit-modal').classList.add('hidden');
+        }
+
+        function saveLevelEdit() {
+            const farmId = gameState.currentFarm;
+            const tbody = document.getElementById('level-edit-tbody');
+            const newLevels = [];
+            
+            for (let i = 1; i <= 8; i++) {
+                const row = tbody.querySelector(\`tr:nth-child(\${i})\`);
+                if (row) {
+                    const inputs = row.querySelectorAll('input[data-field]');
+                    const levelData = { level: i };
+                    
+                    inputs.forEach(input => {
+                        const field = input.getAttribute('data-field');
+                        levelData[field] = parseInt(input.value) || 0;
+                    });
+                    
+                    newLevels.push(levelData);
+                }
+            }
+            
+            // gameState 업데이트
+            gameState.farmLevels[farmId] = newLevels;
+            
+            // localStorage에 게임하기 전용 설정 저장
+            localStorage.setItem(\`game_farm\${farmId}_levels\`, JSON.stringify(newLevels));
+            
+            renderLevelInfo();
+            renderPots(); // 레벨 조건이 바뀌었으므로 화분 다시 렌더링
+            saveGameState();
+            closeLevelEditModal();
+            
+            alert(\`농장 \${farmId}의 레벨 설정이 저장되었습니다!\`);
+            console.log(\`Game: Farm \${farmId} levels saved\`, newLevels);
+        }
+
+        function resetLevelToSimulator() {
+            const farmId = gameState.currentFarm;
+            
+            if (!confirm(\`농장 \${farmId}의 레벨 설정을 설정하기(시뮬레이터)의 현재 값으로 복원하시겠습니까?\`)) {
+                return;
+            }
+            
+            // localStorage에서 시뮬레이터 설정 가져오기
+            const simulatorConfig = localStorage.getItem(\`farm\${farmId}_config\`);
+            if (simulatorConfig) {
+                try {
+                    const config = JSON.parse(simulatorConfig);
+                    if (config.levels && config.levels.length > 0) {
+                        gameState.farmLevels[farmId] = config.levels;
+                        
+                        // 게임하기 전용 설정 삭제
+                        localStorage.removeItem(\`game_farm\${farmId}_levels\`);
+                        
+                        renderLevelInfo();
+                        renderPots();
+                        saveGameState();
+                        
+                        // 모달 닫고 다시 열어서 새 값 표시
+                        closeLevelEditModal();
+                        showLevelEditModal();
+                        
+                        alert(\`농장 \${farmId} 레벨 설정이 시뮬레이터 값으로 복원되었습니다!\`);
+                        console.log(\`Game: Farm \${farmId} restored from simulator\`, config.levels);
+                    } else {
+                        alert('시뮬레이터에 저장된 값이 없습니다. 기본값을 사용합니다.');
+                    }
+                } catch (e) {
+                    console.error('Failed to restore from simulator:', e);
+                    alert('복원에 실패했습니다.');
+                }
+            } else {
+                alert('시뮬레이터에 저장된 설정이 없습니다.');
+            }
         }
 
         // Initialize on page load
