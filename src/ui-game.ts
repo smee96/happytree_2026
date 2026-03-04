@@ -413,12 +413,12 @@ export const gamePageTemplate = `<!DOCTYPE html>
         }
 
         // Initialize game
-        function initGame() {
-            loadFarmLevels();
-            loadGameState();
-            updateFarmButtons();  // 농장 버튼 상태 업데이트
+        async function initGame() {
+            await loadFarmLevels();  // farmLevels 먼저 로드
+            loadGameState();         // 그 다음 게임 상태 로드
+            updateFarmButtons();     // 농장 버튼 상태 업데이트
             renderPots();
-            renderWarehouse();  // 창고 렌더링
+            renderWarehouse();       // 창고 렌더링
             updateStats();
         }
 
@@ -430,7 +430,22 @@ export const gamePageTemplate = `<!DOCTYPE html>
         function loadGameState() {
             const saved = localStorage.getItem('happytree_game');
             if (saved) {
-                gameState = JSON.parse(saved);
+                const savedState = JSON.parse(saved);
+                // farmLevels는 덮어쓰지 않고 나머지만 복원
+                gameState.currentFarm = savedState.currentFarm || 1;
+                gameState.walletBalance = savedState.walletBalance || 0;
+                gameState.heartsBalance = savedState.heartsBalance || 300000;
+                gameState.heartAllowance = savedState.heartAllowance || 1;
+                gameState.starsPurchased = savedState.starsPurchased || 0;
+                gameState.coinsEarned = savedState.coinsEarned || 0;
+                gameState.pots = savedState.pots || [{ id: 1, level: 0, farmId: 1 }];
+                gameState.warehouse = savedState.warehouse || [];
+                gameState.farmUnlocked = savedState.farmUnlocked || { 1: true, 2: false, 3: false, 4: false };
+                gameState.starPrice = savedState.starPrice || 2;
+                gameState.testMode = savedState.testMode || false;
+                gameState.testStats = savedState.testStats || { stars: 0, coins: 0, allowance: 0 };
+                // farmLevels는 loadFarmLevels()에서 이미 로드됨
+                console.log('Game state loaded', gameState);
             }
         }
 
