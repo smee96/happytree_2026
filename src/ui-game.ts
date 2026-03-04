@@ -519,6 +519,7 @@ export const gamePageTemplate = `<!DOCTYPE html>
             document.getElementById('current-farm-display').textContent = farmId;
             renderLevelInfo();
             renderPots();
+            updateStats();  // 농장별 화분 개수, 하트 등 업데이트
             saveGameState();
         }
         
