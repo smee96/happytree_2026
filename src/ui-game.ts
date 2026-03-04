@@ -464,9 +464,9 @@ export const gamePageTemplate = `<!DOCTYPE html>
 
         // Select Farm
         function selectFarm(farmId) {
-            // 잠긴 농장 체크
-            if (!gameState.farmUnlocked[farmId]) {
-                alert(\`🔒 농장 \${farmId}은(는) 잠겨있습니다!\\n\\n농장 \${farmId - 1}에서 최대 레벨(Lv.8)을 달성한 화분이 있어야 해제됩니다.\`);
+            // 🧪 테스트 모드에서는 잠금 무시
+            if (!gameState.testMode && !gameState.farmUnlocked[farmId]) {
+                alert(\`🔒 농장 \${farmId}은(는) 잠겨있습니다!\\n\\n농장 \${farmId - 1}에서 최대 레벨(Lv.8)을 달성한 화분이 있어야 해제됩니다.\\n\\n💡 테스트 모드를 활성화하면 모든 농장을 테스트할 수 있습니다!\`);
                 return;
             }
             
@@ -485,7 +485,7 @@ export const gamePageTemplate = `<!DOCTYPE html>
         function updateFarmButtons() {
             for (let i = 1; i <= 4; i++) {
                 const btn = document.getElementById(\`farm-btn-\${i}\`);
-                const isUnlocked = gameState.farmUnlocked[i];
+                const isUnlocked = gameState.testMode || gameState.farmUnlocked[i];  // 🧪 테스트 모드에서는 모두 해제
                 const isCurrent = i === gameState.currentFarm;
                 
                 if (!isUnlocked) {
@@ -494,12 +494,14 @@ export const gamePageTemplate = `<!DOCTYPE html>
                     btn.innerHTML = \`🔒 농장 \${i}\`;
                 } else if (isCurrent) {
                     // 현재 선택된 농장
+                    const testBadge = gameState.testMode ? ' <span class="text-xs">🧪</span>' : '';
                     btn.className = 'farm-btn px-6 py-4 bg-green-500 text-white rounded-lg font-bold hover:bg-green-600 transition';
-                    btn.innerHTML = \`농장 \${i}\`;
+                    btn.innerHTML = \`농장 \${i}\${testBadge}\`;
                 } else {
                     // 해제된 다른 농장
+                    const testBadge = gameState.testMode && !gameState.farmUnlocked[i] ? ' <span class="text-xs">🧪</span>' : '';
                     btn.className = 'farm-btn px-6 py-4 bg-gray-200 text-gray-700 rounded-lg font-bold hover:bg-gray-300 transition';
-                    btn.innerHTML = \`농장 \${i}\`;
+                    btn.innerHTML = \`농장 \${i}\${testBadge}\`;
                 }
             }
         }
@@ -811,11 +813,13 @@ export const gamePageTemplate = `<!DOCTYPE html>
                 // 테스트 통계 초기화
                 gameState.testStats = { stars: 0, coins: 0, allowance: 0 };
                 updateTestStats();
+                alert('🧪 테스트 모드가 활성화되었습니다!\\n\\n• 모든 레벨업 조건 무시\\n• 모든 농장 잠금 해제\\n• 별/코인/하트 차감 없음\\n\\n테스트가 끝나면 OFF로 돌려주세요!');
             } else {
                 btn.textContent = '🧪 테스트 모드: OFF';
                 btn.className = 'px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-sm font-semibold transition';
                 statsDiv.classList.add('hidden');
             }
+            updateFarmButtons();  // 🧪 농장 버튼 상태 업데이트
             renderPots();
             saveGameState();
         }
