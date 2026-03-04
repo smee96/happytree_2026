@@ -3,8 +3,10 @@ import { cors } from 'hono/cors';
 import { calculateCorrectReport } from './lib/correct-calculator';
 import { calculateMultiPotReport } from './lib/multi-pot-calculator';
 import { calculateFivePotsReport } from './lib/five-pots-calculator';
-import { calculateSingleFarm } from './lib/farm-calculator';
+import { calculateSingleFarm, FARM_LEVELS } from './lib/farm-calculator';
 import { farmUITemplate } from './ui-template';
+import { mainPageTemplate } from './ui-main';
+import { gamePageTemplate } from './ui-game';
 
 const app = new Hono();
 
@@ -148,8 +150,23 @@ app.post('/api/farm/:farm_id/:total_users/:max_pots', async (c) => {
   }
 });
 
-// 루트 경로 - 농장별 독립 시뮬레이터 UI
+// 농장 레벨 정보 API (게임용)
+app.get('/api/farm-levels', (c) => {
+  return c.json(FARM_LEVELS);
+});
+
+// 루트 경로 - 메인 페이지
 app.get('/', (c) => {
+  return c.html(mainPageTemplate);
+});
+
+// 게임 페이지
+app.get('/game', (c) => {
+  return c.html(gamePageTemplate);
+});
+
+// 시뮬레이터 페이지
+app.get('/simulator', (c) => {
   return c.html(farmUITemplate);
 });
 

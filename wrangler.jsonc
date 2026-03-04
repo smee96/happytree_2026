@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "happy-tree-v2",
+  "name": "happy-tree-game",
   "compatibility_date": "2026-01-27",
   "pages_build_output_dir": "./dist",
   "compatibility_flags": [

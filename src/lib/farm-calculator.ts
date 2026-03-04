@@ -10,7 +10,7 @@ interface FarmLevel {
 }
 
 // 농장별 레벨 데이터
-const FARM_LEVELS: { [farmId: number]: FarmLevel[] } = {
+export const FARM_LEVELS: { [farmId: number]: FarmLevel[] } = {
   1: [
     { level: 1, hearts_required: 0, stars: 0, coins: 0, hearts_reward: 1 },
     { level: 2, hearts_required: 0, stars: 0, coins: 0, hearts_reward: 3 },
