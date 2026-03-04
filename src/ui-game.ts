@@ -345,17 +345,20 @@ export const gamePageTemplate = `<!DOCTYPE html>
         // Game State
         let gameState = {
             currentFarm: 1,
-            // 공통 상태 (모든 농장 공유)
+            
+            // 전역 상태 (모든 농장 공유)
             walletBalance: 0,
+            heartsBalance: INITIAL_HEARTS,      // 공유!
+            heartAllowance: 1,                   // 공유!
             starsPurchased: 0,
             coinsEarned: 0,
             
-            // 농장별 독립 상태
-            farms: {
-                1: { heartsBalance: INITIAL_HEARTS, heartAllowance: 1, pots: [{ id: 1, level: 0 }] },
-                2: { heartsBalance: INITIAL_HEARTS, heartAllowance: 1, pots: [{ id: 1, level: 0 }] },
-                3: { heartsBalance: INITIAL_HEARTS, heartAllowance: 1, pots: [{ id: 1, level: 0 }] },
-                4: { heartsBalance: INITIAL_HEARTS, heartAllowance: 1, pots: [{ id: 1, level: 0 }] }
+            // 농장별 독립 상태 (화분만!)
+            farmPots: {
+                1: [{ id: 1, level: 0 }],
+                2: [{ id: 1, level: 0 }],
+                3: [{ id: 1, level: 0 }],
+                4: [{ id: 1, level: 0 }]
             },
             
             warehouse: [],  // 창고에 보관된 화분들
@@ -369,13 +372,9 @@ export const gamePageTemplate = `<!DOCTYPE html>
                 allowance: 0
             },
             
-            // Getter/Setter for backward compatibility
-            get pots() { return this.farms[this.currentFarm].pots; },
-            set pots(value) { this.farms[this.currentFarm].pots = value; },
-            get heartsBalance() { return this.farms[this.currentFarm].heartsBalance; },
-            set heartsBalance(value) { this.farms[this.currentFarm].heartsBalance = value; },
-            get heartAllowance() { return this.farms[this.currentFarm].heartAllowance; },
-            set heartAllowance(value) { this.farms[this.currentFarm].heartAllowance = value; }
+            // Getter/Setter for current farm pots
+            get pots() { return this.farmPots[this.currentFarm]; },
+            set pots(value) { this.farmPots[this.currentFarm] = value; }
         };
 
         // Load farm levels configuration
@@ -449,9 +448,11 @@ export const gamePageTemplate = `<!DOCTYPE html>
             if (saved) {
                 const savedState = JSON.parse(saved);
                 
-                // 공통 상태 복원
+                // 전역 상태 복원
                 gameState.currentFarm = savedState.currentFarm || 1;
                 gameState.walletBalance = savedState.walletBalance || 0;
+                gameState.heartsBalance = savedState.heartsBalance || INITIAL_HEARTS;  // 전역!
+                gameState.heartAllowance = savedState.heartAllowance || 1;             // 전역!
                 gameState.starsPurchased = savedState.starsPurchased || 0;
                 gameState.coinsEarned = savedState.coinsEarned || 0;
                 gameState.warehouse = savedState.warehouse || [];
@@ -460,35 +461,27 @@ export const gamePageTemplate = `<!DOCTYPE html>
                 gameState.testMode = savedState.testMode || false;
                 gameState.testStats = savedState.testStats || { stars: 0, coins: 0, allowance: 0 };
                 
-                // 새로운 farms 구조 확인 및 마이그레이션
-                if (savedState.farms) {
+                // 농장별 화분 복원
+                if (savedState.farmPots) {
                     // 새 구조로 저장된 경우
-                    gameState.farms = savedState.farms;
+                    gameState.farmPots = savedState.farmPots;
+                } else if (savedState.farms) {
+                    // 중간 구조에서 마이그레이션 (farms.X.pots)
+                    for (let farmId = 1; farmId <= 4; farmId++) {
+                        if (savedState.farms[farmId] && savedState.farms[farmId].pots) {
+                            gameState.farmPots[farmId] = savedState.farms[farmId].pots;
+                        }
+                    }
                 } else {
-                    // 구 구조에서 마이그레이션
+                    // 구 구조에서 마이그레이션 (단일 pots 배열)
                     const oldPots = savedState.pots || [{ id: 1, level: 0 }];
-                    const oldHearts = savedState.heartsBalance || INITIAL_HEARTS;
-                    const oldAllowance = savedState.heartAllowance || 1;
                     
-                    // 기존 화분들을 farmId별로 분류
+                    // farmId별로 분류
                     for (let farmId = 1; farmId <= 4; farmId++) {
                         const farmPots = oldPots.filter(pot => (pot.farmId || 1) === farmId);
-                        
-                        if (farmPots.length > 0) {
-                            // 해당 농장에 화분이 있으면 복원
-                            gameState.farms[farmId] = {
-                                heartsBalance: oldHearts,
-                                heartAllowance: oldAllowance,
-                                pots: farmPots.map(pot => ({ id: pot.id, level: pot.level }))
-                            };
-                        } else {
-                            // 없으면 초기 상태
-                            gameState.farms[farmId] = {
-                                heartsBalance: INITIAL_HEARTS,
-                                heartAllowance: 1,
-                                pots: [{ id: 1, level: 0 }]
-                            };
-                        }
+                        gameState.farmPots[farmId] = farmPots.length > 0 
+                            ? farmPots.map(pot => ({ id: pot.id, level: pot.level }))
+                            : [{ id: 1, level: 0 }];
                     }
                 }
                 
@@ -868,22 +861,20 @@ export const gamePageTemplate = `<!DOCTYPE html>
 
         // 🔄 Reset Farm
         function resetFarm() {
-            if (!confirm(\`농장 \${gameState.currentFarm}을(를) 초기화하시겠습니까?\\n\\n모든 화분과 창고가 삭제되고 초기 상태로 돌아갑니다.\`)) {
+            if (!confirm('게임을 초기화하시겠습니까?\\n\\n모든 농장의 화분과 창고가 삭제되고 초기 상태로 돌아갑니다.')) {
                 return;
             }
 
             // 전체 초기 상태로 리셋
             gameState.walletBalance = 0;
+            gameState.heartsBalance = INITIAL_HEARTS;  // 전역
+            gameState.heartAllowance = 1;              // 전역
             gameState.starsPurchased = 0;
             gameState.coinsEarned = 0;
             
-            // 모든 농장 초기화
+            // 모든 농장의 화분 초기화
             for (let farmId = 1; farmId <= 4; farmId++) {
-                gameState.farms[farmId] = {
-                    heartsBalance: INITIAL_HEARTS,
-                    heartAllowance: 1,
-                    pots: [{ id: 1, level: 0 }]
-                };
+                gameState.farmPots[farmId] = [{ id: 1, level: 0 }];
             }
             
             gameState.warehouse = [];  // 창고 초기화
@@ -903,7 +894,7 @@ export const gamePageTemplate = `<!DOCTYPE html>
             updateStats();
             saveGameState();
             
-            alert('모든 농장이 초기화되었습니다!');
+            alert('게임이 초기화되었습니다!');
         }
 
         // 🗑️ Delete Pot
